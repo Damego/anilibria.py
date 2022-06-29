@@ -32,7 +32,9 @@ class SomeRequest:  # TODO: Назвать как-нибудь
         filter: Optional[List[str]] = None,
         remove: Optional[List[str]] = None,
         include: Optional[List[str]] = None,
-        description_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
+        description_type: Optional[
+            str
+        ] = None,  # TODO: Тут значение по умолчанию какое-то
         playlist_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
     ) -> dict:
         payload: str = self._to_string(
@@ -43,7 +45,7 @@ class SomeRequest:  # TODO: Назвать как-нибудь
             remove=remove,
             include=include,
             description_type=description_type,
-            playlist_type=playlist_type
+            playlist_type=playlist_type,
         )
         return await self.request.request("GET", f"{URL}/getTitle", payload)
 
@@ -54,7 +56,9 @@ class SomeRequest:  # TODO: Назвать как-нибудь
         filter: Optional[List[str]] = None,
         remove: Optional[List[str]] = None,
         include: Optional[List[str]] = None,
-        description_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
+        description_type: Optional[
+            str
+        ] = None,  # TODO: Тут значение по умолчанию какое-то
         playlist_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
     ) -> List[dict]:
         payload: str = self._to_string(
@@ -64,7 +68,7 @@ class SomeRequest:  # TODO: Назвать как-нибудь
             remove=remove,
             include=include,
             description_type=description_type,
-            playlist_type=playlist_type
+            playlist_type=playlist_type,
         )
         return await self.request.request("GET", f"{URL}/getTitles", payload)
 
@@ -74,7 +78,9 @@ class SomeRequest:  # TODO: Назвать как-нибудь
         remove: Optional[List[str]] = None,
         include: Optional[List[str]] = None,
         since: Optional[int] = None,
-        description_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
+        description_type: Optional[
+            str
+        ] = None,  # TODO: Тут значение по умолчанию какое-то
         playlist_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
         after: Optional[int] = None,
         limit: Optional[int] = None,
@@ -87,7 +93,7 @@ class SomeRequest:  # TODO: Назвать как-нибудь
             description_type=description_type,
             playlist_type=playlist_type,
             after=after,
-            limit=limit
+            limit=limit,
         )
         return await self.request.request("GET", f"{URL}/getUpdates", payload)
 
@@ -97,7 +103,9 @@ class SomeRequest:  # TODO: Назвать как-нибудь
         remove: Optional[List[str]] = None,
         include: Optional[List[str]] = None,
         since: Optional[int] = None,
-        description_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
+        description_type: Optional[
+            str
+        ] = None,  # TODO: Тут значение по умолчанию какое-то
         after: Optional[int] = None,
         limit: Optional[int] = None,
     ) -> List[dict]:
@@ -108,7 +116,7 @@ class SomeRequest:  # TODO: Назвать как-нибудь
             since=since,
             description_type=description_type,
             after=after,
-            limit=limit
+            limit=limit,
         )
         return await self.request.request("GET", f"{URL}/getChanges", payload)
 
@@ -118,7 +126,9 @@ class SomeRequest:  # TODO: Назвать как-нибудь
         remove: Optional[List[str]] = None,
         include: Optional[List[str]] = None,
         days: List[str] = None,
-        description_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
+        description_type: Optional[
+            str
+        ] = None,  # TODO: Тут значение по умолчанию какое-то
         playlist_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
     ) -> List[dict]:
         payload: str = self._to_string(
@@ -136,7 +146,9 @@ class SomeRequest:  # TODO: Назвать как-нибудь
         filter: Optional[List[str]] = None,
         remove: Optional[List[str]] = None,
         include: Optional[List[str]] = None,
-        description_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
+        description_type: Optional[
+            str
+        ] = None,  # TODO: Тут значение по умолчанию какое-то
         playlist_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
     ) -> dict:
         payload: str = self._to_string(
@@ -163,7 +175,7 @@ class SomeRequest:  # TODO: Назвать как-нибудь
             include=include,
             since=since,
             after=after,
-            limit=limit
+            limit=limit,
         )
         return await self.request.request("GET", f"{URL}/getYouTube", payload)
 
@@ -173,7 +185,9 @@ class SomeRequest:  # TODO: Назвать как-нибудь
         remove: Optional[List[str]] = None,
         include: Optional[List[str]] = None,
         since: Optional[int] = None,
-        description_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
+        description_type: Optional[
+            str
+        ] = None,  # TODO: Тут значение по умолчанию какое-то
         playlist_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
         after: Optional[int] = None,
         limit: Optional[int] = None,
@@ -186,7 +200,7 @@ class SomeRequest:  # TODO: Назвать как-нибудь
             description_type=description_type,
             playlist_type=playlist_type,
             after=after,
-            limit=limit
+            limit=limit,
         )
         return await self.request.request("GET", f"{URL}/getUpdates", payload)
 
@@ -210,7 +224,9 @@ class SomeRequest:  # TODO: Назвать как-нибудь
         users: List[str],
         remove: Optional[List[str]] = None,
         include: Optional[List[str]] = None,
-        description_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
+        description_type: Optional[
+            str
+        ] = None,  # TODO: Тут значение по умолчанию какое-то
         playlist_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
         after: Optional[int] = None,
         sort_by: Optional[str] = None,
@@ -226,19 +242,20 @@ class SomeRequest:  # TODO: Назвать как-нибудь
             after=after,
             sort_by=sort_by,
             order=order,
-            limit=limit
+            limit=limit,
         )
         return await self.request.request("GET", f"{URL}/getSeedStats", payload)
 
     async def get_rss(
-        self, rss_type: str, session: str, since: Optional[int] = None, after: Optional[int] = None, limit: Optional[int] = None
+        self,
+        rss_type: str,
+        session: str,
+        since: Optional[int] = None,
+        after: Optional[int] = None,
+        limit: Optional[int] = None,
     ):
         payload: str = self._to_string(
-            rss_type=rss_type,
-            session=session,
-            since=since,
-            after=after,
-            limit=limit
+            rss_type=rss_type, session=session, since=since, after=after, limit=limit
         )
         return await self.request.request("GET", f"{URL}/getRSS", payload)
 
@@ -256,7 +273,9 @@ class SomeRequest:  # TODO: Назвать как-нибудь
         filter: Optional[List[str]] = None,
         remove: Optional[List[str]] = None,
         include: Optional[List[str]] = None,
-        description_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
+        description_type: Optional[
+            str
+        ] = None,  # TODO: Тут значение по умолчанию какое-то
         playlist_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
         after: Optional[int] = None,
         limit: Optional[int] = None,
@@ -277,7 +296,7 @@ class SomeRequest:  # TODO: Назвать как-нибудь
             description_type=description_type,
             playlist_type=playlist_type,
             after=after,
-            limit=limit
+            limit=limit,
         )
         return await self.request.request("GET", f"{URL}/searchTitles", payload)
 
@@ -287,7 +306,9 @@ class SomeRequest:  # TODO: Назвать как-нибудь
         filter: Optional[List[str]] = None,
         remove: Optional[List[str]] = None,
         include: Optional[List[str]] = None,
-        description_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
+        description_type: Optional[
+            str
+        ] = None,  # TODO: Тут значение по умолчанию какое-то
         playlist_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
         after: Optional[int] = None,
         order_by: str = None,
@@ -304,7 +325,7 @@ class SomeRequest:  # TODO: Назвать как-нибудь
             after=after,
             order_by=order_by,
             limit=limit,
-            sort_direction=sort_direction
+            sort_direction=sort_direction,
         )
         return await self.request.request("GET", f"{URL}/advancedSearch", payload)
 
@@ -314,7 +335,9 @@ class SomeRequest:  # TODO: Назвать как-нибудь
         filter: Optional[List[str]] = None,
         remove: Optional[List[str]] = None,
         include: Optional[List[str]] = None,
-        description_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
+        description_type: Optional[
+            str
+        ] = None,  # TODO: Тут значение по умолчанию какое-то
         playlist_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
     ) -> List[dict]:
         payload: str = self._to_string(
@@ -328,15 +351,9 @@ class SomeRequest:  # TODO: Назвать как-нибудь
         return await self.request.request("GET", f"{URL}/getFavorites", payload)
 
     async def add_favourite(self, session: str, title_id: int) -> dict:
-        payload: str = self._to_string(
-            session=session,
-            title_id=title_id
-        )
+        payload: str = self._to_string(session=session, title_id=title_id)
         return await self.request.request("PUT", f"{URL}/addFavorite", payload)
 
     async def del_favourite(self, session: str, title_id: int) -> dict:
-        payload: str = self._to_string(
-            session=session,
-            title_id=title_id
-        )
+        payload: str = self._to_string(session=session, title_id=title_id)
         return await self.request.request("DELETE", f"{URL}/delFavorite", payload)

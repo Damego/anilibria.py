@@ -30,17 +30,15 @@ class WebSocketClient:
 
             if self._closed:
                 await self.__run()
-            
+
             while not self._closed:
                 packet = await self._client.receive()
                 await self.process_packet(packet)
-                
 
     async def process_packet(self, packet: WSMessage):
         data = loads(packet.data)
         if data.get("title_update"):
-            #title_data = data["title"]  # TODO: Build models
-            #diff = data["diff"]  # TODO: Build models
+            # title_data = data["title"]  # KeyError lol. Freak docs
             self._listener.dispatch("title_update", data)
         elif data.get("playlist_update"):
             self._listener.dispatch("playlist_update", data)
@@ -50,9 +48,11 @@ class WebSocketClient:
             self._listener.dispatch("end_encode", data)
         elif data.get("encode_progress"):
             self._listener.dispatch("encode_progress", data)
+        else:
+            print(data)
 
         self._listener.dispatch("raw_ani_packet", data)
-        #print("Packet dispatched", packet)  # TODO: Use logging
+        # print("Packet dispatched", packet)  # TODO: Use logging
 
     async def login(self, login: str, password: str) -> str:
         data = await self._http.login(login, password)
@@ -60,4 +60,3 @@ class WebSocketClient:
 
     async def subscribe(self, data: dict):
         await self._client.send_json(data)
-

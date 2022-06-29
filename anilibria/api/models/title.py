@@ -5,7 +5,7 @@ from dataclasses import dataclass
 @dataclass(slots=True, frozen=True)
 class Poster:
     url: str
-    raw_base64_file: None # What?
+    raw_base64_file: None  # What?
 
 
 @dataclass(slots=True)
@@ -77,8 +77,8 @@ class Serie:
     serie: int
     created_timestamp: int
     hls: HLS
-    preview: None # Not documented in the docs
-    skips: SerieSkips # Not documented in the docs
+    preview: None  # Not documented in the docs
+    skips: SerieSkips  # Not documented in the docs
 
     def __post__init__(self):
         self.skips = SerieSkips(**self.skips)
@@ -95,7 +95,9 @@ class Player:
     # поэтому я решил убрать ключи, оставив список с сериями.
 
     def __post_init__(self):
-        self.playlist: List[Serie] = [Serie(**serie) for serie in self.playlist.values()]
+        self.playlist: List[Serie] = [
+            Serie(**serie) for serie in self.playlist.values()
+        ]
 
 
 @dataclass(slots=True, frozen=True)
@@ -119,7 +121,7 @@ class Torrent:
     url: str
     uploaded_timestamp: int
     metadata: None  # What?
-    raw_base64_file: None # What?
+    raw_base64_file: None  # What?
     hash: str
 
 

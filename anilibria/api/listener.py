@@ -3,6 +3,7 @@ from typing import Coroutine
 
 # TODO: Использовать logger
 
+
 class EventListener:
     def __init__(self) -> None:
         self.loop = get_event_loop()

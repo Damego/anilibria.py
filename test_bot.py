@@ -15,7 +15,10 @@ from anilibria import AniLibriaClient
 load_dotenv()
 
 bot = InteractionBot()
-client = AniLibriaClient(login=getenv("LOGIN"), password=getenv("PASSWORD"), proxy=getenv("PROXY"))
+client = AniLibriaClient(
+    login=getenv("LOGIN"), password=getenv("PASSWORD"), proxy=getenv("PROXY")
+)
+
 
 @client.event(name="title_update")
 async def title_update(data):
@@ -27,6 +30,7 @@ async def command(interaction: CommandInteraction):
     title = await client.get_title(id=8700)
     print(title)
     await interaction.send("вроде ок")
+
 
 @bot.event
 async def on_ready():

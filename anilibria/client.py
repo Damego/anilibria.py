@@ -21,17 +21,20 @@ class AniLibriaClient:
         while not self._websocket._closed:
             await self._websocket.run()
 
-    async def subscribe(self):  # TODO: Оно что-то принимает, но что именно, не сказано
-        data = {
-            "subscribe": {"season": {"year": 2022}}
-        }
-        await self._websocket.subscribe(data)
+    async def subscribe(self, data: dict, filter: str, remove: str):
+        """
+        Оно что-то принимает, но что именно, не сказано. \n
+        Принимает filter: str и remove: str. Насчёт первого вопросов нет, но что делать со вторым?
+        """
+        payload = {"subscribe": data, "filter": filter, "remove": remove}
+        await self._websocket.subscribe(payload)
 
     def event(self, name: str = None):
         def decorator(coro: Coroutine):
             self._websocket._listener.add_event(coro, name or coro.__name__)
 
             return coro
+
         return decorator
 
     async def get_title(
@@ -42,12 +45,20 @@ class AniLibriaClient:
         filter: Optional[List[str]] = None,
         remove: Optional[List[str]] = None,
         include: Optional[List[str]] = None,
-        description_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
-        playlist_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
-        ):
-        data = await self._websocket._http.get_title(id=id, code=code, torrent_id=torrent_id, filter=filter, remove=remove, include=include, description_type=description_type, playlist_type=playlist_type)
-        title = Title(**data)
-        return title
+        description_type: Optional[str] = None,
+        playlist_type: Optional[str] = None,
+    ):
+        data = await self._websocket._http.get_title(
+            id=id,
+            code=code,
+            torrent_id=torrent_id,
+            filter=filter,
+            remove=remove,
+            include=include,
+            description_type=description_type,
+            playlist_type=playlist_type,
+        )
+        return Title(**data)
 
     def start(self):
         self._loop.run_until_complete(self._start())
