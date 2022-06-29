@@ -2,7 +2,7 @@ from typing import Optional
 from dataclasses import dataclass, field
 
 from enum import Enum
-from ..models import Player, Serie
+from ..models import Player, Serie, Title
 
 
 class EventType(Enum):
@@ -31,11 +31,14 @@ class PlayListUpdateEvent:
     player: Player
     updated_episode: Serie
     episode: str
+    diff: dict  # Здесь может быть что угодно, а что именно - не сказано, так что пусть пока будет словарём.
+    reupload: bool
 
 
 @dataclass(slots=True, frozen=True)
 class TitleUpdateEvent:
-
+    hash: str
+    title: Title
     diff: dict  # Здесь может быть что угодно, а что именно - не сказано, так что пусть пока будет словарём.
 
 

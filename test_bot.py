@@ -20,16 +20,20 @@ client = AniLibriaClient(
 )
 
 
-@client.event(name="title_update")
+@client.event(name="on_raw_packet")
+async def test(data):
+    print(data)
+
+
+@client.event(name="on_title_update")
 async def title_update(data):
     print(data)
 
 
 @bot.slash_command(name="test")
 async def command(interaction: CommandInteraction):
-    title = await client.get_title(id=8700)
-    print(title)
-    await interaction.send("вроде ок")
+    data = await client.get_feed(limit=100)
+    print(len(data))
 
 
 @bot.event

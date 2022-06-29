@@ -5,6 +5,7 @@ from json import loads
 
 from ..http import HTTPCLient
 from ..listener import EventListener
+from .events import *
 
 
 URL = "ws://api.anilibria.tv/v2/ws/"
@@ -37,22 +38,31 @@ class WebSocketClient:
 
     async def process_packet(self, packet: WSMessage):
         data = loads(packet.data)
-        if data.get("title_update"):
-            # title_data = data["title"]  # KeyError lol. Freak docs
-            self._listener.dispatch("title_update", data)
-        elif data.get("playlist_update"):
-            self._listener.dispatch("playlist_update", data)
-        elif data.get("start_encode"):
-            self._listener.dispatch("start_encode", data)
-        elif data.get("end_encode"):
-            self._listener.dispatch("end_encode", data)
-        elif data.get("encode_progress"):
-            self._listener.dispatch("encode_progress", data)
+        type = data.get("type")
+        if type is None:
+            await self._other(data)
+        event_name = f"on_{type}"
+        if type == EventType.TITLE_UPDATE:
+            event = TitleUpdateEvent(**data[type])
+            self._listener.dispatch(event_name, event)
+        elif type == EventType.PLAYLIST_UPDATE:
+            event = PlayListUpdateEvent(**data[type])
+            self._listener.dispatch(event_name, event)
+        elif type in [
+            EventType.ENCODE_START,
+            EventType.ENCODE_END,
+            EventType.ENCODE_PROGRESS,
+        ]:
+            event = EncodeEvent(**data[type])
+            self._listener.dispatch(event_name, data)
         else:
-            print(data)
+            print("ANOTHER EVENT", data)
 
-        self._listener.dispatch("raw_ani_packet", data)
+        self._listener.dispatch("on_raw_packet", data)
         # print("Packet dispatched", packet)  # TODO: Use logging
+
+    async def _other(self, data):
+        print(data)
 
     async def login(self, login: str, password: str) -> str:
         data = await self._http.login(login, password)

@@ -12,7 +12,7 @@ class EventListener:
     def dispatch(self, name: str, *args, **kwargs):
         for event in self.events.get(name, []):
             self.loop.create_task(event(*args, **kwargs))
-            print(f"event {name} was dispatched")
+            # print(f"event {name} was dispatched")
 
     def add_event(self, coro: Coroutine, name: str = None):
         _name = name or coro.__name__
@@ -20,5 +20,5 @@ class EventListener:
         event.append(coro)
 
         self.events[_name] = event
-        print(f"Event {_name} added")
-        print(f"Coros for {_name}:", self.events[_name])
+        # print(f"Event {_name} added")
+        # print(f"Coros for {_name}:", self.events[_name])

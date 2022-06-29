@@ -1,0 +1,3137 @@
+[
+    {
+        "id": 9202,
+        "code": "yu-gi-oh-shadow-game",
+        "names": {
+            "ru": "Югио! Игра Теней",
+            "en": "Yu-Gi-Oh! Shadow Game",
+            "alternative": null
+        },
+        "announce": "Новая серия каждую среду",
+        "status": {
+            "string": "В работе",
+            "code": 1
+        },
+        "posters": {
+            "small": {
+                "url": "/storage/releases/posters/9202/zWBW9QmYDdL7o4pZ.jpg",
+                "raw_base64_file": null
+            },
+            "medium": {
+                "url": "/storage/releases/posters/9202/zWBW9QmYDdL7o4pZ.jpg",
+                "raw_base64_file": null
+            },
+            "original": {
+                "url": "/storage/releases/posters/9202/zWBW9QmYDdL7o4pZ.jpg",
+                "raw_base64_file": null
+            }
+        },
+        "updated": 1656517046,
+        "last_change": 1656516680,
+        "type": {
+            "full_string": "ТВ (27 эп.), 24 мин.",
+            "code": 1,
+            "string": "TV",
+            "series": 27,
+            "length": 24
+        },
+        "genres": [
+            "Игры",
+            "Комедия",
+            "Сёнен",
+            "Фэнтези",
+            "Экшен"
+        ],
+        "team": {
+            "voice": [
+                "Itashi",
+                "Lupin"
+            ],
+            "translator": [
+                "2R"
+            ],
+            "editing": [],
+            "decor": [],
+            "timing": [
+                "Den Sato"
+            ]
+        },
+        "season": {
+            "string": "весна",
+            "code": 2,
+            "year": 1998,
+            "week_day": 2
+        },
+        "description": "Юги Муто — отчасти хрупкий молодой мальчик, который, оказывается, большой поклонник игр любого рода. Но когда он решает древнюю египетскую головоломку, Юги получает все силы тьмы. Теперь, столкнувшись с опасностью и несправедливостью, он превращает эту силу в гораздо более тёмную и опасную форму и приступает к сражению за справедливость и наказание.",
+        "in_favorites": 365,
+        "blocked": {
+            "blocked": false,
+            "bakanim": false
+        },
+        "player": {
+            "alternative_player": "//aniqit.com/serial/41884/68258bbf286f7d768926efaabc138b5f/720p?translations=false",
+            "host": "de8.libria.fun",
+            "series": {
+                "first": 1,
+                "last": 11,
+                "string": "1-11"
+            },
+            "playlist": {
+                "1": {
+                    "serie": 1,
+                    "created_timestamp": 1649192041,
+                    "preview": "/storage/releases/episodes/previews/9202/1/beUDt1VkxRqJCUmZ.jpg",
+                    "skips": {
+                        "opening": [
+                            1,
+                            70
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": null,
+                        "hd": "/videos/media/ts/9202/1/720/3012146d4ac0f38c5d08a0bb61dae07f.m3u8",
+                        "sd": "/videos/media/ts/9202/1/480/b285454f403912ca86859bc6028ec35f.m3u8"
+                    }
+                },
+                "2": {
+                    "serie": 2,
+                    "created_timestamp": 1649874461,
+                    "preview": "/storage/releases/episodes/previews/9202/2/8gogrLJb9vATdsSs.jpg",
+                    "skips": {
+                        "opening": [
+                            1,
+                            70
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": null,
+                        "hd": "/videos/media/ts/9202/2/720/71f6ac3b1203b1d6f39d514a11d3b9f4.m3u8",
+                        "sd": "/videos/media/ts/9202/2/480/adce0aa9d000b807b99c0ca64350d3a9.m3u8"
+                    }
+                },
+                "3": {
+                    "serie": 3,
+                    "created_timestamp": 1650480814,
+                    "preview": "/storage/releases/episodes/previews/9202/3/DqiQIa3ATOvPD9m1.jpg",
+                    "skips": {
+                        "opening": [
+                            1,
+                            70
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": null,
+                        "hd": "/videos/media/ts/9202/3/720/57e9a66d7e825155d03e83868695ee6d.m3u8",
+                        "sd": "/videos/media/ts/9202/3/480/8554dda42d7e8a0c23c48e945e876001.m3u8"
+                    }
+                },
+                "4": {
+                    "serie": 4,
+                    "created_timestamp": 1651128173,
+                    "preview": "/storage/releases/episodes/previews/9202/4/zoau9RJFaKriy1bG.jpg",
+                    "skips": {
+                        "opening": [
+                            1,
+                            70
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": null,
+                        "hd": "/videos/media/ts/9202/4/720/2b390db039fc66edb9fcc0f2cb96faaf.m3u8",
+                        "sd": "/videos/media/ts/9202/4/480/464340f290d83b697100260c2b64191a.m3u8"
+                    }
+                },
+                "5": {
+                    "serie": 5,
+                    "created_timestamp": 1651781355,
+                    "preview": "/storage/releases/episodes/previews/9202/5/6AFEMQ4Mmqp5WdLX.jpg",
+                    "skips": {
+                        "opening": [
+                            1,
+                            70
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": null,
+                        "hd": "/videos/media/ts/9202/5/720/7346f272ecae88970933e5616092458b.m3u8",
+                        "sd": "/videos/media/ts/9202/5/480/7f6dd0fdad5679ac10adeee2f958bf60.m3u8"
+                    }
+                },
+                "6": {
+                    "serie": 6,
+                    "created_timestamp": 1653448108,
+                    "preview": "/storage/releases/episodes/previews/9202/6/vge6kAPmfGy7MEAL.jpg",
+                    "skips": {
+                        "opening": [
+                            1,
+                            70
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": null,
+                        "hd": "/videos/media/ts/9202/6/720/b132a64d7b49d4966f6edccd154b8f72.m3u8",
+                        "sd": "/videos/media/ts/9202/6/480/e7b77285df8492b74272e97af5bb6e99.m3u8"
+                    }
+                },
+                "7": {
+                    "serie": 7,
+                    "created_timestamp": 1654115554,
+                    "preview": "/storage/releases/episodes/previews/9202/7/XrDrMdCleTEeflMc.jpg",
+                    "skips": {
+                        "opening": [
+                            1,
+                            70
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": null,
+                        "hd": "/videos/media/ts/9202/7/720/4ec7057b3665a9d4d50d4bbe00c54fcb.m3u8",
+                        "sd": "/videos/media/ts/9202/7/480/0a2c2ef63586f7f5e0f50940078e38df.m3u8"
+                    }
+                },
+                "8": {
+                    "serie": 8,
+                    "created_timestamp": 1654711062,
+                    "preview": "/storage/releases/episodes/previews/9202/8/FmrCIwt55vGqtrrD.jpg",
+                    "skips": {
+                        "opening": [
+                            1,
+                            70
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": null,
+                        "hd": "/videos/media/ts/9202/8/720/a037efc8bdb423c65631c737f3219c41.m3u8",
+                        "sd": "/videos/media/ts/9202/8/480/3ff78e873627776f37fec7f2497311ce.m3u8"
+                    }
+                },
+                "9": {
+                    "serie": 9,
+                    "created_timestamp": 1655322944,
+                    "preview": "/storage/releases/episodes/previews/9202/9/2vODnHRoCJv5WCIo.jpg",
+                    "skips": {
+                        "opening": [
+                            1,
+                            70
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": null,
+                        "hd": "/videos/media/ts/9202/9/720/b49230597355d1f6de44119c1ed7d906.m3u8",
+                        "sd": "/videos/media/ts/9202/9/480/33ff1fdb19c36bbf19b730ab25eafc70.m3u8"
+                    }
+                },
+                "10": {
+                    "serie": 10,
+                    "created_timestamp": 1655932201,
+                    "preview": "/storage/releases/episodes/previews/9202/10/uW3YnolVv1O7jMI2.jpg",
+                    "skips": {
+                        "opening": [
+                            1,
+                            70
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": null,
+                        "hd": "/videos/media/ts/9202/10/720/f62b845657374cee4cde1c13d685810d.m3u8",
+                        "sd": "/videos/media/ts/9202/10/480/a37b2f7ea4b19bd0e33401db43b5a1e4.m3u8"
+                    }
+                },
+                "11": {
+                    "serie": 11,
+                    "created_timestamp": 1656516951,
+                    "preview": "/storage/releases/episodes/previews/9202/11/veu0Wou0pFsNIqgj.jpg",
+                    "skips": {
+                        "opening": [
+                            1,
+                            70
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": null,
+                        "hd": "/videos/media/ts/9202/11/720/eed284487b204ea5f3eea619612fa623.m3u8",
+                        "sd": "/videos/media/ts/9202/11/480/fb1333ee2cde7874d08079004d7b4665.m3u8"
+                    }
+                }
+            }
+        },
+        "torrents": {
+            "series": {
+                "first": 1,
+                "last": 11,
+                "string": "1-11"
+            },
+            "list": [
+                {
+                    "torrent_id": 19905,
+                    "series": {
+                        "first": 1,
+                        "last": 11,
+                        "string": "1-11"
+                    },
+                    "quality": {
+                        "string": "TVRip 720p",
+                        "type": "TVRip",
+                        "resolution": "720p",
+                        "encoder": "h264",
+                        "lq_audio": null
+                    },
+                    "leechers": 0,
+                    "seeders": 11,
+                    "downloads": 336,
+                    "total_size": 5182266066,
+                    "url": "/public/torrent/download.php?id=19905",
+                    "uploaded_timestamp": 1656516680,
+                    "hash": "3a01dc0da4d7f300bc4286eb3d5d9df982ab756a",
+                    "metadata": null,
+                    "raw_base64_file": null
+                },
+                {
+                    "torrent_id": 19832,
+                    "series": {
+                        "first": 1,
+                        "last": 10,
+                        "string": "1-10"
+                    },
+                    "quality": {
+                        "string": "TVRip 720p HEVC",
+                        "type": "TVRip",
+                        "resolution": "720p",
+                        "encoder": "h265",
+                        "lq_audio": null
+                    },
+                    "leechers": 0,
+                    "seeders": 11,
+                    "downloads": 284,
+                    "total_size": 1914576532,
+                    "url": "/public/torrent/download.php?id=19832",
+                    "uploaded_timestamp": 1655941145,
+                    "hash": "aad67ebeecae2bf7163c35b769b397f6f7f420ac",
+                    "metadata": null,
+                    "raw_base64_file": null
+                }
+            ]
+        }
+    },
+    {
+        "id": 8700,
+        "code": "texhnolyze",
+        "names": {
+            "ru": "Технолайз",
+            "en": "Texhnolyze",
+            "alternative": null
+        },
+        "announce": null,
+        "status": {
+            "string": "В работе",
+            "code": 1
+        },
+        "posters": {
+            "small": {
+                "url": "/storage/releases/posters/8700/eROIodtYPzLgNiJU.jpg",
+                "raw_base64_file": null
+            },
+            "medium": {
+                "url": "/storage/releases/posters/8700/eROIodtYPzLgNiJU.jpg",
+                "raw_base64_file": null
+            },
+            "original": {
+                "url": "/storage/releases/posters/8700/eROIodtYPzLgNiJU.jpg",
+                "raw_base64_file": null
+            }
+        },
+        "updated": 1656505693,
+        "last_change": 1656505255,
+        "type": {
+            "full_string": "ТВ (22 эп.), 25 мин.",
+            "code": 1,
+            "string": "TV",
+            "series": 22,
+            "length": 25
+        },
+        "genres": [
+            "Драма",
+            "Психологическое",
+            "Фантастика",
+            "Экшен"
+        ],
+        "team": {
+            "voice": [
+                "MyAska",
+                "Zozya"
+            ],
+            "translator": [],
+            "editing": [],
+            "decor": [],
+            "timing": [
+                "Nikanor47"
+            ]
+        },
+        "season": {
+            "string": "весна",
+            "code": 2,
+            "year": 2003,
+            "week_day": 0
+        },
+        "description": "Люкс — подземный город, который был построен ради одного эксперимента, но люди, живущие на поверхности, забыли о нем. Жители Люкса оказались в отчаянном положении. В городе установилось хрупкое равновесие сил между взявшими верх группировками. Была изобретена технология «Технолайз», которая «помогает» управлять городом. Теперь некоторые люди Люкса обладают технолизированными конечностями, похожими на протезы. Действие сериала разворачивается вокруг Итисэ — уличного бойца, одного из потомков первых сосланных под землю людей. Чем же станет «Технолайз» — спасением города или же его разрушением?",
+        "in_favorites": 650,
+        "blocked": {
+            "blocked": false,
+            "bakanim": false
+        },
+        "player": {
+            "alternative_player": null,
+            "host": "de6.libria.fun",
+            "series": {
+                "first": 1,
+                "last": 2,
+                "string": "1-2"
+            },
+            "playlist": {
+                "1": {
+                    "serie": 1,
+                    "created_timestamp": 1656280895,
+                    "preview": "/storage/releases/episodes/previews/8700/1/2y3nujSiiA7VT83w.jpg",
+                    "skips": {
+                        "opening": [
+                            0,
+                            80
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/8700/1/1080/edc86a1cbc28da057014669c9285d745.m3u8",
+                        "hd": "/videos/media/ts/8700/1/720/174e1cea66a28a0986ce9acb8aff7b6e.m3u8",
+                        "sd": "/videos/media/ts/8700/1/480/93dda374488321269450599d6d9b1f26.m3u8"
+                    }
+                },
+                "2": {
+                    "serie": 2,
+                    "created_timestamp": 1656505664,
+                    "preview": "/storage/releases/episodes/previews/8700/2/QC3utj9eHxZZD41Q.jpg",
+                    "skips": {
+                        "opening": [
+                            0,
+                            80
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/8700/2/1080/1718de3ebb807651e43093c642df7297.m3u8",
+                        "hd": "/videos/media/ts/8700/2/720/ab1412cd7ce04abc88541f0ef83fed0f.m3u8",
+                        "sd": "/videos/media/ts/8700/2/480/47451c4701bc02878b397f633e4453c5.m3u8"
+                    }
+                }
+            }
+        },
+        "torrents": {
+            "series": {
+                "first": 1,
+                "last": 2,
+                "string": "1-2"
+            },
+            "list": [
+                {
+                    "torrent_id": 19904,
+                    "series": {
+                        "first": 1,
+                        "last": 2,
+                        "string": "1-2"
+                    },
+                    "quality": {
+                        "string": "DVDRip 480p",
+                        "type": "DVDRip",
+                        "resolution": "480p",
+                        "encoder": "h264",
+                        "lq_audio": null
+                    },
+                    "leechers": 5,
+                    "seeders": 29,
+                    "downloads": 275,
+                    "total_size": 747834727,
+                    "url": "/public/torrent/download.php?id=19904",
+                    "uploaded_timestamp": 1656505255,
+                    "hash": "54c68bf7390eccc913274869c365ab63419dcf24",
+                    "metadata": null,
+                    "raw_base64_file": null
+                }
+            ]
+        }
+    },
+    {
+        "id": 9204,
+        "code": "tiger-bunny-2",
+        "names": {
+            "ru": "Тигр и кролик 2",
+            "en": "Tiger & Bunny 2",
+            "alternative": null
+        },
+        "announce": "Серия задерживается по тех. причинам",
+        "status": {
+            "string": null,
+            "code": null
+        },
+        "posters": {
+            "small": {
+                "url": "/storage/releases/posters/9204/whUyGkuLRForQSET.jpg",
+                "raw_base64_file": null
+            },
+            "medium": {
+                "url": "/storage/releases/posters/9204/whUyGkuLRForQSET.jpg",
+                "raw_base64_file": null
+            },
+            "original": {
+                "url": "/storage/releases/posters/9204/whUyGkuLRForQSET.jpg",
+                "raw_base64_file": null
+            }
+        },
+        "updated": 1656493866,
+        "last_change": 1656493099,
+        "type": {
+            "full_string": "ОNA (25 эп.), 25 мин.",
+            "code": 3,
+            "string": "ONA",
+            "series": 25,
+            "length": 25
+        },
+        "genres": [
+            "Детектив",
+            "Комедия",
+            "Экшен"
+        ],
+        "team": {
+            "voice": [
+                "Derenn",
+                "Hekomi",
+                "Kaize",
+                "Night shift",
+                "Vulpis"
+            ],
+            "translator": [],
+            "editing": [],
+            "decor": [],
+            "timing": [
+                "Nikanor47"
+            ]
+        },
+        "season": {
+            "string": "весна",
+            "code": 2,
+            "year": 2022,
+            "week_day": 2
+        },
+        "description": "Действие происходит в вымышленном городе Штернбилд, который выглядит как футуристический Нью-Йорк. За 45 лет до начала событий стали появляться люди со сверхчеловеческими возможностями, которые получили название NEXT. Некоторые из этих людей стали супергероями. Каждый из городских супергероев имеет собственную компанию-спонсора, а их костюмы украшены рекламой реально существующих компаний. Подвиги супергероев транслируются в прямом эфире в популярном телешоу «Hero TV», которое даёт баллы за каждый поступок супергероя, и в конце сезона подводит итог и провозглашает «Короля Героев».\r\nИстория разворачивается вокруг героя-ветерана Котэцу Кабураги, который известен как «Дикий Тигр». Он получил нового партнёра, молодого парня по имени Барнаби Брукс-младший. Барнаби и Котэцу трудно срабатываются друг с другом, поскольку у каждого из них есть собственное представление о том, как должен вести себя супергерой.",
+        "in_favorites": 295,
+        "blocked": {
+            "blocked": false,
+            "bakanim": false
+        },
+        "player": {
+            "alternative_player": null,
+            "host": "de8.libria.fun",
+            "series": {
+                "first": 1,
+                "last": 10,
+                "string": "1-10"
+            },
+            "playlist": {
+                "1": {
+                    "serie": 1,
+                    "created_timestamp": 1650466979,
+                    "preview": "/storage/releases/episodes/previews/9204/1/B6dwURP8FvWvv7BQ.jpg",
+                    "skips": {
+                        "opening": [
+                            468,
+                            558
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9204/1/1080/4d97320f675bd2e51c15f139318430d8.m3u8",
+                        "hd": "/videos/media/ts/9204/1/720/2c8236cf32f4445fa6ed5ca3a945b582.m3u8",
+                        "sd": "/videos/media/ts/9204/1/480/fc837dc78bcfd03d3a34d1f8865df75a.m3u8"
+                    }
+                },
+                "2": {
+                    "serie": 2,
+                    "created_timestamp": 1651086257,
+                    "preview": "/storage/releases/episodes/previews/9204/2/OWNbc2XWxjWRiduk.jpg",
+                    "skips": {
+                        "opening": [],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9204/2/1080/9070dc8f907b031a9e5462c432baa679.m3u8",
+                        "hd": "/videos/media/ts/9204/2/720/6a7d5ee89f73fdb4547ea3142213b1b5.m3u8",
+                        "sd": "/videos/media/ts/9204/2/480/df26f819a8815bb5206ae42d0a0214da.m3u8"
+                    }
+                },
+                "3": {
+                    "serie": 3,
+                    "created_timestamp": 1651598326,
+                    "preview": "/storage/releases/episodes/previews/9204/3/3sSmebyquYwtTKeM.jpg",
+                    "skips": {
+                        "opening": [
+                            45,
+                            134
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9204/3/1080/41530f4eb791fb2e31996dab8f16e971.m3u8",
+                        "hd": "/videos/media/ts/9204/3/720/f58d0d12f5dc75ff8822c97638523213.m3u8",
+                        "sd": "/videos/media/ts/9204/3/480/7d18c7acc2364ac1c58db052ebe34aec.m3u8"
+                    }
+                },
+                "4": {
+                    "serie": 4,
+                    "created_timestamp": 1652217427,
+                    "preview": "/storage/releases/episodes/previews/9204/4/cfRLXAjF8Ja36urO.jpg",
+                    "skips": {
+                        "opening": [
+                            59,
+                            149
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9204/4/1080/3a8d463a713fd2da51fe327bf2a080d8.m3u8",
+                        "hd": "/videos/media/ts/9204/4/720/d0ae657f0a5a13ab139a3d9b1e6ce622.m3u8",
+                        "sd": "/videos/media/ts/9204/4/480/79293f6aaa29e46d721263dac403bd77.m3u8"
+                    }
+                },
+                "5": {
+                    "serie": 5,
+                    "created_timestamp": 1652870884,
+                    "preview": "/storage/releases/episodes/previews/9204/5/2uM31GXukDkJ1xcF.jpg",
+                    "skips": {
+                        "opening": [
+                            62,
+                            152
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9204/5/1080/46ff9d02f5a8ee588493e308f662508d.m3u8",
+                        "hd": "/videos/media/ts/9204/5/720/07137e65334560faa74e1c144471e606.m3u8",
+                        "sd": "/videos/media/ts/9204/5/480/0f7f8454a1a93e04da97704818bb2430.m3u8"
+                    }
+                },
+                "6": {
+                    "serie": 6,
+                    "created_timestamp": 1654526402,
+                    "preview": "/storage/releases/episodes/previews/9204/6/WYR7aIQg9L6qcToD.jpg",
+                    "skips": {
+                        "opening": [
+                            50,
+                            140
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9204/6/1080/394825def5312d506d8db9169882b2f0.m3u8",
+                        "hd": "/videos/media/ts/9204/6/720/f9551e499693b4f03ace5bf715ec213e.m3u8",
+                        "sd": "/videos/media/ts/9204/6/480/2880e0a9733420eb1eb4fe45b53df2de.m3u8"
+                    }
+                },
+                "7": {
+                    "serie": 7,
+                    "created_timestamp": 1654951585,
+                    "preview": "/storage/releases/episodes/previews/9204/7/TGG10Kq1NiTqZqoz.jpg",
+                    "skips": {
+                        "opening": [
+                            68,
+                            158
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9204/7/1080/43ea1ffa8ae3fd7ea37f5451f6ee2329.m3u8",
+                        "hd": "/videos/media/ts/9204/7/720/fca8eeca37a3fe5f952439da2f0bcd16.m3u8",
+                        "sd": "/videos/media/ts/9204/7/480/a31e8b47ade2ed8221f59edbf7196089.m3u8"
+                    }
+                },
+                "8": {
+                    "serie": 8,
+                    "created_timestamp": 1655823532,
+                    "preview": "/storage/releases/episodes/previews/9204/8/5x3vZJWTEQo36HIT.jpg",
+                    "skips": {
+                        "opening": [
+                            68,
+                            158
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9204/8/1080/b577051e11a6323a757cd42387fbcff5.m3u8",
+                        "hd": "/videos/media/ts/9204/8/720/572bc52e2891cb66ac31127658a516f6.m3u8",
+                        "sd": "/videos/media/ts/9204/8/480/9387c050c5169da2360fecb3bfad3341.m3u8"
+                    }
+                },
+                "9": {
+                    "serie": 9,
+                    "created_timestamp": 1655911272,
+                    "preview": "/storage/releases/episodes/previews/9204/9/ZpT6kKtcenxuX57m.jpg",
+                    "skips": {
+                        "opening": [
+                            36,
+                            126
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9204/9/1080/fed7b83a80c915fa2013e96b13eff361.m3u8",
+                        "hd": "/videos/media/ts/9204/9/720/4c05bdd3e687c8aa3941658134496e9c.m3u8",
+                        "sd": "/videos/media/ts/9204/9/480/599f690e70a9f9db27771c9bec455c59.m3u8"
+                    }
+                },
+                "10": {
+                    "serie": 10,
+                    "created_timestamp": 1656494144,
+                    "preview": "/storage/releases/episodes/previews/9204/10/KayhqtyAiOCrjRuo.jpg",
+                    "skips": {
+                        "opening": [
+                            170,
+                            260
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9204/10/1080/1b0c9521d767cfde04464b1cf306336b.m3u8",
+                        "hd": "/videos/media/ts/9204/10/720/044bfda1877b550b9e6cea9b8dc3f404.m3u8",
+                        "sd": "/videos/media/ts/9204/10/480/535f40699a5510f1cdb44ab60748c49f.m3u8"
+                    }
+                }
+            }
+        },
+        "torrents": {
+            "series": {
+                "first": 1,
+                "last": 10,
+                "string": "1-10"
+            },
+            "list": [
+                {
+                    "torrent_id": 19903,
+                    "series": {
+                        "first": 1,
+                        "last": 10,
+                        "string": "1-10"
+                    },
+                    "quality": {
+                        "string": "WEB-DLRip 1080p",
+                        "type": "WEB-DLRip",
+                        "resolution": "1080p",
+                        "encoder": "h264",
+                        "lq_audio": null
+                    },
+                    "leechers": 7,
+                    "seeders": 17,
+                    "downloads": 636,
+                    "total_size": 7332028632,
+                    "url": "/public/torrent/download.php?id=19903",
+                    "uploaded_timestamp": 1656493099,
+                    "hash": "8eeda42bda11ab1fe7d01f076ec107e0472b0f77",
+                    "metadata": null,
+                    "raw_base64_file": null
+                }
+            ]
+        }
+    },
+    {
+        "id": 9179,
+        "code": "kono-healer-mendokusai",
+        "names": {
+            "ru": "Этот противный целитель!",
+            "en": "Kono Healer, Mendokusai",
+            "alternative": "//aniqit.com/serial/42131/0b48bd8961e32002606a603acbf739f1/720p?translations=false"
+        },
+        "announce": null,
+        "status": {
+            "string": "В работе",
+            "code": 1
+        },
+        "posters": {
+            "small": {
+                "url": "/storage/releases/posters/9179/uZ1GrJxx4Iwno9lg.jpg",
+                "raw_base64_file": null
+            },
+            "medium": {
+                "url": "/storage/releases/posters/9179/uZ1GrJxx4Iwno9lg.jpg",
+                "raw_base64_file": null
+            },
+            "original": {
+                "url": "/storage/releases/posters/9179/uZ1GrJxx4Iwno9lg.jpg",
+                "raw_base64_file": null
+            }
+        },
+        "updated": 1656490044,
+        "last_change": 1656489649,
+        "type": {
+            "full_string": "ТВ (12 эп.), 24 мин.",
+            "code": 1,
+            "string": "TV",
+            "series": 12,
+            "length": 24
+        },
+        "genres": [
+            "Комедия",
+            "Приключения",
+            "Фэнтези",
+            "Экшен"
+        ],
+        "team": {
+            "voice": [
+                "Crowley",
+                "Itashi"
+            ],
+            "translator": [
+                "rokettu"
+            ],
+            "editing": [],
+            "decor": [],
+            "timing": [
+                "Oishi Inu"
+            ]
+        },
+        "season": {
+            "string": "весна",
+            "code": 2,
+            "year": 2022,
+            "week_day": 6
+        },
+        "description": "Тёмный эльф-клирик Карла обладает невероятно большим статом харизмы, только вот вся её харизма ушла не в навыки убеждения или устрашения, а в токсичность и грубость. К счастью, её сопровождает рыцарь по имени Элвин, вынужденный мириться с её характером и сглаживать углы в общении с людьми. Куда же приведет дорога приключений наших главных героев, незаметно друг для друга ставших друзьями? Ведь эта история только начинается!",
+        "in_favorites": 2537,
+        "blocked": {
+            "blocked": false,
+            "bakanim": false
+        },
+        "player": {
+            "alternative_player": "//aniqit.com/serial/42131/0b48bd8961e32002606a603acbf739f1/720p?translations=false",
+            "host": "de6.libria.fun",
+            "series": {
+                "first": 1,
+                "last": 12,
+                "string": "1-12"
+            },
+            "playlist": {
+                "1": {
+                    "serie": 1,
+                    "created_timestamp": 1649674723,
+                    "preview": "/storage/releases/episodes/previews/9179/1/oiqtsnAkrdw64O4T.jpg",
+                    "skips": {
+                        "opening": [
+                            1272,
+                            1344
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9179/1/1080/ff31cd0d38b2dde5bf6239bf86a38a57.m3u8",
+                        "hd": "/videos/media/ts/9179/1/720/fd23bfa01c37e86032b0d256f904c66a.m3u8",
+                        "sd": "/videos/media/ts/9179/1/480/0001d30dad4405cbace5eb0d992fc741.m3u8"
+                    }
+                },
+                "2": {
+                    "serie": 2,
+                    "created_timestamp": 1650268610,
+                    "preview": "/storage/releases/episodes/previews/9179/2/tcqYSvC0yJsBpsfe.jpg",
+                    "skips": {
+                        "opening": [
+                            40,
+                            129
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9179/2/1080/668c0ed93b8d5bf212da7a0cb9631ee6.m3u8",
+                        "hd": "/videos/media/ts/9179/2/720/e4dc4a7f92def9d459febefd7f90e5f0.m3u8",
+                        "sd": "/videos/media/ts/9179/2/480/62f9db0254a7652112f89f83c7e1a26a.m3u8"
+                    }
+                },
+                "3": {
+                    "serie": 3,
+                    "created_timestamp": 1650882029,
+                    "preview": "/storage/releases/episodes/previews/9179/3/Dr0mvnAxKdYW8yB0.jpg",
+                    "skips": {
+                        "opening": [
+                            1,
+                            129
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9179/3/1080/3891b7706d2361af049c4e461c0b0c5b.m3u8",
+                        "hd": "/videos/media/ts/9179/3/720/3b6823d39d717c32d208d1d925995509.m3u8",
+                        "sd": "/videos/media/ts/9179/3/480/8cf610bf81e1b7016f021eebb062d518.m3u8"
+                    }
+                },
+                "4": {
+                    "serie": 4,
+                    "created_timestamp": 1651484677,
+                    "preview": "/storage/releases/episodes/previews/9179/4/qdwiEbclZcqxVHL8.jpg",
+                    "skips": {
+                        "opening": [
+                            1,
+                            129
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9179/4/1080/abae3bb5289ef01bb30878cf511328a6.m3u8",
+                        "hd": "/videos/media/ts/9179/4/720/8ee99db20839922ad760401b1a5b57aa.m3u8",
+                        "sd": "/videos/media/ts/9179/4/480/dc0923e4496b1f231276a8c28035da11.m3u8"
+                    }
+                },
+                "5": {
+                    "serie": 5,
+                    "created_timestamp": 1652095565,
+                    "preview": "/storage/releases/episodes/previews/9179/5/0NteLm6fYMGo0drA.jpg",
+                    "skips": {
+                        "opening": [
+                            1,
+                            112
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9179/5/1080/9fdc543a4a219da9ed5dbdef30b850a8.m3u8",
+                        "hd": "/videos/media/ts/9179/5/720/e101ec4a0ff469ef84231d063b584db8.m3u8",
+                        "sd": "/videos/media/ts/9179/5/480/e72442389a8a6a788ae99174fc81ae56.m3u8"
+                    }
+                },
+                "6": {
+                    "serie": 6,
+                    "created_timestamp": 1652711711,
+                    "preview": "/storage/releases/episodes/previews/9179/6/WYgLN5aVvWnutrI6.jpg",
+                    "skips": {
+                        "opening": [
+                            1,
+                            112
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9179/6/1080/a22635dab95bf170b2f14280b98dc288.m3u8",
+                        "hd": "/videos/media/ts/9179/6/720/cd6e37098a6e15c6796d696fceca0a58.m3u8",
+                        "sd": "/videos/media/ts/9179/6/480/f0ad56c0907f2799492f137e741ec893.m3u8"
+                    }
+                },
+                "7": {
+                    "serie": 7,
+                    "created_timestamp": 1653318765,
+                    "preview": "/storage/releases/episodes/previews/9179/7/jLnt5IGsRVtmTkHd.jpg",
+                    "skips": {
+                        "opening": [
+                            1,
+                            112
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9179/7/1080/e9f6940014cb45589c2a8342ab15bb58.m3u8",
+                        "hd": "/videos/media/ts/9179/7/720/d4a5d87bb7b7e64ae34a1bfb0e2a9784.m3u8",
+                        "sd": "/videos/media/ts/9179/7/480/96d83f1e02b31c3f43b7f553d362fc6c.m3u8"
+                    }
+                },
+                "8": {
+                    "serie": 8,
+                    "created_timestamp": 1654000382,
+                    "preview": "/storage/releases/episodes/previews/9179/8/E3C8hYJO8msbEPWn.jpg",
+                    "skips": {
+                        "opening": [
+                            1,
+                            112
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9179/8/1080/61b4bf09a48ae292e839274f8bdbc2ce.m3u8",
+                        "hd": "/videos/media/ts/9179/8/720/8dde9daa21e822814ef64609406ea7f7.m3u8",
+                        "sd": "/videos/media/ts/9179/8/480/472785f91fbc3a238f0ec2029afdf4ff.m3u8"
+                    }
+                },
+                "9": {
+                    "serie": 9,
+                    "created_timestamp": 1654539656,
+                    "preview": "/storage/releases/episodes/previews/9179/9/xb6mlgku7E7xgGsp.jpg",
+                    "skips": {
+                        "opening": [
+                            1,
+                            112
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9179/9/1080/4e33b984a8ec16f4c26d05be78aba4a7.m3u8",
+                        "hd": "/videos/media/ts/9179/9/720/781c2e59bf0eb33c8e763b7e0e0bdbbf.m3u8",
+                        "sd": "/videos/media/ts/9179/9/480/b60476e375f251cb3ec033a8161303dc.m3u8"
+                    }
+                },
+                "10": {
+                    "serie": 10,
+                    "created_timestamp": 1655229730,
+                    "preview": "/storage/releases/episodes/previews/9179/10/TdHB9i3RhRH6L34G.jpg",
+                    "skips": {
+                        "opening": [
+                            1,
+                            112
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9179/10/1080/aa5315686717d35d511e3111b483a809.m3u8",
+                        "hd": "/videos/media/ts/9179/10/720/deec4b209ea494111f89b2d5ea0e9b35.m3u8",
+                        "sd": "/videos/media/ts/9179/10/480/bc47ef7eb52e062969108815b3f3097d.m3u8"
+                    }
+                },
+                "11": {
+                    "serie": 11,
+                    "created_timestamp": 1655896680,
+                    "preview": "/storage/releases/episodes/previews/9179/11/AmJLhkmsdr2YLnKO.jpg",
+                    "skips": {
+                        "opening": [
+                            1,
+                            112
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9179/11/1080/1a96c556785be546f101b038adc7c7fe.m3u8",
+                        "hd": "/videos/media/ts/9179/11/720/131567e63ad6c96a4167879be1602dc3.m3u8",
+                        "sd": "/videos/media/ts/9179/11/480/4dca3320a755168888867f58b114b7bb.m3u8"
+                    }
+                },
+                "12": {
+                    "serie": 12,
+                    "created_timestamp": 1656490516,
+                    "preview": "/storage/releases/episodes/previews/9179/12/DtJPnpZDjkVX5RZB.jpg",
+                    "skips": {
+                        "opening": [],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9179/12/1080/15b6d16a44ffc762cd235ab378c92b21.m3u8",
+                        "hd": "/videos/media/ts/9179/12/720/da8887837025f09145db40df8804a16d.m3u8",
+                        "sd": "/videos/media/ts/9179/12/480/e24b3f681a5c8c19950cf0a15a221904.m3u8"
+                    }
+                }
+            }
+        },
+        "torrents": {
+            "series": {
+                "first": 1,
+                "last": 12,
+                "string": "1-12"
+            },
+            "list": [
+                {
+                    "torrent_id": 19902,
+                    "series": {
+                        "first": 1,
+                        "last": 12,
+                        "string": "1-12"
+                    },
+                    "quality": {
+                        "string": "WEBRip 1080p",
+                        "type": "WEBRip",
+                        "resolution": "1080p",
+                        "encoder": "h264",
+                        "lq_audio": null
+                    },
+                    "leechers": 30,
+                    "seeders": 52,
+                    "downloads": 2595,
+                    "total_size": 17754721482,
+                    "url": "/public/torrent/download.php?id=19902",
+                    "uploaded_timestamp": 1656489649,
+                    "hash": "f7f958f94aa89fb189c2da82def79b0b1ef8c49b",
+                    "metadata": null,
+                    "raw_base64_file": null
+                },
+                {
+                    "torrent_id": 19822,
+                    "series": {
+                        "first": 1,
+                        "last": 11,
+                        "string": "1-11"
+                    },
+                    "quality": {
+                        "string": "WEBRip 1080p HEVC",
+                        "type": "WEBRip",
+                        "resolution": "1080p",
+                        "encoder": "h265",
+                        "lq_audio": null
+                    },
+                    "leechers": 0,
+                    "seeders": 41,
+                    "downloads": 2630,
+                    "total_size": 2757796023,
+                    "url": "/public/torrent/download.php?id=19822",
+                    "uploaded_timestamp": 1655920917,
+                    "hash": "c6d8ee4837ecf709c97006278c35dc616fe8a80d",
+                    "metadata": null,
+                    "raw_base64_file": null
+                }
+            ]
+        }
+    },
+    {
+        "id": 9196,
+        "code": "shadowverse-flame",
+        "names": {
+            "ru": "Поэзия теней: Пламя",
+            "en": "Shadowverse Flame",
+            "alternative": null
+        },
+        "announce": null,
+        "status": {
+            "string": "В работе",
+            "code": 1
+        },
+        "posters": {
+            "small": {
+                "url": "/storage/releases/posters/9196/oO8MIGCT6wP6NOLK.jpg",
+                "raw_base64_file": null
+            },
+            "medium": {
+                "url": "/storage/releases/posters/9196/oO8MIGCT6wP6NOLK.jpg",
+                "raw_base64_file": null
+            },
+            "original": {
+                "url": "/storage/releases/posters/9196/oO8MIGCT6wP6NOLK.jpg",
+                "raw_base64_file": null
+            }
+        },
+        "updated": 1656451455,
+        "last_change": 1656517345,
+        "type": {
+            "full_string": "ТВ, 24 мин.",
+            "code": 1,
+            "string": "TV",
+            "series": null,
+            "length": 24
+        },
+        "genres": [
+            "Игры",
+            "Фэнтези"
+        ],
+        "team": {
+            "voice": [
+                "Huskycat",
+                "Jaily",
+                "MefistoO",
+                "Zayka"
+            ],
+            "translator": [
+                "Vurdalak121"
+            ],
+            "editing": [],
+            "decor": [],
+            "timing": [
+                "WhiteCat"
+            ]
+        },
+        "season": {
+            "string": "весна",
+            "code": 2,
+            "year": 2022,
+            "week_day": 0
+        },
+        "description": "Аниме, вдохновленное карточной игрой Shadowverse. \r\nИстория расскажет нам о жизни Лайта Тенрю, ученика по обмену академии Шадовар. Лайт всегда мечтал поступить сюда и присоедимниться к Седьмому пламени, одному из семи клубов Шадовар. Однако Седьмое Пламя находится на грани закрытия из-за нехватки участников! Чтобы избежать распада клуба, Лайт решает искать новых членов. Но это будет не так то и просто, ведь ему будут противостоять умелые соперники, которые управляют редкими картами.",
+        "in_favorites": 544,
+        "blocked": {
+            "blocked": false,
+            "bakanim": false
+        },
+        "player": {
+            "alternative_player": null,
+            "host": "de8.libria.fun",
+            "series": {
+                "first": 1,
+                "last": 13,
+                "string": "1-13"
+            },
+            "playlist": {
+                "1": {
+                    "serie": 1,
+                    "created_timestamp": 1649104914,
+                    "preview": "/storage/releases/episodes/previews/9196/1/k1MHWE70n6ZjwGp9.jpg",
+                    "skips": {
+                        "opening": [
+                            212,
+                            300
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9196/1/1080/d57b07607798eb9f33dbc212a5dce2e5.m3u8",
+                        "hd": "/videos/media/ts/9196/1/720/0ef9879377a0c3ab178075618e48b710.m3u8",
+                        "sd": "/videos/media/ts/9196/1/480/d5dba3245f74667d8daf74b283826024.m3u8"
+                    }
+                },
+                "2": {
+                    "serie": 2,
+                    "created_timestamp": 1649706695,
+                    "preview": "/storage/releases/episodes/previews/9196/2/pVYNExAupJ6uXlFG.jpg",
+                    "skips": {
+                        "opening": [
+                            100,
+                            188
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9196/2/1080/e4923cdd256dbd0f1937cb5b5fe4014b.m3u8",
+                        "hd": "/videos/media/ts/9196/2/720/70641f7f7aeefa315e88fc9d48dc8f82.m3u8",
+                        "sd": "/videos/media/ts/9196/2/480/b834da7ff1e135ade6aea6d58854276d.m3u8"
+                    }
+                },
+                "3": {
+                    "serie": 3,
+                    "created_timestamp": 1650315531,
+                    "preview": "/storage/releases/episodes/previews/9196/3/Dg5sMIp1F9uWaB1E.jpg",
+                    "skips": {
+                        "opening": [
+                            66,
+                            157
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9196/3/1080/eebcfff2068aad71fd150a883f480a28.m3u8",
+                        "hd": "/videos/media/ts/9196/3/720/4d78573c406246c1d1647b7b7903513a.m3u8",
+                        "sd": "/videos/media/ts/9196/3/480/f6a86b4ecb6f1ee67384726d14aad4eb.m3u8"
+                    }
+                },
+                "4": {
+                    "serie": 4,
+                    "created_timestamp": 1651003787,
+                    "preview": "/storage/releases/episodes/previews/9196/4/2MFRRmejCZ1JZRrj.jpg",
+                    "skips": {
+                        "opening": [
+                            134,
+                            242
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9196/4/1080/b9fe22d069c65ab0e6d04f5e6bc33270.m3u8",
+                        "hd": "/videos/media/ts/9196/4/720/5b225b982d4690b24641de518c11ba4c.m3u8",
+                        "sd": "/videos/media/ts/9196/4/480/4737eaea072db6da61c6a8a16532d7e5.m3u8"
+                    }
+                },
+                "5": {
+                    "serie": 5,
+                    "created_timestamp": 1651605848,
+                    "preview": "/storage/releases/episodes/previews/9196/5/opQUxuvTbAhWNXN4.jpg",
+                    "skips": {
+                        "opening": [
+                            70,
+                            157
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9196/5/1080/d204bbd388fd9f4447688c538ce71278.m3u8",
+                        "hd": "/videos/media/ts/9196/5/720/1d88bdfd613fdb722f28380ad7cd61c5.m3u8",
+                        "sd": "/videos/media/ts/9196/5/480/d990cf33bda8a3da7ac6614cf9048a32.m3u8"
+                    }
+                },
+                "6": {
+                    "serie": 6,
+                    "created_timestamp": 1652217419,
+                    "preview": "/storage/releases/episodes/previews/9196/6/0ZKlA4zlVixaPKG4.jpg",
+                    "skips": {
+                        "opening": [
+                            65,
+                            154
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9196/6/1080/95ecce800916789692e6379b150b7bbc.m3u8",
+                        "hd": "/videos/media/ts/9196/6/720/889cfeaf398e93bf8e994be6855fd66c.m3u8",
+                        "sd": "/videos/media/ts/9196/6/480/576e3127c13d40f048348dc67f8321f0.m3u8"
+                    }
+                },
+                "7": {
+                    "serie": 7,
+                    "created_timestamp": 1652805121,
+                    "preview": "/storage/releases/episodes/previews/9196/7/Q8E4LYyYTqxNtA4G.jpg",
+                    "skips": {
+                        "opening": [],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9196/7/1080/1585aebab8d8d78af4414f5162e77da9.m3u8",
+                        "hd": "/videos/media/ts/9196/7/720/ddebb2c6784daa0f729e6bf85755f295.m3u8",
+                        "sd": "/videos/media/ts/9196/7/480/1aa2323a9294024207c163f655f552ed.m3u8"
+                    }
+                },
+                "8": {
+                    "serie": 8,
+                    "created_timestamp": 1653427861,
+                    "preview": "/storage/releases/episodes/previews/9196/8/XqNQe9RYvI4iXqcW.jpg",
+                    "skips": {
+                        "opening": [
+                            143,
+                            233
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9196/8/1080/ea6440a9ec1a507b46758bb1991d3de6.m3u8",
+                        "hd": "/videos/media/ts/9196/8/720/1691fa80276e55eeb6b8dcbdbb0be702.m3u8",
+                        "sd": "/videos/media/ts/9196/8/480/4105f839226939f3c8a4939011fc781e.m3u8"
+                    }
+                },
+                "9": {
+                    "serie": 9,
+                    "created_timestamp": 1654030026,
+                    "preview": "/storage/releases/episodes/previews/9196/9/YGu38RXY7NXzbkkc.jpg",
+                    "skips": {
+                        "opening": [],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9196/9/1080/253356b4d799b2d4c551aa7c202e8c79.m3u8",
+                        "hd": "/videos/media/ts/9196/9/720/37271c6dd0610680b0f99d3a344bc5d5.m3u8",
+                        "sd": "/videos/media/ts/9196/9/480/83e29c4d50d864477e7ea9a503144bed.m3u8"
+                    }
+                },
+                "10": {
+                    "serie": 10,
+                    "created_timestamp": 1654627446,
+                    "preview": "/storage/releases/episodes/previews/9196/10/cJdcfWedu5TezluY.jpg",
+                    "skips": {
+                        "opening": [
+                            1,
+                            95
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9196/10/1080/0b2072742386095db060a59ddd6ee57e.m3u8",
+                        "hd": "/videos/media/ts/9196/10/720/24f34be19c4b52c84df9ce235257cb13.m3u8",
+                        "sd": "/videos/media/ts/9196/10/480/b58489967fcc3829581d3877468e597b.m3u8"
+                    }
+                },
+                "11": {
+                    "serie": 11,
+                    "created_timestamp": 1655234356,
+                    "preview": "/storage/releases/episodes/previews/9196/11/jThC0h0Ql9RhkUBW.jpg",
+                    "skips": {
+                        "opening": [
+                            54,
+                            143
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9196/11/1080/7d02a0090fbce7c0633f49698b71acba.m3u8",
+                        "hd": "/videos/media/ts/9196/11/720/ad99d7d2404c464a9d8c0db0d2ec995c.m3u8",
+                        "sd": "/videos/media/ts/9196/11/480/ac6f4c369eb164a0e1d4c8754165e54c.m3u8"
+                    }
+                },
+                "12": {
+                    "serie": 12,
+                    "created_timestamp": 1655837190,
+                    "preview": "/storage/releases/episodes/previews/9196/12/d5rSmPJTeodn2JSy.jpg",
+                    "skips": {
+                        "opening": [],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9196/12/1080/c90f31d3c1b9bed40cbde55af5f8b16b.m3u8",
+                        "hd": "/videos/media/ts/9196/12/720/213517a8bb6cd63df6d61937da54762a.m3u8",
+                        "sd": "/videos/media/ts/9196/12/480/8e2eafc42b231548ddc7d52ad70b710d.m3u8"
+                    }
+                },
+                "13": {
+                    "serie": 13,
+                    "created_timestamp": 1656518741,
+                    "preview": "/storage/releases/episodes/previews/9196/13/eFW0kt0dn7A7OeLS.jpg",
+                    "skips": {
+                        "opening": [
+                            81,
+                            170
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9196/13/1080/8376066a8e7cd881a411ba94a332fbde.m3u8",
+                        "hd": "/videos/media/ts/9196/13/720/9b54ed316fe534d26cf18528c6662fb4.m3u8",
+                        "sd": "/videos/media/ts/9196/13/480/045ae46d5830c972a20fa5f1839bbd6a.m3u8"
+                    }
+                }
+            }
+        },
+        "torrents": {
+            "series": {
+                "first": 1,
+                "last": 13,
+                "string": "1-13"
+            },
+            "list": [
+                {
+                    "torrent_id": 19906,
+                    "series": {
+                        "first": 1,
+                        "last": 13,
+                        "string": "1-13"
+                    },
+                    "quality": {
+                        "string": "WEBRip 1080p",
+                        "type": "WEBRip",
+                        "resolution": "1080p",
+                        "encoder": "h264",
+                        "lq_audio": null
+                    },
+                    "leechers": 1,
+                    "seeders": 9,
+                    "downloads": 578,
+                    "total_size": 19347745293,
+                    "url": "/public/torrent/download.php?id=19906",
+                    "uploaded_timestamp": 1656517345,
+                    "hash": "a515b7ebcba7ebf5d3b4e93305f3a9ca4669c649",
+                    "metadata": null,
+                    "raw_base64_file": null
+                },
+                {
+                    "torrent_id": 19899,
+                    "series": {
+                        "first": 1,
+                        "last": 13,
+                        "string": "1-13"
+                    },
+                    "quality": {
+                        "string": "WEBRip 1080p HEVC",
+                        "type": "WEBRip",
+                        "resolution": "1080p",
+                        "encoder": "h265",
+                        "lq_audio": null
+                    },
+                    "leechers": 3,
+                    "seeders": 16,
+                    "downloads": 405,
+                    "total_size": 5039246867,
+                    "url": "/public/torrent/download.php?id=19899",
+                    "uploaded_timestamp": 1656462839,
+                    "hash": "c668c725453faf14ca08ba0495e4c02d6b7ec8a9",
+                    "metadata": null,
+                    "raw_base64_file": null
+                }
+            ]
+        }
+    },
+    {
+        "id": 9173,
+        "code": "koi-wa-sekai-seifuku-no-ato-de",
+        "names": {
+            "ru": "Любовь после мирового господства",
+            "en": "Koi wa Sekai Seifuku no Ato de",
+            "alternative": "Любовь после порабощения мира"
+        },
+        "announce": "Серия выйдет во вторник",
+        "status": {
+            "string": "В работе",
+            "code": 1
+        },
+        "posters": {
+            "small": {
+                "url": "/storage/releases/posters/9173/HXGYfqjMpNpfXM4M.jpg",
+                "raw_base64_file": null
+            },
+            "medium": {
+                "url": "/storage/releases/posters/9173/HXGYfqjMpNpfXM4M.jpg",
+                "raw_base64_file": null
+            },
+            "original": {
+                "url": "/storage/releases/posters/9173/HXGYfqjMpNpfXM4M.jpg",
+                "raw_base64_file": null
+            }
+        },
+        "updated": 1656449130,
+        "last_change": 1656460165,
+        "type": {
+            "full_string": "ТВ (>12 эп.),24 мин.",
+            "code": 1,
+            "string": "TV",
+            "series": 12,
+            "length": 24
+        },
+        "genres": [
+            "Комедия",
+            "Романтика"
+        ],
+        "team": {
+            "voice": [
+                "Cleo-chan",
+                "JazzJack",
+                "Nuts"
+            ],
+            "translator": [
+                "Fenix Main"
+            ],
+            "editing": [],
+            "decor": [],
+            "timing": [
+                "Mango"
+            ]
+        },
+        "season": {
+            "string": "весна",
+            "code": 2,
+            "year": 2022,
+            "week_day": 0
+        },
+        "description": "Фуда Айкава и Дэсуми Магахара влюблены  друг в друга, но есть одно маленькое но, которое мешает им быть вместе. Фудо — лидер команды героев, призванных бороться со злом во всём мире, — ''Гелато Пять'', в то время как Дэсуми является одной из глав злодейской организации ''Гекко'', чьей целью является захват мирового господства. К чему приведут эти странные отношения?",
+        "in_favorites": 3030,
+        "blocked": {
+            "blocked": false,
+            "bakanim": false
+        },
+        "player": {
+            "alternative_player": " //aniqit.com/serial/42141/4d239fd66ba73ccf2d55cace7376a2a7/720p?translations=false",
+            "host": "de8.libria.fun",
+            "series": {
+                "first": 1,
+                "last": 12,
+                "string": "1-12"
+            },
+            "playlist": {
+                "1": {
+                    "serie": 1,
+                    "created_timestamp": 1649692699,
+                    "preview": "/storage/releases/episodes/previews/9173/1/9gRK8Ul3JoMf5P9I.jpg",
+                    "skips": {
+                        "opening": [
+                            255,
+                            345
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9173/1/1080/7b449f74aa4f6c31a762ef755cfbb999.m3u8",
+                        "hd": "/videos/media/ts/9173/1/720/14a1b3a9739970cefa71ea9ef6cd829c.m3u8",
+                        "sd": "/videos/media/ts/9173/1/480/26acbdffd1f20f84c231420a41d20b49.m3u8"
+                    }
+                },
+                "2": {
+                    "serie": 2,
+                    "created_timestamp": 1650295676,
+                    "preview": "/storage/releases/episodes/previews/9173/2/er6Ykq4H6xcJVANy.jpg",
+                    "skips": {
+                        "opening": [
+                            147,
+                            237
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9173/2/1080/dbd0109197284484de5fdc5c9b4875e8.m3u8",
+                        "hd": "/videos/media/ts/9173/2/720/9568761ca93bdb214946c098339cb4f5.m3u8",
+                        "sd": "/videos/media/ts/9173/2/480/fef9e52f6cd8ea58e70f90312f3294e5.m3u8"
+                    }
+                },
+                "3": {
+                    "serie": 3,
+                    "created_timestamp": 1650976693,
+                    "preview": "/storage/releases/episodes/previews/9173/3/X9mNLZdys7J2gei0.jpg",
+                    "skips": {
+                        "opening": [],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9173/3/1080/1a49942ccf4adc20f274ba08b3729329.m3u8",
+                        "hd": "/videos/media/ts/9173/3/720/6c9e2b4094cb5b260ad3fa9fcde7aa58.m3u8",
+                        "sd": "/videos/media/ts/9173/3/480/f41db5f098cee4f0de9908bc4faebf9b.m3u8"
+                    }
+                },
+                "4": {
+                    "serie": 4,
+                    "created_timestamp": 1651491801,
+                    "preview": "/storage/releases/episodes/previews/9173/4/B8Xse9rf69VXHN9D.jpg",
+                    "skips": {
+                        "opening": [
+                            1,
+                            90
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9173/4/1080/15cd848229b2292cd65c8c4e18ac6309.m3u8",
+                        "hd": "/videos/media/ts/9173/4/720/d225c83a4cdd21c94ab7a6f6d07fac09.m3u8",
+                        "sd": "/videos/media/ts/9173/4/480/e98e3830a119207ea7944da4ff6a710b.m3u8"
+                    }
+                },
+                "5": {
+                    "serie": 5,
+                    "created_timestamp": 1652174468,
+                    "preview": "/storage/releases/episodes/previews/9173/5/tfvuMq7mo5rTlyOy.jpg",
+                    "skips": {
+                        "opening": [
+                            1,
+                            90
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9173/5/1080/1fdfefa7714f17c1f745a0328ca2a51f.m3u8",
+                        "hd": "/videos/media/ts/9173/5/720/b13b4fb5bc31aa5f9a279e47531031f5.m3u8",
+                        "sd": "/videos/media/ts/9173/5/480/2c6e8612c3ce99291c51a017ab60540b.m3u8"
+                    }
+                },
+                "6": {
+                    "serie": 6,
+                    "created_timestamp": 1652715348,
+                    "preview": "/storage/releases/episodes/previews/9173/6/UJTza79frgz31eCs.jpg",
+                    "skips": {
+                        "opening": [
+                            59,
+                            149
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9173/6/1080/4999738ad0ad944a145c934a1a4fa9fe.m3u8",
+                        "hd": "/videos/media/ts/9173/6/720/f00c83908c12559ebdd38fb1ae69ab46.m3u8",
+                        "sd": "/videos/media/ts/9173/6/480/f99687d6a0ff51d0e4030de794ba6254.m3u8"
+                    }
+                },
+                "7": {
+                    "serie": 7,
+                    "created_timestamp": 1653323289,
+                    "preview": "/storage/releases/episodes/previews/9173/7/JEWfXMM44Dy0GRhb.jpg",
+                    "skips": {
+                        "opening": [
+                            110,
+                            200
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9173/7/1080/5e252db2f73947ac2965adf841d25f8f.m3u8",
+                        "hd": "/videos/media/ts/9173/7/720/f4d0a8307a5678515f87db4c79ba39f0.m3u8",
+                        "sd": "/videos/media/ts/9173/7/480/3b6cf00220e45fec9b9e50e70d619185.m3u8"
+                    }
+                },
+                "8": {
+                    "serie": 8,
+                    "created_timestamp": 1653938874,
+                    "preview": "/storage/releases/episodes/previews/9173/8/gw8j90voAFMMaFpS.jpg",
+                    "skips": {
+                        "opening": [
+                            34,
+                            124
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9173/8/1080/fddc3426956c77e6497479e44636ede1.m3u8",
+                        "hd": "/videos/media/ts/9173/8/720/449ea28fe0e078e770fcec8d6231a429.m3u8",
+                        "sd": "/videos/media/ts/9173/8/480/1893e56d0bad1371fdd58cae3b010b92.m3u8"
+                    }
+                },
+                "9": {
+                    "serie": 9,
+                    "created_timestamp": 1654573399,
+                    "preview": "/storage/releases/episodes/previews/9173/9/mPJnTAByf6ly3qlw.jpg",
+                    "skips": {
+                        "opening": [
+                            1,
+                            90
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9173/9/1080/1e452bba43b7cfe88964b23406f1f042.m3u8",
+                        "hd": "/videos/media/ts/9173/9/720/ef60ebfc1b89696ee08b968adf7e99aa.m3u8",
+                        "sd": "/videos/media/ts/9173/9/480/d67e079357d41cead03a0073b6fbc55a.m3u8"
+                    }
+                },
+                "10": {
+                    "serie": 10,
+                    "created_timestamp": 1655134083,
+                    "preview": "/storage/releases/episodes/previews/9173/10/34nighN9PRHpC1Jp.jpg",
+                    "skips": {
+                        "opening": [
+                            120,
+                            210
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9173/10/1080/e440c136e55ffb8022e7df162fbbbb1c.m3u8",
+                        "hd": "/videos/media/ts/9173/10/720/d5c1b39de585c97156352b284c2d7a57.m3u8",
+                        "sd": "/videos/media/ts/9173/10/480/6bd369774d88f4f833194400f5792a42.m3u8"
+                    }
+                },
+                "11": {
+                    "serie": 11,
+                    "created_timestamp": 1655750624,
+                    "preview": "/storage/releases/episodes/previews/9173/11/PKq5QeqUF5AHfX61.jpg",
+                    "skips": {
+                        "opening": [
+                            26,
+                            116
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9173/11/1080/e7d517c33c325db7ce1f8f78977b245e.m3u8",
+                        "hd": "/videos/media/ts/9173/11/720/cd2d9df6293724c7e2403d0e2d159f34.m3u8",
+                        "sd": "/videos/media/ts/9173/11/480/d92a4f18099c4434003c84095f189ee5.m3u8"
+                    }
+                },
+                "12": {
+                    "serie": 12,
+                    "created_timestamp": 1656448380,
+                    "preview": "/storage/releases/episodes/previews/9173/12/WIeYX5hb6rNV2M1Q.jpg",
+                    "skips": {
+                        "opening": [],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9173/12/1080/e24b413bd20771be6de04a89dbff1d50.m3u8",
+                        "hd": "/videos/media/ts/9173/12/720/1fa2c3ef208200f8806103bb31ae6521.m3u8",
+                        "sd": "/videos/media/ts/9173/12/480/00cae9398a64b37e874f360e00916388.m3u8"
+                    }
+                }
+            }
+        },
+        "torrents": {
+            "series": {
+                "first": 1,
+                "last": 12,
+                "string": "1-12"
+            },
+            "list": [
+                {
+                    "torrent_id": 19895,
+                    "series": {
+                        "first": 1,
+                        "last": 12,
+                        "string": "1-12"
+                    },
+                    "quality": {
+                        "string": "WEBRip 1080p",
+                        "type": "WEBRip",
+                        "resolution": "1080p",
+                        "encoder": "h264",
+                        "lq_audio": null
+                    },
+                    "leechers": 21,
+                    "seeders": 47,
+                    "downloads": 2820,
+                    "total_size": 17756402803,
+                    "url": "/public/torrent/download.php?id=19895",
+                    "uploaded_timestamp": 1656446112,
+                    "hash": "c0e920e555d3524490241cad046a9ecbc4243d5d",
+                    "metadata": null,
+                    "raw_base64_file": null
+                },
+                {
+                    "torrent_id": 19897,
+                    "series": {
+                        "first": 1,
+                        "last": 12,
+                        "string": "1-12"
+                    },
+                    "quality": {
+                        "string": "WEBRip 1080p HEVC",
+                        "type": "WEBRip",
+                        "resolution": "1080p",
+                        "encoder": "h265",
+                        "lq_audio": null
+                    },
+                    "leechers": 14,
+                    "seeders": 66,
+                    "downloads": 1943,
+                    "total_size": 3325931343,
+                    "url": "/public/torrent/download.php?id=19897",
+                    "uploaded_timestamp": 1656460165,
+                    "hash": "bc64a7f392e782779cd5a76d18c5e5bcad2b337a",
+                    "metadata": null,
+                    "raw_base64_file": null
+                }
+            ]
+        }
+    },
+    {
+        "id": 9182,
+        "code": "aoashi",
+        "names": {
+            "ru": "Аой Ашито",
+            "en": "AOASHI",
+            "alternative": null
+        },
+        "announce": "Серия выйдет во вторник",
+        "status": {
+            "string": "В работе",
+            "code": 1
+        },
+        "posters": {
+            "small": {
+                "url": "/storage/releases/posters/9182/rZzRdgFrii9QJT5D.jpg",
+                "raw_base64_file": null
+            },
+            "medium": {
+                "url": "/storage/releases/posters/9182/rZzRdgFrii9QJT5D.jpg",
+                "raw_base64_file": null
+            },
+            "original": {
+                "url": "/storage/releases/posters/9182/rZzRdgFrii9QJT5D.jpg",
+                "raw_base64_file": null
+            }
+        },
+        "updated": 1656449121,
+        "last_change": 1656460178,
+        "type": {
+            "full_string": "ТВ (>24 эп.), 24 мин.",
+            "code": 1,
+            "string": "TV",
+            "series": 24,
+            "length": 24
+        },
+        "genres": [
+            "Комедия",
+            "Сейнен",
+            "Школа"
+        ],
+        "team": {
+            "voice": [
+                "Amikiri",
+                "Anzen",
+                "WhiteCroW"
+            ],
+            "translator": [
+                "Timur_kun"
+            ],
+            "editing": [],
+            "decor": [],
+            "timing": [
+                "Mango"
+            ]
+        },
+        "season": {
+            "string": "весна",
+            "code": 2,
+            "year": 2022,
+            "week_day": 0
+        },
+        "description": "Áшито Аой — звезда школьного футбола небольшого городка. Но однажды команда проигрывает в финале турнира среди средних школ из-за него. Растроенный, он бежит по берегу океана и там встречает человека, который до этого наблюдал за его игрой.\r\nЭтого человека зовут Та́цуя Фуку́да, и он тренер команды молодёжной японской лиги. Разглядев потенциал Ашито, Фукуда приглашает его пройти отборочные в свою команду. Не имея права отказаться от такого шанса юный футболист  отправляется в Токио, чтобы показать всем чего он стоит.",
+        "in_favorites": 954,
+        "blocked": {
+            "blocked": false,
+            "bakanim": false
+        },
+        "player": {
+            "alternative_player": null,
+            "host": "de6.libria.fun",
+            "series": {
+                "first": 1,
+                "last": 12,
+                "string": "1-12"
+            },
+            "playlist": {
+                "1": {
+                    "serie": 1,
+                    "created_timestamp": 1649596833,
+                    "preview": "/storage/releases/episodes/previews/9182/1/RAk6kJXNIHa49iKM.jpg",
+                    "skips": {
+                        "opening": [],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9182/1/1080/5cb3ca80236d62afd5b0c0fabe8eb811.m3u8",
+                        "hd": "/videos/media/ts/9182/1/720/d28c9d2de96baf8a0bc1f5e1555129c3.m3u8",
+                        "sd": "/videos/media/ts/9182/1/480/411f9d717995ad36e30d577406e14ce7.m3u8"
+                    }
+                },
+                "2": {
+                    "serie": 2,
+                    "created_timestamp": 1650230941,
+                    "preview": "/storage/releases/episodes/previews/9182/2/PJEITH1d8aWHYzRd.jpg",
+                    "skips": {
+                        "opening": [
+                            24,
+                            114
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9182/2/1080/cfde23ba67923c05d2b640d7f945bb06.m3u8",
+                        "hd": "/videos/media/ts/9182/2/720/046a98c918b4832d35d47cb94d1db89e.m3u8",
+                        "sd": "/videos/media/ts/9182/2/480/ec02cb0aaa42c7e1e1158eacf0334bb6.m3u8"
+                    }
+                },
+                "3": {
+                    "serie": 3,
+                    "created_timestamp": 1650897167,
+                    "preview": "/storage/releases/episodes/previews/9182/3/rszkF4oGZV5DV3pf.jpg",
+                    "skips": {
+                        "opening": [
+                            66,
+                            156
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9182/3/1080/da138a67b2f1105777a0a6ceb1217e5f.m3u8",
+                        "hd": "/videos/media/ts/9182/3/720/da85ca7ca8ebdc4aff507ca03fcd7c2e.m3u8",
+                        "sd": "/videos/media/ts/9182/3/480/6f232ab4cab40af4ea05b6050b43a1e9.m3u8"
+                    }
+                },
+                "4": {
+                    "serie": 4,
+                    "created_timestamp": 1651494447,
+                    "preview": "/storage/releases/episodes/previews/9182/4/BvFf2pecv0Yco3WW.jpg",
+                    "skips": {
+                        "opening": [
+                            59,
+                            149
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9182/4/1080/6e9f9534b900f5fa5385265967fbce36.m3u8",
+                        "hd": "/videos/media/ts/9182/4/720/a6c28d1dae5f781ad16945bb6907e467.m3u8",
+                        "sd": "/videos/media/ts/9182/4/480/6d7cc2eebf5bac8babbf1ca5209ec1fc.m3u8"
+                    }
+                },
+                "5": {
+                    "serie": 5,
+                    "created_timestamp": 1652112836,
+                    "preview": "/storage/releases/episodes/previews/9182/5/mHIwlO5iYMLruG2f.jpg",
+                    "skips": {
+                        "opening": [
+                            69,
+                            159
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9182/5/1080/bc7829655e39773a7d79bda5be598177.m3u8",
+                        "hd": "/videos/media/ts/9182/5/720/f134d66293837b9937b3f2192d67f2f2.m3u8",
+                        "sd": "/videos/media/ts/9182/5/480/6b8854e88b48507ae32c9fbf9bd3efba.m3u8"
+                    }
+                },
+                "6": {
+                    "serie": 6,
+                    "created_timestamp": 1652890517,
+                    "preview": "/storage/releases/episodes/previews/9182/6/rKLCgffB60lqncBq.jpg",
+                    "skips": {
+                        "opening": [
+                            25,
+                            115
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9182/6/1080/3e1a73bc9105ed5527d9d35b662b2060.m3u8",
+                        "hd": "/videos/media/ts/9182/6/720/4d8a6dc4ad2f2d2ef1cfadc0e9c8fbc8.m3u8",
+                        "sd": "/videos/media/ts/9182/6/480/2b8addcdb3503345518e1114de460bfc.m3u8"
+                    }
+                },
+                "7": {
+                    "serie": 7,
+                    "created_timestamp": 1653305813,
+                    "preview": "/storage/releases/episodes/previews/9182/7/yYq3BuTsiFl5F922.jpg",
+                    "skips": {
+                        "opening": [
+                            53,
+                            143
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9182/7/1080/89c1d3271140b95d3b01ff8d3acd6147.m3u8",
+                        "hd": "/videos/media/ts/9182/7/720/25072d9efad640a19f5ad7a7b9c38179.m3u8",
+                        "sd": "/videos/media/ts/9182/7/480/65bbcb6b64c2ed4e134168c10843f2b0.m3u8"
+                    }
+                },
+                "8": {
+                    "serie": 8,
+                    "created_timestamp": 1654017573,
+                    "preview": "/storage/releases/episodes/previews/9182/8/yyMlT6u5xdMLfZSf.jpg",
+                    "skips": {
+                        "opening": [
+                            55,
+                            145
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9182/8/1080/220667ead84cbcc6afdc2ac3655f2cdd.m3u8",
+                        "hd": "/videos/media/ts/9182/8/720/6b1d896f3fcabe38175754e39f43534f.m3u8",
+                        "sd": "/videos/media/ts/9182/8/480/65212d312e03fbcff0c7e48234619613.m3u8"
+                    }
+                },
+                "9": {
+                    "serie": 9,
+                    "created_timestamp": 1654612299,
+                    "preview": "/storage/releases/episodes/previews/9182/9/HZZQwGgUYMXbl90U.jpg",
+                    "skips": {
+                        "opening": [
+                            41,
+                            131
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9182/9/1080/0afc6136d743c5fcf4ced8fa6a850db4.m3u8",
+                        "hd": "/videos/media/ts/9182/9/720/080633444fac88ceca1e5c5294717f51.m3u8",
+                        "sd": "/videos/media/ts/9182/9/480/07de4d23814451b8ad2650d8ce2274a7.m3u8"
+                    }
+                },
+                "10": {
+                    "serie": 10,
+                    "created_timestamp": 1655136668,
+                    "preview": "/storage/releases/episodes/previews/9182/10/bed5a37de2pSUrxh.jpg",
+                    "skips": {
+                        "opening": [
+                            38,
+                            128
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9182/10/1080/00327a97f629a0b4bbd3fe26ec0970fa.m3u8",
+                        "hd": "/videos/media/ts/9182/10/720/2943d849c3a0fb2739a64780db576b04.m3u8",
+                        "sd": "/videos/media/ts/9182/10/480/91166a23d59da0edb4bc1889f2331de2.m3u8"
+                    }
+                },
+                "11": {
+                    "serie": 11,
+                    "created_timestamp": 1655755314,
+                    "preview": "/storage/releases/episodes/previews/9182/11/yAdXIvrpKt0rBzUX.jpg",
+                    "skips": {
+                        "opening": [
+                            27,
+                            117
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9182/11/1080/59ac82393273a3617fd2b910c806381d.m3u8",
+                        "hd": "/videos/media/ts/9182/11/720/8390b348bad493716c8fe4797531d6fd.m3u8",
+                        "sd": "/videos/media/ts/9182/11/480/63d6a6f621950e5285f729f5fbcb6207.m3u8"
+                    }
+                },
+                "12": {
+                    "serie": 12,
+                    "created_timestamp": 1656446207,
+                    "preview": "/storage/releases/episodes/previews/9182/12/zTBDxlSZimG47nSo.jpg",
+                    "skips": {
+                        "opening": [
+                            36,
+                            126
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9182/12/1080/846c177c9bd6dfd6c0f37302b6d9f9c4.m3u8",
+                        "hd": "/videos/media/ts/9182/12/720/496c33e7e66f88671318b102167ce64f.m3u8",
+                        "sd": "/videos/media/ts/9182/12/480/d7530ccb1a8e82a3a9e3ce98234a2bd4.m3u8"
+                    }
+                }
+            }
+        },
+        "torrents": {
+            "series": {
+                "first": 1,
+                "last": 12,
+                "string": "1-12"
+            },
+            "list": [
+                {
+                    "torrent_id": 19894,
+                    "series": {
+                        "first": 1,
+                        "last": 12,
+                        "string": "1-12"
+                    },
+                    "quality": {
+                        "string": "WEBRip 1080p",
+                        "type": "WEBRip",
+                        "resolution": "1080p",
+                        "encoder": "h264",
+                        "lq_audio": null
+                    },
+                    "leechers": 3,
+                    "seeders": 21,
+                    "downloads": 806,
+                    "total_size": 18392133959,
+                    "url": "/public/torrent/download.php?id=19894",
+                    "uploaded_timestamp": 1656443980,
+                    "hash": "f08931a1eb40bf3602c835ba39849c446145c902",
+                    "metadata": null,
+                    "raw_base64_file": null
+                },
+                {
+                    "torrent_id": 19898,
+                    "series": {
+                        "first": 1,
+                        "last": 12,
+                        "string": "1-12"
+                    },
+                    "quality": {
+                        "string": "WEBRip 1080p HEVC",
+                        "type": "WEBRip",
+                        "resolution": "1080p",
+                        "encoder": "h265",
+                        "lq_audio": null
+                    },
+                    "leechers": 2,
+                    "seeders": 17,
+                    "downloads": 590,
+                    "total_size": 2559745340,
+                    "url": "/public/torrent/download.php?id=19898",
+                    "uploaded_timestamp": 1656460178,
+                    "hash": "7a506374cdfbc8c7676c815a5d0d8beb010c1f8c",
+                    "metadata": null,
+                    "raw_base64_file": null
+                }
+            ]
+        }
+    },
+    {
+        "id": 9174,
+        "code": "summer-time-render",
+        "names": {
+            "ru": "Летнее время",
+            "en": "Summer Time Render",
+            "alternative": null
+        },
+        "announce": null,
+        "status": {
+            "string": "В работе",
+            "code": 1
+        },
+        "posters": {
+            "small": {
+                "url": "/storage/releases/posters/9174/1PetzULYl6me0iSw.jpg",
+                "raw_base64_file": null
+            },
+            "medium": {
+                "url": "/storage/releases/posters/9174/1PetzULYl6me0iSw.jpg",
+                "raw_base64_file": null
+            },
+            "original": {
+                "url": "/storage/releases/posters/9174/1PetzULYl6me0iSw.jpg",
+                "raw_base64_file": null
+            }
+        },
+        "updated": 1656440040,
+        "last_change": 1656473019,
+        "type": {
+            "full_string": "ТВ (25 эп.), 24 мин.",
+            "code": 1,
+            "string": "TV",
+            "series": 25,
+            "length": 24
+        },
+        "genres": [
+            "Детектив",
+            "Сверхъестественное"
+        ],
+        "team": {
+            "voice": [
+                "Derenn",
+                "Itashi",
+                "OkanaTsoy",
+                "WhiteCrow"
+            ],
+            "translator": [
+                "DeerGfonis"
+            ],
+            "editing": [],
+            "decor": [
+                "JoyMaloy"
+            ],
+            "timing": [
+                "Caxaro4ek"
+            ]
+        },
+        "season": {
+            "string": "весна",
+            "code": 2,
+            "year": 2022,
+            "week_day": 1
+        },
+        "description": "Узнав о внезапной кончине своей сводной сестренки Юшио, Шинпэ́й возвращается в родной город на похороны. Казалось бы, ничего необычного, сестра, пытаясь спасти тонущего ребенка, сама рассталась жизнью.Но разве всё может быть так банально и просто? Вот и островитяне, те, что видели тело бедной девочки со следами удушения, не верят, что это был несчастный случай. А ещё говорят, являются в мир этот духи-двойники, что смерть приносят тем, кто их увидит…\r\n Пытаясь разобраться в случившемся, Шинпэ́й сам неожиданно погибает, но, очнувшись, оказывается во временной петле…",
+        "in_favorites": 3889,
+        "blocked": {
+            "blocked": false,
+            "bakanim": false
+        },
+        "player": {
+            "alternative_player": null,
+            "host": "static.libria.fun",
+            "series": {
+                "first": 1,
+                "last": 11,
+                "string": "1-11"
+            },
+            "playlist": {
+                "1": {
+                    "serie": 1,
+                    "created_timestamp": 1650214009,
+                    "preview": "/storage/releases/episodes/previews/9174/1/hCW59DAdVzOdtJuH.jpg",
+                    "skips": {
+                        "opening": [
+                            287,
+                            377
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9174/1/1080/8dff7502c9942a518010f073e544ae0b.m3u8",
+                        "hd": "/videos/media/ts/9174/1/720/dedccb4a6a58eb29d48db05446fb7a83.m3u8",
+                        "sd": "/videos/media/ts/9174/1/480/469e2d2e3b8f4326fb395014af09ed43.m3u8"
+                    }
+                },
+                "2": {
+                    "serie": 2,
+                    "created_timestamp": 1650795751,
+                    "preview": "/storage/releases/episodes/previews/9174/2/1SNTBDIwNt4StqiQ.jpg",
+                    "skips": {
+                        "opening": [
+                            189,
+                            279
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9174/2/1080/a666dad6b80068557b907668a00fd3b9.m3u8",
+                        "hd": "/videos/media/ts/9174/2/720/c9badd9d1c575bb87c7a58de1221fd28.m3u8",
+                        "sd": "/videos/media/ts/9174/2/480/f934cbebba9a99ac96f09877173742f5.m3u8"
+                    }
+                },
+                "3": {
+                    "serie": 3,
+                    "created_timestamp": 1651481477,
+                    "preview": "/storage/releases/episodes/previews/9174/3/QOIXWeomqyTbXtru.jpg",
+                    "skips": {
+                        "opening": [
+                            48,
+                            138
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9174/3/1080/900ea757fff00a59de4cb33b4e510735.m3u8",
+                        "hd": "/videos/media/ts/9174/3/720/d0389c2692c64b675a50d1868d5eb48c.m3u8",
+                        "sd": "/videos/media/ts/9174/3/480/7898183e9af1ee2f9bacb69b43781bac.m3u8"
+                    }
+                },
+                "4": {
+                    "serie": 4,
+                    "created_timestamp": 1651943223,
+                    "preview": "/storage/releases/episodes/previews/9174/4/D5EwYSwdMb80hPUm.jpg",
+                    "skips": {
+                        "opening": [
+                            188,
+                            278
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9174/4/1080/0cce734fd0bedf64b7b56a6968a63857.m3u8",
+                        "hd": "/videos/media/ts/9174/4/720/7c347091f541e397a7f30e31bba2791a.m3u8",
+                        "sd": "/videos/media/ts/9174/4/480/f256c7e877d760d38c9a45938c71584b.m3u8"
+                    }
+                },
+                "5": {
+                    "serie": 5,
+                    "created_timestamp": 1653226570,
+                    "preview": "/storage/releases/episodes/previews/9174/5/jEAHAoCahG7jWv3S.jpg",
+                    "skips": {
+                        "opening": [
+                            128,
+                            218
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9174/5/1080/44f6bfe90354a8ed83b762925e442410.m3u8",
+                        "hd": "/videos/media/ts/9174/5/720/c6b3d09a7b20a30524fabed1c5359711.m3u8",
+                        "sd": "/videos/media/ts/9174/5/480/71811d1f6d059f1c3a59df7de3bf5720.m3u8"
+                    }
+                },
+                "6": {
+                    "serie": 6,
+                    "created_timestamp": 1653822770,
+                    "preview": "/storage/releases/episodes/previews/9174/6/FsweU2aXhAKgIH2n.jpg",
+                    "skips": {
+                        "opening": [
+                            36,
+                            126
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9174/6/1080/0d06776857a1fbe5515e2878cea71145.m3u8",
+                        "hd": "/videos/media/ts/9174/6/720/5e17aa27ae06a616631bd147680505eb.m3u8",
+                        "sd": "/videos/media/ts/9174/6/480/b59967f77643295794693d0ef7f91b4b.m3u8"
+                    }
+                },
+                "7": {
+                    "serie": 7,
+                    "created_timestamp": 1653821784,
+                    "preview": "/storage/releases/episodes/previews/9174/7/YHrBYfQqkn2YiTDz.jpg",
+                    "skips": {
+                        "opening": [
+                            56,
+                            146
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9174/7/1080/9e72fc4b13187c607d27cde1b981f7f2.m3u8",
+                        "hd": "/videos/media/ts/9174/7/720/18c670922c31eff3f3e7fc6ab8ee0ad2.m3u8",
+                        "sd": "/videos/media/ts/9174/7/480/6b00e27d7ab5829f665ffaa2f8492ecb.m3u8"
+                    }
+                },
+                "8": {
+                    "serie": 8,
+                    "created_timestamp": 1655024996,
+                    "preview": "/storage/releases/episodes/previews/9174/8/WF4lHK0mvFvG6X6t.jpg",
+                    "skips": {
+                        "opening": [
+                            140,
+                            230
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9174/8/1080/f838ce549e7eceee6789459c005b5f85.m3u8",
+                        "hd": "/videos/media/ts/9174/8/720/d54009329e600b26c0ae7c8f08699fad.m3u8",
+                        "sd": "/videos/media/ts/9174/8/480/f28b137942568105d3b78dbb8668551b.m3u8"
+                    }
+                },
+                "9": {
+                    "serie": 9,
+                    "created_timestamp": 1655023978,
+                    "preview": "/storage/releases/episodes/previews/9174/9/BGq96k8ZKgt3Edid.jpg",
+                    "skips": {
+                        "opening": [
+                            104,
+                            194
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9174/9/1080/5108b701eba822ecf0930db4e7de5bc9.m3u8",
+                        "hd": "/videos/media/ts/9174/9/720/33605bbdec522be56ef32a5473268d15.m3u8",
+                        "sd": "/videos/media/ts/9174/9/480/e644981cb647cd352caf1420a9c954b6.m3u8"
+                    }
+                },
+                "10": {
+                    "serie": 10,
+                    "created_timestamp": 1655793916,
+                    "preview": "/storage/releases/episodes/previews/9174/10/RFDpS8e7GgzxuQkh.jpg",
+                    "skips": {
+                        "opening": [
+                            1,
+                            90
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9174/10/1080/87d88d34eaa808880dd2b10cba22c202.m3u8",
+                        "hd": "/videos/media/ts/9174/10/720/0a7916bfa2c3e7b1ad808d624248b817.m3u8",
+                        "sd": "/videos/media/ts/9174/10/480/41fe19631a75247ca7baf98808a7bd55.m3u8"
+                    }
+                },
+                "11": {
+                    "serie": 11,
+                    "created_timestamp": 1656440539,
+                    "preview": "/storage/releases/episodes/previews/9174/11/TLfZ1fBmgtmmzRn1.jpg",
+                    "skips": {
+                        "opening": [
+                            130,
+                            220
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9174/11/1080/e8caa234d3c08ec3738f472181badceb.m3u8",
+                        "hd": "/videos/media/ts/9174/11/720/913210427b7a10e609475822c60ef1b3.m3u8",
+                        "sd": "/videos/media/ts/9174/11/480/eb783cba10d259c49f2e7702640ebed7.m3u8"
+                    }
+                }
+            }
+        },
+        "torrents": {
+            "series": {
+                "first": 1,
+                "last": 11,
+                "string": "1-11"
+            },
+            "list": [
+                {
+                    "torrent_id": 19893,
+                    "series": {
+                        "first": 1,
+                        "last": 11,
+                        "string": "1-11"
+                    },
+                    "quality": {
+                        "string": "WEBRip 1080p",
+                        "type": "WEBRip",
+                        "resolution": "1080p",
+                        "encoder": "h264",
+                        "lq_audio": null
+                    },
+                    "leechers": 24,
+                    "seeders": 43,
+                    "downloads": 2826,
+                    "total_size": 10319381894,
+                    "url": "/public/torrent/download.php?id=19893",
+                    "uploaded_timestamp": 1656439232,
+                    "hash": "38063525bc9ce797ab717604477f87aee3ba72f5",
+                    "metadata": null,
+                    "raw_base64_file": null
+                },
+                {
+                    "torrent_id": 19901,
+                    "series": {
+                        "first": 1,
+                        "last": 11,
+                        "string": "1-11"
+                    },
+                    "quality": {
+                        "string": "WEBRip 1080p HEVC",
+                        "type": "WEBRip",
+                        "resolution": "1080p",
+                        "encoder": "h265",
+                        "lq_audio": null
+                    },
+                    "leechers": 10,
+                    "seeders": 38,
+                    "downloads": 2241,
+                    "total_size": 3821880132,
+                    "url": "/public/torrent/download.php?id=19901",
+                    "uploaded_timestamp": 1656473019,
+                    "hash": "53b94d16599df02344c4b3b28d3604f6934931c9",
+                    "metadata": null,
+                    "raw_base64_file": null
+                }
+            ]
+        }
+    },
+    {
+        "id": 9061,
+        "code": "date-a-live-4",
+        "names": {
+            "ru": "Рандеву с Жизнью 4",
+            "en": "Date A Live 4",
+            "alternative": null
+        },
+        "announce": "Релиз завершён!",
+        "status": {
+            "string": "В работе",
+            "code": 1
+        },
+        "posters": {
+            "small": {
+                "url": "/storage/releases/posters/9061/WJzj6kIGZULNOw2d.jpg",
+                "raw_base64_file": null
+            },
+            "medium": {
+                "url": "/storage/releases/posters/9061/WJzj6kIGZULNOw2d.jpg",
+                "raw_base64_file": null
+            },
+            "original": {
+                "url": "/storage/releases/posters/9061/WJzj6kIGZULNOw2d.jpg",
+                "raw_base64_file": null
+            }
+        },
+        "updated": 1656421807,
+        "last_change": 1656468781,
+        "type": {
+            "full_string": "ТВ (12 эп.), 24 мин.",
+            "code": 1,
+            "string": "TV",
+            "series": 12,
+            "length": 24
+        },
+        "genres": [
+            "Комедия",
+            "Меха",
+            "Романтика",
+            "Фантастика",
+            "Школа"
+        ],
+        "team": {
+            "voice": [
+                "Amikiri",
+                "Anzen"
+            ],
+            "translator": [
+                "Mr_Fantasm"
+            ],
+            "editing": [
+                "SwiXit"
+            ],
+            "decor": [
+                "AFFO",
+                "Waspil"
+            ],
+            "timing": [
+                "Quin"
+            ]
+        },
+        "season": {
+            "string": "весна",
+            "code": 2,
+            "year": 2022,
+            "week_day": 6
+        },
+        "description": "Долгожданный четвёртый сезон так полюбившегося многим аниме о невероятных приключениях Шидо Ицуки и его загадочных подруг. Вновь всё как вы любите: красивые девушки на любой вкус, красочные сражения и различные таинственные события, угрожающие существованию всего живого на Земле, с которыми необходимо разобраться главному герою. Всё это неизменно щедро сдобрено лёгким юмором.",
+        "in_favorites": 3191,
+        "blocked": {
+            "blocked": false,
+            "bakanim": false
+        },
+        "player": {
+            "alternative_player": null,
+            "host": "de8.libria.fun",
+            "series": {
+                "first": 1,
+                "last": 12,
+                "string": "1-12"
+            },
+            "playlist": {
+                "1": {
+                    "serie": 1,
+                    "created_timestamp": 1650109023,
+                    "preview": "/storage/releases/episodes/previews/9061/1/czKSXdCKBkBNjbd6.jpg",
+                    "skips": {
+                        "opening": [
+                            72,
+                            162
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9061/1/1080/87c0bb9e27ecccb70f8991b97a32e822.m3u8",
+                        "hd": "/videos/media/ts/9061/1/720/817cf895da5c4aaef2d5a245652ee2a7.m3u8",
+                        "sd": "/videos/media/ts/9061/1/480/bea24a4676ab8b8884ee6e17fb46c13e.m3u8"
+                    }
+                },
+                "2": {
+                    "serie": 2,
+                    "created_timestamp": 1650604278,
+                    "preview": "/storage/releases/episodes/previews/9061/2/ezx6ptDy8tsXNtIA.jpg",
+                    "skips": {
+                        "opening": [
+                            73,
+                            163
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9061/2/1080/155e197ac29d1ced5d66e3cc498e446f.m3u8",
+                        "hd": "/videos/media/ts/9061/2/720/cb64ebd87206ce9bbee5f5ea0f5f8761.m3u8",
+                        "sd": "/videos/media/ts/9061/2/480/6a0c31ed4db347edf8455424e34a2a94.m3u8"
+                    }
+                },
+                "3": {
+                    "serie": 3,
+                    "created_timestamp": 1650894252,
+                    "preview": "/storage/releases/episodes/previews/9061/3/ykXz19NAv14QKaLz.jpg",
+                    "skips": {
+                        "opening": [
+                            55,
+                            145
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9061/3/1080/f53c9aba58e1a1ee37a87873381dd898.m3u8",
+                        "hd": "/videos/media/ts/9061/3/720/77822260ca2ad45cf0f2be52f2bd7154.m3u8",
+                        "sd": "/videos/media/ts/9061/3/480/9dab6e47a4b43b4786833c42262e83c5.m3u8"
+                    }
+                },
+                "4": {
+                    "serie": 4,
+                    "created_timestamp": 1651648120,
+                    "preview": "/storage/releases/episodes/previews/9061/4/WkfmgNw0CriyZvrd.jpg",
+                    "skips": {
+                        "opening": [
+                            202,
+                            292
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9061/4/1080/1707387199f204a78b328471e3906ee3.m3u8",
+                        "hd": "/videos/media/ts/9061/4/720/42fcbca3ca92e12960b07b6a6cfaa5a1.m3u8",
+                        "sd": "/videos/media/ts/9061/4/480/c57c9ae287e19fcf511df78b56c651aa.m3u8"
+                    }
+                },
+                "5": {
+                    "serie": 5,
+                    "created_timestamp": 1652023665,
+                    "preview": "/storage/releases/episodes/previews/9061/5/QsqgU0cxHvRFhuZT.jpg",
+                    "skips": {
+                        "opening": [
+                            56,
+                            146
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9061/5/1080/35a09885d82599bf253193b99843b0d2.m3u8",
+                        "hd": "/videos/media/ts/9061/5/720/ab0db06fff4c48829f3f542655887729.m3u8",
+                        "sd": "/videos/media/ts/9061/5/480/0247f658d21bd5daed9ee3d4057d4c0c.m3u8"
+                    }
+                },
+                "6": {
+                    "serie": 6,
+                    "created_timestamp": 1652621552,
+                    "preview": "/storage/releases/episodes/previews/9061/6/Y3Y2h3fmkP7hNq40.jpg",
+                    "skips": {
+                        "opening": [
+                            110,
+                            200
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9061/6/1080/43f87fff60bfcd3b4a48ebec4752d6aa.m3u8",
+                        "hd": "/videos/media/ts/9061/6/720/d7778684cb9c1f9bb77690fbe1ae8333.m3u8",
+                        "sd": "/videos/media/ts/9061/6/480/5cf625d8475bd87eeb9c507b73282afd.m3u8"
+                    }
+                },
+                "7": {
+                    "serie": 7,
+                    "created_timestamp": 1653577315,
+                    "preview": "/storage/releases/episodes/previews/9061/7/2mD3aUr6cKer45wg.jpg",
+                    "skips": {
+                        "opening": [
+                            60,
+                            150
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9061/7/1080/b1bb540a255dab8e91af1a0ddbdc0650.m3u8",
+                        "hd": "/videos/media/ts/9061/7/720/7ec147b49ca1c6624079f606056fa55b.m3u8",
+                        "sd": "/videos/media/ts/9061/7/480/58829537afe40bbcd2dac24b4e99ccb3.m3u8"
+                    }
+                },
+                "8": {
+                    "serie": 8,
+                    "created_timestamp": 1654008279,
+                    "preview": "/storage/releases/episodes/previews/9061/8/ei3qDTmax1ymtulw.jpg",
+                    "skips": {
+                        "opening": [
+                            78,
+                            168
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9061/8/1080/913da35837af4b15d9e447d194331302.m3u8",
+                        "hd": "/videos/media/ts/9061/8/720/d290e09c15217cc11b60a7492a2d7e5c.m3u8",
+                        "sd": "/videos/media/ts/9061/8/480/252a01c99289846621e0732d1b3472be.m3u8"
+                    }
+                },
+                "9": {
+                    "serie": 9,
+                    "created_timestamp": 1654528332,
+                    "preview": "/storage/releases/episodes/previews/9061/9/PhjKqkbpa89ORPBQ.jpg",
+                    "skips": {
+                        "opening": [
+                            66,
+                            156
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9061/9/1080/e0b0184069835474f24a9d7acb30768a.m3u8",
+                        "hd": "/videos/media/ts/9061/9/720/307304eb10922929aba65916faa7f543.m3u8",
+                        "sd": "/videos/media/ts/9061/9/480/115d1efa2e77af158d52081dcd4305e4.m3u8"
+                    }
+                },
+                "10": {
+                    "serie": 10,
+                    "created_timestamp": 1655132576,
+                    "preview": "/storage/releases/episodes/previews/9061/10/McJzPgd7OUXFgx5q.jpg",
+                    "skips": {
+                        "opening": [
+                            50,
+                            140
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9061/10/1080/274d9d15129e8b912ff4ac4bcb79fd31.m3u8",
+                        "hd": "/videos/media/ts/9061/10/720/079be5fd6b41da7b6627acc069e2b2fc.m3u8",
+                        "sd": "/videos/media/ts/9061/10/480/3e44023a8d0373437d47a5fc8f91c159.m3u8"
+                    }
+                },
+                "11": {
+                    "serie": 11,
+                    "created_timestamp": 1655818755,
+                    "preview": "/storage/releases/episodes/previews/9061/11/qFuPT3TbyVNyD2jX.jpg",
+                    "skips": {
+                        "opening": [
+                            177,
+                            257
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9061/11/1080/c18b5123b8907c553690fd17980952b1.m3u8",
+                        "hd": "/videos/media/ts/9061/11/720/c39fa8c6efba3acb7bd044bb9fc024c5.m3u8",
+                        "sd": "/videos/media/ts/9061/11/480/bd16659e758065c39909f9792248f626.m3u8"
+                    }
+                },
+                "12": {
+                    "serie": 12,
+                    "created_timestamp": 1656422241,
+                    "preview": "/storage/releases/episodes/previews/9061/12/hL58OvCgbnwQmDGc.jpg",
+                    "skips": {
+                        "opening": [
+                            156,
+                            246
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9061/12/1080/2c769b859deea6e43f844c942316505c.m3u8",
+                        "hd": "/videos/media/ts/9061/12/720/781dc9ad60d4b3cdf128518080b30b18.m3u8",
+                        "sd": "/videos/media/ts/9061/12/480/da42daf196a630d80e7f0918bea60ebe.m3u8"
+                    }
+                }
+            }
+        },
+        "torrents": {
+            "series": {
+                "first": 1,
+                "last": 12,
+                "string": "1-12"
+            },
+            "list": [
+                {
+                    "torrent_id": 19892,
+                    "series": {
+                        "first": 1,
+                        "last": 12,
+                        "string": "1-12"
+                    },
+                    "quality": {
+                        "string": "WEBRip 1080p",
+                        "type": "WEBRip",
+                        "resolution": "1080p",
+                        "encoder": "h264",
+                        "lq_audio": null
+                    },
+                    "leechers": 13,
+                    "seeders": 55,
+                    "downloads": 2252,
+                    "total_size": 13692050067,
+                    "url": "/public/torrent/download.php?id=19892",
+                    "uploaded_timestamp": 1656421369,
+                    "hash": "2c4e4d860a568f184cb3c465607965ddddccdd5e",
+                    "metadata": null,
+                    "raw_base64_file": null
+                },
+                {
+                    "torrent_id": 19900,
+                    "series": {
+                        "first": 1,
+                        "last": 12,
+                        "string": "1-12"
+                    },
+                    "quality": {
+                        "string": "WEBRip 1080p HEVC",
+                        "type": "WEBRip",
+                        "resolution": "1080p",
+                        "encoder": "h265",
+                        "lq_audio": null
+                    },
+                    "leechers": 6,
+                    "seeders": 51,
+                    "downloads": 1521,
+                    "total_size": 2938247879,
+                    "url": "/public/torrent/download.php?id=19900",
+                    "uploaded_timestamp": 1656468781,
+                    "hash": "5135adb49e042dd2502ab16dac506e9afb46da82",
+                    "metadata": null,
+                    "raw_base64_file": null
+                }
+            ]
+        }
+    },
+    {
+        "id": 9159,
+        "code": "kaguya-sama-wa-kokurasetai-ultra-romantic",
+        "names": {
+            "ru": "Кагуя хочет, чтобы ей признались: война любви и разума гениев 3",
+            "en": "Kaguya-sama wa Kokurasetai: Ultra Romantic",
+            "alternative": null
+        },
+        "announce": "РЕЛИЗ ЗАВЕРШЁН!<br>Последние три серии вскоре будут перезалиты.",
+        "status": {
+            "string": "В работе",
+            "code": 1
+        },
+        "posters": {
+            "small": {
+                "url": "/storage/releases/posters/9159/THcW3lbZY6QEaLkU.jpg",
+                "raw_base64_file": null
+            },
+            "medium": {
+                "url": "/storage/releases/posters/9159/THcW3lbZY6QEaLkU.jpg",
+                "raw_base64_file": null
+            },
+            "original": {
+                "url": "/storage/releases/posters/9159/THcW3lbZY6QEaLkU.jpg",
+                "raw_base64_file": null
+            }
+        },
+        "updated": 1656348889,
+        "last_change": 1656349141,
+        "type": {
+            "full_string": "ТВ (13 эп.), 24 мин.",
+            "code": 1,
+            "string": "TV",
+            "series": 13,
+            "length": 24
+        },
+        "genres": [
+            "Комедия",
+            "Психологическое",
+            "Романтика",
+            "Сейнен",
+            "Школа"
+        ],
+        "team": {
+            "voice": [
+                "Cleo-chan",
+                "HectoR",
+                "Hekomi"
+            ],
+            "translator": [
+                "Timur_kun"
+            ],
+            "editing": [],
+            "decor": [
+                "Rossik666"
+            ],
+            "timing": [
+                "StuffyHarbor"
+            ]
+        },
+        "season": {
+            "string": "весна",
+            "code": 2,
+            "year": 2022,
+            "week_day": 6
+        },
+        "description": "И вновь двери престижной академии Шучиин распахиваются перед нами! А это значит, что пора вернуться и к будням любимого студсовета! \r\nВице-президент Кáгуя Шинóмия. Президент Мию́ки Широгáне. Всё такие же непреклонно гордые возлюбленные. Признаешься — проиграешь. Это битва двух гениев. Битва их чувств, их сердец. \r\nС новым сезоном сменилось и поле боя — грядёт культурный фестиваль! Так кто же первым ослабит бдительность? Откроется ли новый уровень их отношений? Сложно предсказать! Ведь всем известно, что в любви как на войне.",
+        "in_favorites": 5181,
+        "blocked": {
+            "blocked": false,
+            "bakanim": false
+        },
+        "player": {
+            "alternative_player": null,
+            "host": "static.libria.fun",
+            "series": {
+                "first": 1,
+                "last": 13,
+                "string": "1-13"
+            },
+            "playlist": {
+                "1": {
+                    "serie": 1,
+                    "created_timestamp": 1649623589,
+                    "preview": "/storage/releases/episodes/previews/9159/1/zkxleoYnDZNtjoZs.jpg",
+                    "skips": {
+                        "opening": [],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9159/1/1080/9f4e57673cbd0376bf387b680bebbcf2.m3u8",
+                        "hd": "/videos/media/ts/9159/1/720/eb16c712ea77e31a9fcf76ae1d6051d0.m3u8",
+                        "sd": "/videos/media/ts/9159/1/480/4100a79d5dc8f2cd79e9681d9e7a2c21.m3u8"
+                    }
+                },
+                "2": {
+                    "serie": 2,
+                    "created_timestamp": 1650224090,
+                    "preview": "/storage/releases/episodes/previews/9159/2/sxldzg6B5qfv0s8Z.jpg",
+                    "skips": {
+                        "opening": [
+                            1,
+                            89
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9159/2/1080/43589c97119d1c9fa26c5894605e64e8.m3u8",
+                        "hd": "/videos/media/ts/9159/2/720/64d736d8203ae4e5dfc9fc56661a6da5.m3u8",
+                        "sd": "/videos/media/ts/9159/2/480/9547d0c5e514299e7fb067b90603bdc2.m3u8"
+                    }
+                },
+                "3": {
+                    "serie": 3,
+                    "created_timestamp": 1650755147,
+                    "preview": "/storage/releases/episodes/previews/9159/3/05X8l8ImOU0HYE7n.jpg",
+                    "skips": {
+                        "opening": [
+                            1,
+                            89
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9159/3/1080/49c0d276f687036dc58fd886007b5642.m3u8",
+                        "hd": "/videos/media/ts/9159/3/720/c335d73e05ae41b955cba25bbba71676.m3u8",
+                        "sd": "/videos/media/ts/9159/3/480/805356f6333d915f2392800bb0aadeb4.m3u8"
+                    }
+                },
+                "4": {
+                    "serie": 4,
+                    "created_timestamp": 1651412662,
+                    "preview": "/storage/releases/episodes/previews/9159/4/2SQB08V6jjWbT6KX.jpg",
+                    "skips": {
+                        "opening": [
+                            16,
+                            105
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9159/4/1080/677487cb176230ecece9f8150c664e93.m3u8",
+                        "hd": "/videos/media/ts/9159/4/720/f2d2187fb07ff3b47ae99cbd72f71fd6.m3u8",
+                        "sd": "/videos/media/ts/9159/4/480/4fea0945d352a818ab53bec4eb845397.m3u8"
+                    }
+                },
+                "5": {
+                    "serie": 5,
+                    "created_timestamp": 1653229808,
+                    "preview": "/storage/releases/episodes/previews/9159/5/y34bOUr369dqAiEX.jpg",
+                    "skips": {
+                        "opening": [],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9159/5/1080/9a7d47a8673fe63b4d2557f6db2bdc1c.m3u8",
+                        "hd": "/videos/media/ts/9159/5/720/277209c65708ea3c737f362e29c4f0b8.m3u8",
+                        "sd": "/videos/media/ts/9159/5/480/0a834fb78542db0e885489412b1202f3.m3u8"
+                    }
+                },
+                "6": {
+                    "serie": 6,
+                    "created_timestamp": 1652622580,
+                    "preview": "/storage/releases/episodes/previews/9159/6/OFjc2BWEjPI71F4N.jpg",
+                    "skips": {
+                        "opening": [
+                            97,
+                            187
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9159/6/1080/768cd24e636460962d986100485c5158.m3u8",
+                        "hd": "/videos/media/ts/9159/6/720/7e1decc203dabeaea4dcbcd3fb93b462.m3u8",
+                        "sd": "/videos/media/ts/9159/6/480/e3d2b24e4fa9a1ac04a14b5fb0a7a6d1.m3u8"
+                    }
+                },
+                "7": {
+                    "serie": 7,
+                    "created_timestamp": 1653234063,
+                    "preview": "/storage/releases/episodes/previews/9159/7/Wz8xUgcrxIvHN3fS.jpg",
+                    "skips": {
+                        "opening": [
+                            20,
+                            109
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9159/7/1080/c47f82d37371d01d0f38dfd500c92503.m3u8",
+                        "hd": "/videos/media/ts/9159/7/720/d30733b08f6b3edf50b80f59c60a110d.m3u8",
+                        "sd": "/videos/media/ts/9159/7/480/a9e12458b7f3715e9416bde2a7349d96.m3u8"
+                    }
+                },
+                "8": {
+                    "serie": 8,
+                    "created_timestamp": 1653833285,
+                    "preview": "/storage/releases/episodes/previews/9159/8/WxgCj2BLjIZU40sZ.jpg",
+                    "skips": {
+                        "opening": [
+                            1,
+                            90
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9159/8/1080/ca72b9c6c38a1b8d84b5c49a3879319f.m3u8",
+                        "hd": "/videos/media/ts/9159/8/720/bd7c4dfb3bfd7c43b71b7d88b91a9c59.m3u8",
+                        "sd": "/videos/media/ts/9159/8/480/0295353dd4dfcf64a7f83f1118fa4c32.m3u8"
+                    }
+                },
+                "9": {
+                    "serie": 9,
+                    "created_timestamp": 1654437817,
+                    "preview": "/storage/releases/episodes/previews/9159/9/5ql6doV81gRtQfak.jpg",
+                    "skips": {
+                        "opening": [],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9159/9/1080/93067f01624dc6a81241559153a42a0b.m3u8",
+                        "hd": "/videos/media/ts/9159/9/720/f314f75bb714e1789573e24b9d0e21af.m3u8",
+                        "sd": "/videos/media/ts/9159/9/480/cb9d15ccda3cbd15f102554c2ffad70b.m3u8"
+                    }
+                },
+                "10": {
+                    "serie": 10,
+                    "created_timestamp": 1655046449,
+                    "preview": "/storage/releases/episodes/previews/9159/10/Sns2Lk9gkGOzWhs5.jpg",
+                    "skips": {
+                        "opening": [
+                            1,
+                            89
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9159/10/1080/317ed4ade8e96270444c9574414b0093.m3u8",
+                        "hd": "/videos/media/ts/9159/10/720/2402f7f9ca7d5e80d9183311f3781a35.m3u8",
+                        "sd": "/videos/media/ts/9159/10/480/a0ba5864f25f8b99e272be44e8a50767.m3u8"
+                    }
+                },
+                "11": {
+                    "serie": 11,
+                    "created_timestamp": 1655588674,
+                    "preview": "/storage/releases/episodes/previews/9159/11/7nGgQDKDc9pQy9Np.jpg",
+                    "skips": {
+                        "opening": [
+                            106,
+                            196
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9159/11/1080/29c27b9c0d7135d7d3938a4c221236cb.m3u8",
+                        "hd": "/videos/media/ts/9159/11/720/002767787a82dfca57f024ae08f2bd9f.m3u8",
+                        "sd": "/videos/media/ts/9159/11/480/61a790b1c78064be5342589b6302053a.m3u8"
+                    }
+                },
+                "12": {
+                    "serie": 12,
+                    "created_timestamp": 1656277951,
+                    "preview": "/storage/releases/episodes/previews/9159/12/rqmvpbDo79kTIAzA.jpg",
+                    "skips": {
+                        "opening": [
+                            60,
+                            149
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9159/12/1080/470709937c830b20acecda207d1c9583.m3u8",
+                        "hd": "/videos/media/ts/9159/12/720/19c4ffd72b16e5f65bcddb6b1e21f6af.m3u8",
+                        "sd": "/videos/media/ts/9159/12/480/2b2fe16476240da61b8f93e73afee668.m3u8"
+                    }
+                },
+                "13": {
+                    "serie": 13,
+                    "created_timestamp": 1656348867,
+                    "preview": "/storage/releases/episodes/previews/9159/13/tuH9EobT5jU8ffYF.jpg",
+                    "skips": {
+                        "opening": [
+                            1,
+                            90
+                        ],
+                        "ending": []
+                    },
+                    "hls": {
+                        "fhd": "/videos/media/ts/9159/13/1080/c449638593338674ac91348b567e17f5.m3u8",
+                        "hd": "/videos/media/ts/9159/13/720/aa99a99d219147cbeec53b9712f28936.m3u8",
+                        "sd": "/videos/media/ts/9159/13/480/45435ab4b30b41211abd5865b2d00f64.m3u8"
+                    }
+                }
+            }
+        },
+        "torrents": {
+            "series": {
+                "first": 1,
+                "last": 13,
+                "string": "1-13"
+            },
+            "list": [
+                {
+                    "torrent_id": 19888,
+                    "series": {
+                        "first": 1,
+                        "last": 13,
+                        "string": "1-13"
+                    },
+                    "quality": {
+                        "string": "WEBRip 1080p",
+                        "type": "WEBRip",
+                        "resolution": "1080p",
+                        "encoder": "h264",
+                        "lq_audio": null
+                    },
+                    "leechers": 25,
+                    "seeders": 69,
+                    "downloads": 3742,
+                    "total_size": 19826960685,
+                    "url": "/public/torrent/download.php?id=19888",
+                    "uploaded_timestamp": 1656347335,
+                    "hash": "614d6c1124281c91e6d89531ad4d5700406409a7",
+                    "metadata": null,
+                    "raw_base64_file": null
+                },
+                {
+                    "torrent_id": 19889,
+                    "series": {
+                        "first": 1,
+                        "last": 13,
+                        "string": "1-13"
+                    },
+                    "quality": {
+                        "string": "WEBRip 1080p HEVC",
+                        "type": "WEBRip",
+                        "resolution": "1080p",
+                        "encoder": "h265",
+                        "lq_audio": null
+                    },
+                    "leechers": 12,
+                    "seeders": 99,
+                    "downloads": 4214,
+                    "total_size": 4605766947,
+                    "url": "/public/torrent/download.php?id=19889",
+                    "uploaded_timestamp": 1656347346,
+                    "hash": "d4781ff5226faf38c4a993dde68361c803bf8f6c",
+                    "metadata": null,
+                    "raw_base64_file": null
+                }
+            ]
+        }
+    }
+]

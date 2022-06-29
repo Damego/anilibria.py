@@ -32,10 +32,8 @@ class SomeRequest:  # TODO: Назвать как-нибудь
         filter: Optional[List[str]] = None,
         remove: Optional[List[str]] = None,
         include: Optional[List[str]] = None,
-        description_type: Optional[
-            str
-        ] = None,  # TODO: Тут значение по умолчанию какое-то
-        playlist_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
+        description_type: Optional[str] = None,
+        playlist_type: Optional[str] = None,
     ) -> dict:
         payload: str = self._to_string(
             id=id,
@@ -56,10 +54,8 @@ class SomeRequest:  # TODO: Назвать как-нибудь
         filter: Optional[List[str]] = None,
         remove: Optional[List[str]] = None,
         include: Optional[List[str]] = None,
-        description_type: Optional[
-            str
-        ] = None,  # TODO: Тут значение по умолчанию какое-то
-        playlist_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
+        description_type: Optional[str] = None,
+        playlist_type: Optional[str] = None,
     ) -> List[dict]:
         payload: str = self._to_string(
             id_list=id_list,
@@ -78,10 +74,8 @@ class SomeRequest:  # TODO: Назвать как-нибудь
         remove: Optional[List[str]] = None,
         include: Optional[List[str]] = None,
         since: Optional[int] = None,
-        description_type: Optional[
-            str
-        ] = None,  # TODO: Тут значение по умолчанию какое-то
-        playlist_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
+        description_type: Optional[str] = None,
+        playlist_type: Optional[str] = None,
         after: Optional[int] = None,
         limit: Optional[int] = None,
     ) -> List[dict]:
@@ -103,9 +97,7 @@ class SomeRequest:  # TODO: Назвать как-нибудь
         remove: Optional[List[str]] = None,
         include: Optional[List[str]] = None,
         since: Optional[int] = None,
-        description_type: Optional[
-            str
-        ] = None,  # TODO: Тут значение по умолчанию какое-то
+        description_type: Optional[str] = None,
         after: Optional[int] = None,
         limit: Optional[int] = None,
     ) -> List[dict]:
@@ -126,10 +118,8 @@ class SomeRequest:  # TODO: Назвать как-нибудь
         remove: Optional[List[str]] = None,
         include: Optional[List[str]] = None,
         days: List[str] = None,
-        description_type: Optional[
-            str
-        ] = None,  # TODO: Тут значение по умолчанию какое-то
-        playlist_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
+        description_type: Optional[str] = None,
+        playlist_type: Optional[str] = None,
     ) -> List[dict]:
         payload: str = self._to_string(
             filter=filter,
@@ -146,10 +136,8 @@ class SomeRequest:  # TODO: Назвать как-нибудь
         filter: Optional[List[str]] = None,
         remove: Optional[List[str]] = None,
         include: Optional[List[str]] = None,
-        description_type: Optional[
-            str
-        ] = None,  # TODO: Тут значение по умолчанию какое-то
-        playlist_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
+        description_type: Optional[str] = None,
+        playlist_type: Optional[str] = None,
     ) -> dict:
         payload: str = self._to_string(
             filter=filter,
@@ -185,10 +173,8 @@ class SomeRequest:  # TODO: Назвать как-нибудь
         remove: Optional[List[str]] = None,
         include: Optional[List[str]] = None,
         since: Optional[int] = None,
-        description_type: Optional[
-            str
-        ] = None,  # TODO: Тут значение по умолчанию какое-то
-        playlist_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
+        description_type: Optional[str] = None,
+        playlist_type: Optional[str] = None,
         after: Optional[int] = None,
         limit: Optional[int] = None,
     ) -> List[dict]:
@@ -224,10 +210,8 @@ class SomeRequest:  # TODO: Назвать как-нибудь
         users: List[str],
         remove: Optional[List[str]] = None,
         include: Optional[List[str]] = None,
-        description_type: Optional[
-            str
-        ] = None,  # TODO: Тут значение по умолчанию какое-то
-        playlist_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
+        description_type: Optional[str] = None,
+        playlist_type: Optional[str] = None,
         after: Optional[int] = None,
         sort_by: Optional[str] = None,
         order: Optional[int] = None,
@@ -273,13 +257,11 @@ class SomeRequest:  # TODO: Назвать как-нибудь
         filter: Optional[List[str]] = None,
         remove: Optional[List[str]] = None,
         include: Optional[List[str]] = None,
-        description_type: Optional[
-            str
-        ] = None,  # TODO: Тут значение по умолчанию какое-то
-        playlist_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
+        description_type: Optional[str] = None,
+        playlist_type: Optional[str] = None,
         after: Optional[int] = None,
         limit: Optional[int] = None,
-    ):
+    ) -> List[dict]:
         payload: str = self._to_string(
             search=search,
             year=year,
@@ -306,10 +288,8 @@ class SomeRequest:  # TODO: Назвать как-нибудь
         filter: Optional[List[str]] = None,
         remove: Optional[List[str]] = None,
         include: Optional[List[str]] = None,
-        description_type: Optional[
-            str
-        ] = None,  # TODO: Тут значение по умолчанию какое-то
-        playlist_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
+        description_type: Optional[str] = None,
+        playlist_type: Optional[str] = None,
         after: Optional[int] = None,
         order_by: str = None,
         limit: Optional[int] = None,
@@ -335,10 +315,8 @@ class SomeRequest:  # TODO: Назвать как-нибудь
         filter: Optional[List[str]] = None,
         remove: Optional[List[str]] = None,
         include: Optional[List[str]] = None,
-        description_type: Optional[
-            str
-        ] = None,  # TODO: Тут значение по умолчанию какое-то
-        playlist_type: Optional[str] = None,  # TODO: Тут значение по умолчанию какое-то
+        description_type: Optional[str] = None,
+        playlist_type: Optional[str] = None,
     ) -> List[dict]:
         payload: str = self._to_string(
             session=session,
