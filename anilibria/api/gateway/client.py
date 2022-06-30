@@ -1,7 +1,8 @@
-import asyncio
+from asyncio import get_event_loop, get_running_loop, new_event_loop
 from json import loads
 from typing import List
 from logging import getLogger
+from sys import version_info
 
 from aiohttp import WSMessage, ClientWebSocketResponse
 
@@ -11,14 +12,15 @@ from .events import *
 
 
 log = getLogger("anilibria.gateway")
-
-
 URL = "ws://api.anilibria.tv/v2/ws/"
 
 
 class WebSocketClient:
     def __init__(self, proxy: str = None):
-        self._loop = asyncio.get_event_loop()
+        try:
+            self._loop = get_event_loop() if version_info < (3, 10) else get_running_loop()
+        except RuntimeError:
+            self._loop = new_event_loop()
         self._http = HTTPCLient(proxy)
         self._listener = EventListener()
         self.proxy: str = proxy

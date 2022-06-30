@@ -9,6 +9,7 @@ class AniLibriaClient:
     def __init__(self, *, proxy: str = None) -> None:
         self.proxy: str = proxy
         self._loop: AbstractEventLoop = None
+        self._loop = get_event_loop()
         self._websocket: WebSocketClient = WebSocketClient(proxy=self.proxy)
         self._subscribes: List[dict] = []
 
@@ -656,7 +657,6 @@ class AniLibriaClient:
         Запускает клиент.
         :return:
         """
-        self._loop = get_event_loop()
         self._loop.run_until_complete(self._start())
 
     def startwith(self, coro: Coroutine):
@@ -665,8 +665,7 @@ class AniLibriaClient:
         :param coro:
         :return:
         """
-        loop = get_event_loop()
-        task1 = loop.create_task(self._start())
-        task2 = loop.create_task(coro)
+        task1 = self._loop.create_task(self._start())
+        task2 = self._loop.create_task(coro)
         gathered = gather(task1, task2)
-        loop.run_until_complete(gathered)
+        self._loop.run_until_complete(gathered)
