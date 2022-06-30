@@ -1,11 +1,11 @@
 from .request import Request
-from .other import SomeRequest
+from .v2 import V2Request
 from .public import PublicRequest
 
 
-class HTTPCLient(SomeRequest, PublicRequest):
+class HTTPCLient:
     def __init__(self, proxy: str = None) -> None:
         self.proxy = proxy
         self.request = Request(proxy)
-        SomeRequest.__init__(self)
-        PublicRequest.__init__(self)
+        self.v2 = V2Request(self.request)
+        self.public = PublicRequest(self.request)

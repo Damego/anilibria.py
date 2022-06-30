@@ -6,11 +6,9 @@ from .request import Request
 URL = "http://api.anilibria.tv/v2"
 
 
-class SomeRequest:  # TODO: Назвать как-нибудь
-    request: Request
-
-    def __init__(self) -> None:
-        pass
+class V2Request:
+    def __init__(self, request: Request) -> None:
+        self.request = request
 
     def _to_string(self, **kwargs):
         list_data = []
@@ -309,7 +307,7 @@ class SomeRequest:  # TODO: Назвать как-нибудь
         )
         return await self.request.request("GET", f"{URL}/advancedSearch", payload)
 
-    async def get_favourites(
+    async def get_favorites(
         self,
         session: str,
         filter: Optional[List[str]] = None,
@@ -328,10 +326,10 @@ class SomeRequest:  # TODO: Назвать как-нибудь
         )
         return await self.request.request("GET", f"{URL}/getFavorites", payload)
 
-    async def add_favourite(self, session: str, title_id: int) -> dict:
+    async def add_favorite(self, session: str, title_id: int) -> dict:
         payload: str = self._to_string(session=session, title_id=title_id)
         return await self.request.request("PUT", f"{URL}/addFavorite", payload)
 
-    async def del_favourite(self, session: str, title_id: int) -> dict:
+    async def del_favorite(self, session: str, title_id: int) -> dict:
         payload: str = self._to_string(session=session, title_id=title_id)
         return await self.request.request("DELETE", f"{URL}/delFavorite", payload)

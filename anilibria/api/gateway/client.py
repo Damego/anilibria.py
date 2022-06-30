@@ -1,11 +1,16 @@
 import asyncio
-
-from aiohttp import WSMessage
 from json import loads
+from typing import List
+from logging import getLogger
+
+from aiohttp import WSMessage, ClientWebSocketResponse
 
 from ..http import HTTPCLient
 from ..listener import EventListener
 from .events import *
+
+
+log = getLogger("anilibria.gateway")
 
 
 URL = "ws://api.anilibria.tv/v2/ws/"
@@ -16,21 +21,25 @@ class WebSocketClient:
         self._loop = asyncio.get_event_loop()
         self._http = HTTPCLient(proxy)
         self._listener = EventListener()
-        self.proxy = proxy
+        self.proxy: str = proxy
+        self._client: ClientWebSocketResponse = None
+        self._closed: bool = False
+        self._subscribes: List[dict] = None
+        self.api_version: str = None
 
-        self._client = None
-        self._closed = False
-        self.session_id = None
+    async def run(self, subscribes: List[dict]):
+        self._subscribes = subscribes
+        await self.__connect()
 
-    async def run(self):
-        await self.__run()
-
-    async def __run(self):
+    async def __connect(self):
         async with self._http.request.session.ws_connect(URL) as self._client:
+            log.debug("Connected to websocket")
             self._closed = self._client._closed
+            if self._subscribes:
+                await self.__subscribe_on_titles()
 
             if self._closed:
-                await self.__run()
+                await self.__connect()
 
             while not self._closed:
                 packet = await self._client.receive()
@@ -38,13 +47,15 @@ class WebSocketClient:
 
     async def process_packet(self, packet: WSMessage):
         data = loads(packet.data)
+        self._listener.dispatch("on_raw_packet", data)
+
         type = data.get("type")
         if type is None:
-            await self._other(data)
+            return await self._process_other_events(data)
+
         event_name = f"on_{type}"
         if type == EventType.TITLE_UPDATE:
-            event = TitleUpdateEvent(**data[type])
-            self._listener.dispatch(event_name, event)
+            self._dispatch_title_update_event(data)
         elif type == EventType.PLAYLIST_UPDATE:
             event = PlayListUpdateEvent(**data[type])
             self._listener.dispatch(event_name, event)
@@ -56,17 +67,33 @@ class WebSocketClient:
             event = EncodeEvent(**data[type])
             self._listener.dispatch(event_name, data)
         else:
-            print("ANOTHER EVENT", data)
+            self._listener.dispatch(event_name, data)
+            log.debug(f"Not documented event type {type} dispatched with data: {data}")
 
-        self._listener.dispatch("on_raw_packet", data)
-        # print("Packet dispatched", packet)  # TODO: Use logging
+    def _dispatch_title_update_event(self, data: dict):
+        event_model = TitleUpdateEvent(**data[type])
+        self._listener.dispatch(data["type"], event_model)
 
-    async def _other(self, data):
-        print(data)
+        title_data = data["title"]
+        events = self._listener.events
+        for event in events:
+            if event == "on_title":
+                coro_data = events[event]["data"]
+                if all(value == title_data[key] for key, value in coro_data.items()):
+                    self._listener.dispatch("on_title", event_model)
 
-    async def login(self, login: str, password: str) -> str:
-        data = await self._http.login(login, password)
-        self.session_id = data["sessionId"]
+    async def _process_other_events(self, data: dict):
+        if api_version := data.get("api_version"):
+            self.api_version = api_version
+            log.debug(f"Got API version {api_version}")
+        else:
+            log.debug(data)
 
-    async def subscribe(self, data: dict):
+    async def __subscribe_on_titles(self):
+        for subscribe in self._subscribes:
+            await self.__subscribe(subscribe)
+        self._subscribes = None
+
+    async def __subscribe(self, data: dict):
         await self._client.send_json(data)
+        log.debug(f"Send json to websocket with data: {data}")

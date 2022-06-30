@@ -31,7 +31,7 @@ class PlayListUpdateEvent:
     player: Player
     updated_episode: Serie
     episode: str
-    diff: dict  # Здесь может быть что угодно, а что именно - не сказано, так что пусть пока будет словарём.
+    diff: dict
     reupload: bool
 
 
@@ -39,7 +39,4 @@ class PlayListUpdateEvent:
 class TitleUpdateEvent:
     hash: str
     title: Title
-    diff: dict  # Здесь может быть что угодно, а что именно - не сказано, так что пусть пока будет словарём.
-
-
-print("playlist_update" == EventType.PLAYLIST_UPDATE)
+    diff: dict

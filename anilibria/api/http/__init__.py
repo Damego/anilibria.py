@@ -1,4 +1,4 @@
 from .client import *
-from .other import *
+from .v2 import *
 from .public import *
 from .request import *

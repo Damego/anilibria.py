@@ -1,24 +1,27 @@
 from asyncio import get_event_loop
-from typing import Coroutine
+from typing import Coroutine, Dict, List, Union
+from logging import getLogger
 
-# TODO: Использовать logger
+
+log = getLogger("anilibria.dispatch")
 
 
 class EventListener:
     def __init__(self) -> None:
         self.loop = get_event_loop()
-        self.events = {}
+        self.events: Dict[str, List[dict]] = {}
 
     def dispatch(self, name: str, *args, **kwargs):
-        for event in self.events.get(name, []):
+        for event_data in self.events.get(name, []):
+            event = event_data["coro"]
             self.loop.create_task(event(*args, **kwargs))
-            # print(f"event {name} was dispatched")
+        log.debug(f"Event {name} dispatched")
 
-    def add_event(self, coro: Coroutine, name: str = None):
-        _name = name or coro.__name__
-        event = self.events.get(_name, [])
-        event.append(coro)
+    def add_event(self, name: str, data: Dict[str, Union[Coroutine, dict]]):
+        event = self.events.get(name, [])
+        event.append(data)
 
-        self.events[_name] = event
-        # print(f"Event {_name} added")
-        # print(f"Coros for {_name}:", self.events[_name])
+        self.events[name] = event
+        log.debug(
+            f"Added coro to {name} event. Total coros for this event: {self.events[name]}"
+        )

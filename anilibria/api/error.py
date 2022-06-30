@@ -3,4 +3,4 @@ class HTTPException(Exception):
         self.code = code
         self.message = message
 
-        super().__init__(f"HTTP Error with code: {self.code}! Message: {self.message}")
+        super().__init__(f"HTTP error with code: {self.code}!\nMessage: {self.message}")

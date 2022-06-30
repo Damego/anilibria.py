@@ -1,5 +1,7 @@
 """
-Тестовый бот, для разработки вебсокета
+Тестовый бот на disnake, проверки работоспособности библиотеки.
+Библиотеку можно также использовть и с другими библиотеками, например: aiogram для телеграм ботов.
+Позже я выложу папку с примерами исплользования с другими библиотеками.
 """
 
 import asyncio
@@ -8,21 +10,30 @@ from os import getenv
 from disnake import CommandInteraction
 from disnake.ext.commands import InteractionBot
 from dotenv import load_dotenv
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 from anilibria import AniLibriaClient
+from anilibria.api.gateway.events import TitleUpdateEvent
 
+# TODO на 30 июня
+# * Документация
 
 load_dotenv()
 
 bot = InteractionBot()
-client = AniLibriaClient(
-    login=getenv("LOGIN"), password=getenv("PASSWORD"), proxy=getenv("PROXY")
-)
+client = AniLibriaClient(proxy=getenv("PROXY"))
 
 
 @client.event(name="on_raw_packet")
 async def test(data):
-    print(data)
+    print("raw packet", data)
+
+
+@client.on_title(id=8700)
+async def on_anime(event: TitleUpdateEvent):
+    print("aboba", event)
 
 
 @client.event(name="on_title_update")
@@ -32,8 +43,7 @@ async def title_update(data):
 
 @bot.slash_command(name="test")
 async def command(interaction: CommandInteraction):
-    data = await client.get_feed(limit=100)
-    print(len(data))
+    ...
 
 
 @bot.event
