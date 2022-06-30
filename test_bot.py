@@ -12,13 +12,14 @@ from disnake.ext.commands import InteractionBot
 from dotenv import load_dotenv
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
+#logging.basicConfig(level=logging.DEBUG)
 
-from anilibria import AniLibriaClient
-from anilibria.api.gateway.events import TitleUpdateEvent
+from anilibria import AniLibriaClient, TitleUpdateEvent
+
 
 # TODO на 30 июня
 # * Документация
+# * loop = asyncio.get_event_loop() -> DeprecationWarning: There is no current event loop
 
 load_dotenv()
 
@@ -26,9 +27,9 @@ bot = InteractionBot()
 client = AniLibriaClient(proxy=getenv("PROXY"))
 
 
-@client.event(name="on_raw_packet")
-async def test(data):
-    print("raw packet", data)
+@client.event(name="on_connect")
+async def test():
+    print("connected")
 
 
 @client.on_title(id=8700)

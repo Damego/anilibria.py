@@ -85,7 +85,8 @@ class WebSocketClient:
     async def _process_other_events(self, data: dict):
         if api_version := data.get("api_version"):
             self.api_version = api_version
-            log.debug(f"Got API version {api_version}")
+            log.debug(f"Successully connected to API. API version {api_version}")
+            self._listener.dispatch("on_connect")
         else:
             log.debug(data)
 
