@@ -1,8 +1,8 @@
 .. currentmodule:: anilibria
 
 Модели Тайтла
-================
+=============
 
-.. autoclass:: anilibria.api.models.v2.title.Title
+.. automodule:: anilibria.api.models.v2
     :members:
     :noindex:
