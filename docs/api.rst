@@ -5,12 +5,12 @@ API Reference
 
 .. toctree::
     :maxdepth: 2
-    :caption: Client
+    :caption: Клиент
 
     client.rst
 
 .. toctree::
     :maxdepth: 2
-    :caption: Model/Design
+    :caption: Модели
 
     models.rst

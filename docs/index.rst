@@ -78,7 +78,7 @@ anilibria.py - это REST API и Websocket обёртка API.
 - ``aiogram``
 
 .. toctree::
-   :maxdepth: 1
-   :caption: Pages:
+   :maxdepth: 2
+   :caption: Страницы:
 
-   client.rst
+   api.rst
