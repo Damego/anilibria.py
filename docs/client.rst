@@ -1,7 +1,7 @@
 .. currentmodule:: anilibria
 
-Bot Client
-==========
+Anilibria Client
+================
 
 .. automodule:: anilibria.client
     :members:
