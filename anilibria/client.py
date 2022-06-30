@@ -1,4 +1,4 @@
-from asyncio import get_event_loop
+from asyncio import get_event_loop, gather, AbstractEventLoop
 from typing import Coroutine, Optional, List, Union, Any
 
 from .api import WebSocketClient
@@ -7,9 +7,9 @@ from .api.models import *
 
 class AniLibriaClient:
     def __init__(self, *, proxy: str = None) -> None:
-        self.proxy = proxy
-        self._loop = get_event_loop()
-        self._websocket = WebSocketClient(proxy=self.proxy)
+        self.proxy: str = proxy
+        self._loop: AbstractEventLoop = None
+        self._websocket: WebSocketClient = WebSocketClient(proxy=self.proxy)
         self._subscribes: List[dict] = []
 
     async def _start(self):
@@ -412,4 +412,12 @@ class AniLibriaClient:
         )
 
     def start(self):
+        self._loop = get_event_loop()
         self._loop.run_until_complete(self._start())
+
+    def startwith(self, coro: Coroutine):
+        loop = get_event_loop()
+        task1 = loop.create_task(self._start())
+        task2 = loop.create_task(coro)
+        gathered = gather(task1, task2)
+        loop.run_until_complete(gathered)

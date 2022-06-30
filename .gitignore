@@ -131,3 +131,5 @@ dmypy.json
 # Project files
 .idea
 archive.py
+development_bot.py
+test.py
