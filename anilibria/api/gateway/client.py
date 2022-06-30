@@ -92,9 +92,9 @@ class WebSocketClient:
 
     async def __subscribe_on_titles(self):
         for subscribe in self._subscribes:
-            await self.__subscribe(subscribe)
+            await self._subscribe(subscribe)
         self._subscribes = None
 
-    async def __subscribe(self, data: dict):
+    async def _subscribe(self, data: dict):
         await self._client.send_json(data)
         log.debug(f"Send json to websocket with data: {data}")
