@@ -3,7 +3,7 @@
 """
 
 
-from aiogram import Bot, Dispatcher, types
+from aiogram import Bot, Dispatcher, types, executor
 from anilibria import AniLibriaClient, TitleUpdateEvent
 
 import logging

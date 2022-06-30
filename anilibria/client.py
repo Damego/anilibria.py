@@ -1,5 +1,5 @@
 from asyncio import get_event_loop, gather, AbstractEventLoop
-from typing import Coroutine, Optional, List, Union, Any
+from typing import Coroutine, Optional, Any
 
 from .api import WebSocketClient
 from .api.models import *

@@ -1,0 +1,3 @@
+karma_sphinx_theme
+Sphinx
+sphinx-hoverxref
