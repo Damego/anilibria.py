@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import List
 
 from .title import Title
 
@@ -6,7 +7,7 @@ from .title import Title
 @dataclass(slots=True)
 class Schedule:
     day: int
-    list: Title
+    list: List[Title]
 
     def __post_init__(self):
         self.list = [Title(**title) for title in self.list]
