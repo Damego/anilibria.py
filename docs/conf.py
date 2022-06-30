@@ -58,9 +58,9 @@ templates_path = ["_templates"]
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = "de"
-locale_dirs = ["locale/"]
-gettext_compact = True
+# language = "de"
+# ocale_dirs = ["locale/"]
+# gettext_compact = True
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -68,7 +68,7 @@ gettext_compact = True
 exclude_patterns = ["_build"]
 
 # This should fix wrong sort
-autodoc_member_order = "bysource"
+autodoc_default_options = {"member-order": "bysource", "private-members": True}
 
 # -- Options for HTML output -------------------------------------------------
 
