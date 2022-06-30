@@ -22,6 +22,4 @@ class EventListener:
         event.append(data)
 
         self.events[name] = event
-        log.debug(
-            f"Added coro to {name} event. Total coros for this event: {self.events[name]}"
-        )
+        log.debug(f"Added coro to {name} event. Total coros for this event: {self.events[name]}")

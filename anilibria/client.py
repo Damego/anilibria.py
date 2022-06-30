@@ -1,7 +1,8 @@
 from asyncio import get_event_loop, gather, AbstractEventLoop
 from typing import Coroutine, Optional, Any, List, Dict, Union
 
-from .api import WebSocketClient, Title, Schedule, Type, YouTubeData, Team, SeedStats
+from .api import WebSocketClient
+from .api.models.v2 import Title, Schedule, Type, YouTubeData, Team, SeedStats
 
 
 class AniLibriaClient:
@@ -25,7 +26,7 @@ class AniLibriaClient:
         Подписывает на тайтл(ы)
 
         :param subscribe: Словарь, в котором описано, что должно входить в тайтл. Например: {"season": {"year": 2022}}.
-        :param filter: Список значений, которые будут в ответе.
+        :param filter: Список? значений, которые будут в ответе.
         :param remove: Список? значений, которые будут удалены.
         :return:
         """
@@ -42,15 +43,11 @@ class AniLibriaClient:
         :return:
         """
         if coro is not None:
-            self._websocket._listener.add_event(
-                name or coro.__name__, {"coro": coro, "data": data}
-            )
+            self._websocket._listener.add_event(name or coro.__name__, {"coro": coro, "data": data})
             return coro
 
         def decorator(coro: Coroutine):
-            self._websocket._listener.add_event(
-                name or coro.__name__, {"coro": coro, "data": data}
-            )
+            self._websocket._listener.add_event(name or coro.__name__, {"coro": coro, "data": data})
             return coro
 
         return decorator
@@ -635,9 +632,7 @@ class AniLibriaClient:
         :param title_id: айди тайтла.
         :return: словарь с успехом
         """
-        await self._websocket._http.v2.add_favorite(
-            session=session_id, title_id=title_id
-        )
+        await self._websocket._http.v2.add_favorite(session=session_id, title_id=title_id)
 
     async def del_favorite(self, session_id: str, title_id: int):
         """
@@ -645,9 +640,7 @@ class AniLibriaClient:
         :param session_id: ID сессии.
         :param title_id: айди тайтла.
         """
-        await self._websocket._http.v2.del_favorite(
-            session=session_id, title_id=title_id
-        )
+        await self._websocket._http.v2.del_favorite(session=session_id, title_id=title_id)
 
     def start(self):
         """

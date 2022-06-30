@@ -95,9 +95,7 @@ class Player:
     # поэтому я решил убрать ключи, оставив список с сериями.
 
     def __post_init__(self):
-        self.playlist: List[Serie] = [
-            Serie(**serie) for serie in self.playlist.values()
-        ]
+        self.playlist: List[Serie] = [Serie(**serie) for serie in self.playlist.values()]
 
 
 @dataclass(slots=True, frozen=True)
