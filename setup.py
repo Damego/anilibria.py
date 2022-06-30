@@ -27,9 +27,7 @@ setup(
     author="Damego",
     author_email="danyabatueff@gmail.com",
     description="The async API wrapper for anilibria.tv",
-    extras_require={
-        "readthedocs": requirements_docs
-    },
+    extras_require={"readthedocs": requirements_docs},
     include_package_data=True,
     install_requires=requirements,
     license="GPL-3.0 License",
@@ -46,7 +44,7 @@ setup(
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
-		"Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.10",
         "Topic :: Internet",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Software Development :: Libraries",

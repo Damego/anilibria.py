@@ -5,6 +5,7 @@ from aiohttp import ClientSession
 
 from ..error import HTTPException
 
+
 log = getLogger("anilibria.request")
 _session = ClientSession()
 

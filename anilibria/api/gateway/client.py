@@ -6,9 +6,9 @@ from sys import version_info
 
 from aiohttp import WSMessage, ClientWebSocketResponse
 
+from .events import TitleUpdateEvent, PlayListUpdateEvent, EncodeEvent, EventType
 from ..http import HTTPCLient
 from ..listener import EventListener
-from .events import *
 
 
 log = getLogger("anilibria.gateway")
@@ -67,7 +67,7 @@ class WebSocketClient:
             EventType.ENCODE_PROGRESS,
         ]:
             event = EncodeEvent(**data[type])
-            self._listener.dispatch(event_name, data)
+            self._listener.dispatch(event_name, event)
         else:
             self._listener.dispatch(event_name, data)
             log.debug(f"Not documented event type {type} dispatched with data: {data}")
@@ -87,7 +87,7 @@ class WebSocketClient:
     async def _process_other_events(self, data: dict):
         if api_version := data.get("api_version"):
             self.api_version = api_version
-            log.debug(f"Successully connected to API. API version {api_version}")
+            log.debug(f"Successfully connected to API. API version {api_version}")
             self._listener.dispatch("on_connect")
         else:
             log.debug(data)

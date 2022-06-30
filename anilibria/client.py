@@ -1,8 +1,7 @@
 from asyncio import get_event_loop, gather, AbstractEventLoop
-from typing import Coroutine, Optional, Any
+from typing import Coroutine, Optional, Any, List, Dict, Union
 
-from .api import WebSocketClient
-from .api.models import *
+from .api import WebSocketClient, Title, Schedule, Type, YouTubeData, Team, SeedStats
 
 
 class AniLibriaClient:
@@ -25,7 +24,7 @@ class AniLibriaClient:
         """
         Подписывает на тайтл(ы)
 
-        :param subscribe: Словарь, в котором описано то, что должно входить в тайтл. Например: {"season": {"year": 2022}}. Вы подписались на все тайтлы 2022 года.
+        :param subscribe: Словарь, в котором описано, что должно входить в тайтл. Например: {"season": {"year": 2022}}.
         :param filter: Список значений, которые будут в ответе.
         :param remove: Список? значений, которые будут удалены.
         :return:
@@ -370,9 +369,7 @@ class AniLibriaClient:
         playlist_type: Optional[str] = None,
         after: Optional[int] = None,
         limit: Optional[int] = None,
-    ) -> List[
-        Title
-    ]:
+    ) -> List[Title]:
         # ? Can be here youtube videos? Docs says yes, but I didn't see any data about this
         """
         Возвращает список тайтлов и ?youtube видео? в хронологическом порядке с заданными параметрами.
