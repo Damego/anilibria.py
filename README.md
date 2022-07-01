@@ -1,7 +1,7 @@
 # anilibria.py
 **Python async wrapper for anilibria.tv**
 
-<hr>
+![Discord Shield](https://discordapp.com/api/guilds/992384114667823194/widget.png?style=shield)
 
 ## О библиотеке
 anilibria.py - это REST API и Websocket обёртка API. <br>
