@@ -16,6 +16,10 @@ anilibria.py - это REST API и Websocket обёртка API. <br>
 
 `pip install anilibria.py`
 
+или
+
+`pip install git+https://github.com/Damego/anilibria.py.git`
+
 ## Использование
 
 Ниже представлено самое простое использование библиотеки. <br>
