@@ -17,7 +17,7 @@ with open("requirements.txt", "r", encoding="utf-8") as f:
 with open("requirements-docs.txt", "r", encoding="utf-8") as f:
     requirements_docs = f.read()
 
-with open(path.join(HERE, PACKAGE_NAME, "__init__.py"), encoding="utf-8") as fp:
+with open(path.join(HERE, "anilibria", "__init__.py"), encoding="utf-8") as fp:
     VERSION = re.search('__version__ = "([^"]+)"', fp.read())[1]
 
 
