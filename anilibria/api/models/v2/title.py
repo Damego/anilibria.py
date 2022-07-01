@@ -8,7 +8,7 @@ class Poster:
     Модель постера.
     """
     url: str
-    raw_base64_file: None  # What?
+    raw_base64_file: None
 
 
 @dataclass(slots=True)
@@ -111,6 +111,7 @@ class Serie:
     skips: SerieSkips  # Not documented in the docs
 
     def __post__init__(self):
+        self.hls = HLS(**self.hls)  # type: ignore
         self.skips = SerieSkips(**self.skips)  # type: ignore
 
 
@@ -160,9 +161,12 @@ class Torrent:
     total_size: int
     url: str
     uploaded_timestamp: int
-    metadata: None  # What?
-    raw_base64_file: None  # What?
+    metadata: None
+    raw_base64_file: None
     hash: str
+        
+    def __post_init__(self):
+        self.quality = Quality(**self.quality)  # type: ignore
 
 
 @dataclass(slots=True)
