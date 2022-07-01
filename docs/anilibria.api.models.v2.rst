@@ -1,13 +1,5 @@
-Модели ответов на запросы
+Модели
 ===============================
-
-Другие модели
------------------------------------
-
-.. automodule:: anilibria.api.models.v2.misc
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
 Модели тайтла
 ------------------------------------
@@ -17,10 +9,10 @@
    :undoc-members:
    :show-inheritance:
 
-Контент
----------------
+Другие модели
+-----------------------------------
 
-.. automodule:: anilibria.api.models.v2
+.. automodule:: anilibria.api.models.v2.misc
    :members:
    :undoc-members:
    :show-inheritance:

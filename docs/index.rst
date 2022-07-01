@@ -56,7 +56,7 @@ anilibria.py - это REST API и Websocket обёртка API.
 
 .. code-block:: python
 
-  #  Первый способ. НЕ РАБОЧИЙ (пока что)
+  #  Первый способ
   @client.event
   async def on_connect():
     print("Подключено")
@@ -84,6 +84,5 @@ anilibria.py - это REST API и Websocket обёртка API.
    :maxdepth: 4
    :caption: Страницы:
 
-   index.rst
    api.rst
 
