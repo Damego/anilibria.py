@@ -9,17 +9,6 @@ Subpackages
 
    anilibria.api
 
-Submodules
-----------
-
-anilibria.client module
------------------------
-
-.. automodule:: anilibria.client
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 Module contents
 ---------------
 
