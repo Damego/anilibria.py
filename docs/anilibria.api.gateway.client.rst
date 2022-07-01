@@ -1,16 +1,9 @@
-WebSocketClient и ивенты
+WebSocketClient
 =============================
 
 WebSocketClient
 -----------------------------------
 
 .. automodule:: anilibria.api.gateway.client
-   :members:
-   :undoc-members:
-
-Ивенты
------------------------------------
-
-.. automodule:: anilibria.api.gateway.events
    :members:
    :undoc-members:

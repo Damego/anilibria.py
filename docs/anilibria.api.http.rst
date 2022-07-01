@@ -1,29 +1,23 @@
-anilibria.api.http package
+HTTP Клиент и запросы
 ==========================
 
-Submodules
-----------
-
-anilibria.api.http.client module
+HTTP Client
 --------------------------------
 
 .. automodule:: anilibria.api.http.client
    :members:
    :undoc-members:
-   :show-inheritance:
 
-anilibria.api.http.request module
+HTTP Request
 ---------------------------------
 
 .. automodule:: anilibria.api.http.request
    :members:
    :undoc-members:
-   :show-inheritance:
 
-anilibria.api.http.v2 module
+HTTP v2 request
 ----------------------------
 
 .. automodule:: anilibria.api.http.v2
    :members:
    :undoc-members:
-   :show-inheritance:
