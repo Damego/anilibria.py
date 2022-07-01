@@ -68,5 +68,5 @@ async def texhnolyze(event: TitleUpdateEvent):  # Название функци�
 Примеры использования представлены в папке [examples](https://github.com/Damego/anilibria.py/tree/main/examples)
 
 ## Документация
-[Оффициальная документация API](https://github.com/anilibria/docs/blob/master/api_v2.md)
+[Оффициальная документация API](https://github.com/anilibria/docs/blob/master/api_v2.md) <br>
 [Документация](https://anilibriapy.readthedocs.io/en/latest/)
