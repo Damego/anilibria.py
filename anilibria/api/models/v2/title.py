@@ -111,7 +111,7 @@ class Serie:
     skips: SerieSkips  # Not documented in the docs
 
     def __post__init__(self):
-        self.skips = SerieSkips(**self.skips)
+        self.skips = SerieSkips(**self.skips)  # type: ignore
 
 
 @dataclass(slots=True)
@@ -130,7 +130,7 @@ class Player:
     playlist: List[Serie]
 
     def __post_init__(self):
-        self.playlist: List[Serie] = [Serie(**serie) for serie in self.playlist.values()]
+        self.playlist: List[Serie] = [Serie(**serie) for serie in self.playlist.values()]  # type: ignore
 
 
 @dataclass(slots=True, frozen=True)
