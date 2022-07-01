@@ -1,13 +1,13 @@
-from dataclasses import dataclass
-from typing import List
+from dataclasses import dataclass, field
+from typing import List, Optional
 
 from .title import Title
 
 
 @dataclass(slots=True)
 class Schedule:
-    day: int
-    list: List[Title]
+    day: Optional[int] = field(default=None)
+    list: Optional[List[Title]] = field(default_factory=list)
 
     def __post_init__(self):
         self.list = [Title(**title) for title in self.list]
@@ -15,15 +15,15 @@ class Schedule:
 
 @dataclass(slots=True, frozen=True)
 class YouTubeData:
-    id: int
-    title: str
-    image: str
-    youtube_id: str
-    timestamp: int
+    id: Optional[int] = field(default=None)
+    title: Optional[str] = field(default=None)
+    image: Optional[str] = field(default=None)
+    youtube_id: Optional[str] = field(default=None)
+    timestamp: Optional[int] = field(default=None)
 
 
 @dataclass(slots=True, frozen=True)
 class SeedStats:
-    downloaded: int
-    uploaded: int
-    user: str
+    downloaded: Optional[int] = field(default=None)
+    uploaded: Optional[int] = field(default=None)
+    user: Optional[str] = field(default=None)
