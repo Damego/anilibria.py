@@ -25,9 +25,9 @@ class EncodeEvent:
     Модель для ивентов ``on_encode_start``, ``on_encode_progress``, ``on_encode_end``
 
     .. code-block:: python
-       @client.event
-       async def on_encode_start(event: EncodeEvent):
-           ...
+      @client.event
+      async def on_encode_start(event: EncodeEvent):
+          ...
     """
     id: str
     episode: str
@@ -42,9 +42,10 @@ class PlayListUpdateEvent:
     Модель для ивента ``on_playlist_update``
 
     .. code-block:: python
-       @client.event
-       async def on_playlist_update(event: PlayListUpdateEvent):
-           ...
+
+      @client.event
+      async def on_playlist_update(event: PlayListUpdateEvent):
+          ...
     """
     id: int
     player: Player
@@ -60,9 +61,9 @@ class TitleUpdateEvent:
     Модель для ивента ``on_title_update``
 
     .. code-block:: python
-       @client.event
-       async def on_title_update(event: TitleUpdateEvent):
-           ...
+      @client.event
+      async def on_title_update(event: TitleUpdateEvent):
+          ...
     """
     hash: str
     title: Title
