@@ -2,7 +2,7 @@ import re
 from codecs import open
 from os import path
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 PACKAGE_NAME = "anilibria.py"
@@ -34,7 +34,7 @@ setup(
     long_description=README,
     long_description_content_type="text/markdown",
     url="https://github.com/Damego/anilibria.py",
-    packages=["anilibria"],
+    packages=find_packages(),
     python_requires=">=3.8",
     classifiers=[
         "Intended Audience :: Developers",
