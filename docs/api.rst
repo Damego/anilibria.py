@@ -3,9 +3,10 @@ API Reference
 
 .. toctree::
     :maxdepth: 2
-    :caption: Клиент
+    :caption: Клиенты
 
     client.rst
+    anilibria.api.gateway.rst
 
 .. toctree::
     :maxdepth: 2
