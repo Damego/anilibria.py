@@ -7,7 +7,6 @@ WebSocketClient
 .. automodule:: anilibria.api.gateway.client
    :members:
    :undoc-members:
-   :show-inheritance:
 
 Ивенты
 -----------------------------------
@@ -15,4 +14,3 @@ WebSocketClient
 .. automodule:: anilibria.api.gateway.events
    :members:
    :undoc-members:
-   :show-inheritance:
