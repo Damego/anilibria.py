@@ -15,4 +15,3 @@ Module contents
 .. automodule:: anilibria
    :members:
    :undoc-members:
-   :show-inheritance:
