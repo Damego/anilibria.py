@@ -82,7 +82,6 @@ anilibria.py - это REST API и Websocket обёртка API.
 - ``aiogram``
 
 Примеры использования представлены `здесь <https://github.com/Damego/anilibria.py/tree/main/examples>`__
-Примеры использования представлены `здесь <https://github.com/Damego/anilibria.py/tree/main/examples>`_
 
 .. toctree::
    :maxdepth: 4
