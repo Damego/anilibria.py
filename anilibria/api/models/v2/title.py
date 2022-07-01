@@ -130,6 +130,7 @@ class Player:
     playlist: List[Serie]
 
     def __post_init__(self):
+        self.series: Series = Series(**self.series)  # type: ignore
         self.playlist: List[Serie] = [Serie(**serie) for serie in self.playlist.values()]  # type: ignore
 
 
