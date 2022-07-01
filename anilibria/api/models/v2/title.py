@@ -20,10 +20,10 @@ class Posters:
     medium: Poster
     original: Poster
 
-    def __init__(self, *, small: dict, medium: dict, original: dict):
-        self.small = Poster(**small)
-        self.medium = Poster(**medium)
-        self.original = Poster(**original)
+    def __post_init__(self):
+        self.small = Poster(**self.small)  # type: ignore
+        self.medium = Poster(**self.medium)  # type: ignore
+        self.original = Poster(**self.original)  # type: ignore
 
 
 @dataclass(slots=True, frozen=True)
@@ -172,9 +172,9 @@ class Torrents:
     series: Series
     list: List[Torrent]
 
-    def __init__(self, series: dict, list: List[dict]) -> None:
-        self.series = Series(**series)
-        self.list = [Torrent(**torrent) for torrent in list]
+    def __post_init__(self):
+        self.series = Series(**self.series)  # type: ignore
+        self.list = [Torrent(**torrent) for torrent in self.list]  # type: ignore
 
 
 @dataclass(slots=True)
