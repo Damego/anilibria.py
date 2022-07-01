@@ -5,7 +5,7 @@ from os import path
 from setuptools import setup
 
 
-PACKAGE_NAME = "anilibria"
+PACKAGE_NAME = "anilibria.py"
 HERE = path.abspath(path.dirname(__file__))
 
 with open("README.md", "r", encoding="utf-8") as f:
@@ -32,7 +32,7 @@ setup(
     install_requires=requirements,
     license="GPL-3.0 License",
     long_description=README,
-    long_description_content_type="text/x-rst",
+    long_description_content_type="text/markdown",
     url="https://github.com/Damego/anilibria.py",
     packages=["anilibria"],
     python_requires=">=3.8",

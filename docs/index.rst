@@ -21,7 +21,7 @@ anilibria.py - это REST API и Websocket обёртка API.
 Установка
 *********
 
-``pip install anilibria.py`` - Пока не работает
+``pip install anilibria.py``
 
 Использование
 *************

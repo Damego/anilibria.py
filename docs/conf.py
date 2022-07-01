@@ -16,7 +16,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath(".."))
 
-__version__ = "0.0.1"  # import from project
+from anilibria import __version__
 
 # -- Project information -----------------------------------------------------
 
