@@ -213,3 +213,7 @@ class Title:
         self.blocked = Blocked(**self.blocked)  # type: ignore
         self.player = Player(**self.player)  # type: ignore
         self.torrents = Torrents(**self.torrents)  # type: ignore
+
+    @property
+    def url(self):
+        return f"https://anilibria.tv/release/{self.code}.html"
