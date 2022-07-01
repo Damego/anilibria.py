@@ -35,5 +35,7 @@ async def random(message: types.Message):
     name = title.names["ru"]
     await message.answer(name)
 
-
-ani_client.startwith(dp.start_polling())  # ! Not executor.start_polling(dp)
+if __name__ == "__main__":
+    # В executor.start_polling() происходит много чего ещё, перед стартом бота,
+    # если эти действия необходимы, откройте Issue об этом
+    ani_client.startwith(dp.start_polling())  # ! Not executor.start_polling(dp)

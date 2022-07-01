@@ -4,24 +4,33 @@ from dataclasses import dataclass
 
 @dataclass(slots=True, frozen=True)
 class Poster:
+    """
+    Модель постера.
+    """
     url: str
     raw_base64_file: None  # What?
 
 
 @dataclass(slots=True)
 class Posters:
+    """
+    Модель, которая содержит в себе постеры разных размеров.
+    """
     small: Poster
     medium: Poster
     original: Poster
 
-    def __init__(self, *, small: dict, medium: dict, original: dict):
-        self.small = Poster(**small)
-        self.medium = Poster(**medium)
-        self.original = Poster(**original)
+    def __post_init__(self):
+        self.small = Poster(**self.small)  # type: ignore
+        self.medium = Poster(**self.medium)  # type: ignore
+        self.original = Poster(**self.original)  # type: ignore
 
 
 @dataclass(slots=True, frozen=True)
 class Type:
+    """
+    Модель с информацией о типе тайтла.
+    """
     full_string: str
     code: int
     string: str
@@ -31,6 +40,9 @@ class Type:
 
 @dataclass(slots=True, frozen=True)
 class Team:
+    """
+    Модель с участниками, которые принимали участие в переводе тайтла.
+    """
     voice: List[str]
     translator: List[str]
     editing: List[str]
@@ -40,6 +52,9 @@ class Team:
 
 @dataclass(slots=True, frozen=True)
 class Season:
+    """
+    Модель с информацией о сезоне тайтла.
+    """
     string: str
     code: int
     year: int
@@ -48,12 +63,18 @@ class Season:
 
 @dataclass(slots=True, frozen=True)
 class Blocked:
+    """
+    Модель с информацией о статусе блокировки тайтла.
+    """
     blocked: bool
     bakanim: bool
 
 
 @dataclass(slots=True, frozen=True)
 class Series:
+    """
+    Модель, которая содержит информацию о
+    """
     first: int
     last: int
     string: str
@@ -61,6 +82,9 @@ class Series:
 
 @dataclass(slots=True, frozen=True)
 class HLS:
+    """
+    Модель с ссылками на разные разрешения серий.
+    """
     fhd: str
     hs: str
     sd: str
@@ -68,12 +92,18 @@ class HLS:
 
 @dataclass(slots=True, frozen=True)
 class SerieSkips:
+    """
+    Модель с таймкодами для пропуска опенинга и эндинга.
+    """
     opening: List[int]
     ending: List[int]
 
 
 @dataclass(slots=True)
 class Serie:
+    """
+    Модель с информацией о серии.
+    """
     serie: int
     created_timestamp: int
     hls: HLS
@@ -81,27 +111,33 @@ class Serie:
     skips: SerieSkips  # Not documented in the docs
 
     def __post__init__(self):
-        self.skips = SerieSkips(**self.skips)
+        self.skips = SerieSkips(**self.skips)  # type: ignore
 
 
 @dataclass(slots=True)
 class Player:
+    """
+    Модель с информацией о плеере. Содержит все серии.
+
+    .. note::
+       Изначально playlist должно был быть типа Dict[str, Serie],
+       так как ключ выступает в роли номера серии, но номер серии дают в самом Serie,
+       поэтому решено убрать ключи, оставив только список с сериями.
+    """
     alternative_player: str
     host: str
     series: Series
     playlist: List[Serie]
-    # изначально тут должно быть Dict[str, Serie],
-    # но ключ выступает в роли номера серии, который тоже дают в Serie,
-    # поэтому я решил убрать ключи, оставив список с сериями.
 
     def __post_init__(self):
-        self.playlist: List[Serie] = [
-            Serie(**serie) for serie in self.playlist.values()
-        ]
+        self.playlist: List[Serie] = [Serie(**serie) for serie in self.playlist.values()]  # type: ignore
 
 
 @dataclass(slots=True, frozen=True)
 class Quality:
+    """
+    Модель с информацией о качестве тайтла.
+    """
     string: str
     type: str
     resolution: int
@@ -111,6 +147,9 @@ class Quality:
 
 @dataclass(slots=True, frozen=True)
 class Torrent:
+    """
+    Модель с информацией о торренте
+    """
     torrent_id: int
     series: Series
     quality: Quality
@@ -127,16 +166,22 @@ class Torrent:
 
 @dataclass(slots=True)
 class Torrents:
+    """
+    Модель со списком торрентов и информации о сериях.
+    """
     series: Series
     list: List[Torrent]
 
-    def __init__(self, series: dict, list: List[dict]) -> None:
-        self.series = Series(**series)
-        self.list = [Torrent(**torrent) for torrent in list]
+    def __post_init__(self):
+        self.series = Series(**self.series)  # type: ignore
+        self.list = [Torrent(**torrent) for torrent in self.list]  # type: ignore
 
 
 @dataclass(slots=True)
 class Title:
+    """
+    Модель тайтла
+    """
     id: int
     code: str
     names: Dict[str, Union[str, None]]
@@ -156,10 +201,10 @@ class Title:
     torrents: Torrents
 
     def __post_init__(self):
-        self.posters = Posters(**self.posters)
-        self.type = Type(**self.type)
-        self.team = Team(**self.team)
-        self.season = Season(**self.season)
-        self.blocked = Blocked(**self.blocked)
-        self.player = Player(**self.player)
-        self.torrents = Torrents(**self.torrents)
+        self.posters = Posters(**self.posters)  # type: ignore
+        self.type = Type(**self.type)  # type: ignore
+        self.team = Team(**self.team)  # type: ignore
+        self.season = Season(**self.season)  # type: ignore
+        self.blocked = Blocked(**self.blocked)  # type: ignore
+        self.player = Player(**self.player)  # type: ignore
+        self.torrents = Torrents(**self.torrents)  # type: ignore
