@@ -147,7 +147,7 @@ class Quality:
     lq_audio: bool
 
 
-@dataclass(slots=True, frozen=True)
+@dataclass(slots=True)
 class Torrent:
     """
     Модель с информацией о торренте
