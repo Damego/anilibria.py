@@ -14,9 +14,21 @@ class Request:
     session: ClientSession = _session
 
     def __init__(self, proxy: str = None) -> None:
+        """
+
+        :param proxy:
+        """
         self.proxy = proxy
 
     async def request(self, method: str, url: str, payload: str = "", **kwargs):
+        """
+
+        :param method:
+        :param url:
+        :param payload:
+        :param kwargs:
+        :return:
+        """
         if self.proxy is not None:
             kwargs["proxy"] = self.proxy
 

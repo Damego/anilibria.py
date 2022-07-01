@@ -8,9 +8,19 @@ URL = "http://api.anilibria.tv/v2"
 
 class V2Request:
     def __init__(self, request: Request) -> None:
+        """
+
+        :param request:
+        """
         self.request = request
 
-    def _to_string(self, **kwargs):
+    def _to_string(self, **kwargs) -> str:
+        """
+
+        :param kwargs:
+        :return:
+        :rtype: str
+        """
         list_data = []
         for kwarg, value in kwargs.items():
             if isinstance(value, (str, int)):
@@ -33,6 +43,19 @@ class V2Request:
         description_type: Optional[str] = None,
         playlist_type: Optional[str] = None,
     ) -> dict:
+        """
+
+        :param id:
+        :param code:
+        :param torrent_id:
+        :param filter:
+        :param remove:
+        :param include:
+        :param description_type:
+        :param playlist_type:
+        :return:
+        :rtype: dict
+        """
         payload: str = self._to_string(
             id=id,
             code=code,
@@ -55,6 +78,18 @@ class V2Request:
         description_type: Optional[str] = None,
         playlist_type: Optional[str] = None,
     ) -> List[dict]:
+        """
+
+        :param id_list:
+        :param code_list:
+        :param filter:
+        :param remove:
+        :param include:
+        :param description_type:
+        :param playlist_type:
+        :return:
+        :rtype: List[dict]
+        """
         payload: str = self._to_string(
             id_list=id_list,
             code_list=code_list,
@@ -77,6 +112,19 @@ class V2Request:
         after: Optional[int] = None,
         limit: Optional[int] = None,
     ) -> List[dict]:
+        """
+
+        :param filter:
+        :param remove:
+        :param include:
+        :param since:
+        :param description_type:
+        :param playlist_type:
+        :param after:
+        :param limit:
+        :return:
+        :rtype: List[dict]
+        """
         payload: str = self._to_string(
             filter=filter,
             remove=remove,
@@ -99,6 +147,18 @@ class V2Request:
         after: Optional[int] = None,
         limit: Optional[int] = None,
     ) -> List[dict]:
+        """
+
+        :param filter:
+        :param remove:
+        :param include:
+        :param since:
+        :param description_type:
+        :param after:
+        :param limit:
+        :return:
+        :rtype: List[dict]
+        """
         payload: str = self._to_string(
             filter=filter,
             remove=remove,
@@ -119,6 +179,17 @@ class V2Request:
         description_type: Optional[str] = None,
         playlist_type: Optional[str] = None,
     ) -> List[dict]:
+        """
+
+        :param filter:
+        :param remove:
+        :param include:
+        :param days:
+        :param description_type:
+        :param playlist_type:
+        :return:
+        :rtype: List[dict]
+        """
         payload: str = self._to_string(
             filter=filter,
             remove=remove,
@@ -137,6 +208,16 @@ class V2Request:
         description_type: Optional[str] = None,
         playlist_type: Optional[str] = None,
     ) -> dict:
+        """
+
+        :param filter:
+        :param remove:
+        :param include:
+        :param description_type:
+        :param playlist_type:
+        :return:
+        :rtype: dict
+        """
         payload: str = self._to_string(
             filter=filter,
             remove=remove,
@@ -155,6 +236,17 @@ class V2Request:
         after: Optional[int] = None,
         limit: Optional[int] = None,
     ) -> List[dict]:
+        """
+
+        :param filter:
+        :param remove:
+        :param include:
+        :param since:
+        :param after:
+        :param limit:
+        :return:
+        :rtype: List[dict]
+        """
         payload: str = self._to_string(
             filter=filter,
             remove=remove,
@@ -176,6 +268,19 @@ class V2Request:
         after: Optional[int] = None,
         limit: Optional[int] = None,
     ) -> List[dict]:
+        """
+
+        :param filter:
+        :param remove:
+        :param include:
+        :param since:
+        :param description_type:
+        :param playlist_type:
+        :param after:
+        :param limit:
+        :return:
+        :rtype: List[dict]
+        """
         payload: str = self._to_string(
             filter=filter,
             remove=remove,
@@ -189,18 +294,39 @@ class V2Request:
         return await self.request.request("GET", f"{URL}/getUpdates", payload)
 
     async def get_years(self) -> List[int]:
+        """
+
+        :return:
+        :rtype: List[int]
+        """
         return await self.request.request("GET", f"{URL}/getYears")
 
     async def get_genres(self, sorting_type: int = 0) -> List[str]:
+        """
+
+        :param sorting_type:
+        :return:
+        :rtype: List[str]
+        """
         payload: str = self._to_string(
             sorting_type=sorting_type,
         )
         return await self.request.request("GET", f"{URL}/getGenres", payload)
 
     async def get_caching_nodes(self) -> List[str]:
+        """
+
+        :return:
+        :rtype: List[str]
+        """
         return await self.request.request("GET", f"{URL}/getCachingNodes")
 
     async def get_team(self) -> dict:
+        """
+
+        :return:
+        :rtype: dict
+        """
         return await self.request.request("GET", f"{URL}/getTeam")
 
     async def get_seed_stats(
@@ -215,6 +341,20 @@ class V2Request:
         order: Optional[int] = None,
         limit: Optional[int] = None,
     ) -> List[dict]:
+        """
+
+        :param users:
+        :param remove:
+        :param include:
+        :param description_type:
+        :param playlist_type:
+        :param after:
+        :param sort_by:
+        :param order:
+        :param limit:
+        :return:
+        :rtype: List[dict]
+        """
         payload: str = self._to_string(
             users=users,
             remove=remove,
@@ -235,7 +375,17 @@ class V2Request:
         since: Optional[int] = None,
         after: Optional[int] = None,
         limit: Optional[int] = None,
-    ):
+    ) -> str:
+        """
+
+        :param rss_type:
+        :param session:
+        :param since:
+        :param after:
+        :param limit:
+        :return:
+        :rtype: str
+        """
         payload: str = self._to_string(
             rss_type=rss_type, session=session, since=since, after=after, limit=limit
         )
@@ -260,6 +410,27 @@ class V2Request:
         after: Optional[int] = None,
         limit: Optional[int] = None,
     ) -> List[dict]:
+        """
+
+        :param search:
+        :param year:
+        :param season_code:
+        :param genres:
+        :param voice:
+        :param translator:
+        :param editing:
+        :param decor:
+        :param timing:
+        :param filter:
+        :param remove:
+        :param include:
+        :param description_type:
+        :param playlist_type:
+        :param after:
+        :param limit:
+        :return:
+        :rtype: List[dict]
+        """
         payload: str = self._to_string(
             search=search,
             year=year,
@@ -292,7 +463,22 @@ class V2Request:
         order_by: str = None,
         limit: Optional[int] = None,
         sort_direction: Optional[int] = None,
-    ):
+    ) -> List[dict]:
+        """
+
+        :param query:
+        :param filter:
+        :param remove:
+        :param include:
+        :param description_type:
+        :param playlist_type:
+        :param after:
+        :param order_by:
+        :param limit:
+        :param sort_direction:
+        :return:
+        :rtype: List[dict]
+        """
         payload: str = self._to_string(
             query=query,
             filter=filter,
@@ -316,6 +502,17 @@ class V2Request:
         description_type: Optional[str] = None,
         playlist_type: Optional[str] = None,
     ) -> List[dict]:
+        """
+
+        :param session:
+        :param filter:
+        :param remove:
+        :param include:
+        :param description_type:
+        :param playlist_type:
+        :return:
+        :rtype: List[dict]
+        """
         payload: str = self._to_string(
             session=session,
             filter=filter,
@@ -327,9 +524,23 @@ class V2Request:
         return await self.request.request("GET", f"{URL}/getFavorites", payload)
 
     async def add_favorite(self, session: str, title_id: int) -> dict:
+        """
+
+        :param session:
+        :param title_id:
+        :return:
+        :rtype: dict
+        """
         payload: str = self._to_string(session=session, title_id=title_id)
         return await self.request.request("PUT", f"{URL}/addFavorite", payload)
 
     async def del_favorite(self, session: str, title_id: int) -> dict:
+        """
+        
+        :param session:
+        :param title_id:
+        :return:
+        :rtype: dict
+        """
         payload: str = self._to_string(session=session, title_id=title_id)
         return await self.request.request("DELETE", f"{URL}/delFavorite", payload)

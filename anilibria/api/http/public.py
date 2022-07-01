@@ -8,9 +8,19 @@ class PublicRequest:
     request: Request
 
     def __init__(self, request: Request) -> None:
+        """
+
+        :param request:
+        """
         self.request: Request = request
 
     async def login(self, mail: str, password: str) -> dict:
+        """
+
+        :param mail:
+        :param password:
+        :return:
+        """
         payload: dict = {"mail": mail, "passwd": password}
         return await self.request.request("POST", f"{URL}/login.php", data=payload)
 
