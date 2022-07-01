@@ -55,6 +55,7 @@ anilibria.py - это REST API и Websocket обёртка API.
 Если вы хотите получать уведомления об определённых тайтлах, то вы можете подписаться на них.
 
 .. code-block:: python
+
   #  Первый способ. НЕ РАБОЧИЙ (пока что)
   @client.event
   async def on_connect():

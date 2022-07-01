@@ -1,5 +1,3 @@
-.. currentmodule:: anilibria
-
 API Reference
 =============
 
