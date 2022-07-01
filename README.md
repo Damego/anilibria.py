@@ -69,4 +69,4 @@ async def texhnolyze(event: TitleUpdateEvent):  # Название функци�
 
 ## Документация
 [Оффициальная документация API](https://github.com/anilibria/docs/blob/master/api_v2.md) <br>
-[Документация](https://anilibriapy.readthedocs.io/en/latest/)
+[Документация](https://anilibriapy.readthedocs.io/ru/latest/)
