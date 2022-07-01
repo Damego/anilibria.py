@@ -210,7 +210,7 @@ class Title:
     code: Optional[str] = field(default=None)
     names: Optional[Names] = field(default_factory=dict)
     announce: Optional[str] = field(default=None)
-    status: Optional[Dict[str, Union[str, int]]] = field(default_factory=dict)
+    status: Optional[Status] = field(default_factory=dict)
     posters: Optional[Posters] = field(default_factory=dict)
     updated: Optional[int] = field(default=None)
     last_change: Optional[int] = field(default=None)
