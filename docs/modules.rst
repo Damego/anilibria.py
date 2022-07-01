@@ -5,7 +5,3 @@ anilibria.py
    :maxdepth: 4
 
    anilibria
-   archive
-   development_bot
-   setup
-   test

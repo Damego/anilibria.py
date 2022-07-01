@@ -35,4 +35,5 @@ async def random(interaction: disnake.CommandInteraction):
     await interaction.send(name)
 
 
-client.startwith(bot.start("bot token"))  # ! Not bot.run()
+if __name__ == "__main__":
+    client.startwith(bot.start("bot token"))  # ! Not bot.run()
