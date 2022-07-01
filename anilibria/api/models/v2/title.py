@@ -86,7 +86,7 @@ class HLS:
     Модель с ссылками на разные разрешения серий.
     """
     fhd: str
-    hs: str
+    hd: str
     sd: str
 
 
@@ -110,7 +110,7 @@ class Serie:
     preview: None  # Not documented in the docs
     skips: SerieSkips  # Not documented in the docs
 
-    def __post__init__(self):
+    def __post_init__(self):
         self.hls = HLS(**self.hls)  # type: ignore
         self.skips = SerieSkips(**self.skips)  # type: ignore
 
