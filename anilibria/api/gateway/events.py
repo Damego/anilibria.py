@@ -25,6 +25,7 @@ class EncodeEvent:
     Модель для ивентов ``on_encode_start``, ``on_encode_progress``, ``on_encode_end``
 
     .. code-block:: python
+
       @client.event
       async def on_encode_start(event: EncodeEvent):
           ...
@@ -61,6 +62,7 @@ class TitleUpdateEvent:
     Модель для ивента ``on_title_update``
 
     .. code-block:: python
+
       @client.event
       async def on_title_update(event: TitleUpdateEvent):
           ...
