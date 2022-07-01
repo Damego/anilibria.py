@@ -75,8 +75,8 @@ anilibria.py - это REST API и Websocket обёртка API.
 
 
 Вы также можете использовать эту библиотеку вместе с другими:
-- ``discord.py`` и его форках.
 
+- ``discord.py`` и его форках
 - ``aiogram``
 
 
@@ -84,4 +84,6 @@ anilibria.py - это REST API и Websocket обёртка API.
    :maxdepth: 4
    :caption: Страницы:
 
+   index.rst
    api.rst
+

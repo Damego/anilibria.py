@@ -11,4 +11,4 @@ API Reference
     :maxdepth: 2
     :caption: Модели
 
-    models.rst
+    anilibria.api.models.v2.rst

@@ -7,6 +7,12 @@ from .api.models.v2 import Title, Schedule, Type, YouTubeData, Team, SeedStats
 
 class AniLibriaClient:
     def __init__(self, *, proxy: str = None) -> None:
+        """
+        Основной клиент для взаимодействия с API anilibria.tv.
+
+        :param proxy:
+        :type proxy: str
+        """
         self.proxy: str = proxy
         self._loop: AbstractEventLoop = None
         self._loop = get_event_loop()
@@ -16,7 +22,6 @@ class AniLibriaClient:
     async def _start(self):
         """
         Запускает websocket.
-        :return:
         """
         while not self._websocket._closed:
             await self._websocket.run(self._subscribes)
@@ -28,7 +33,6 @@ class AniLibriaClient:
         :param subscribe: Словарь, в котором описано, что должно входить в тайтл. Например: {"season": {"year": 2022}}.
         :param filter: Список? значений, которые будут в ответе.
         :param remove: Список? значений, которые будут удалены.
-        :return:
         """
         payload = {"subscribe": subscribe, "filter": filter, "remove": remove}
         await self._websocket._subscribe(payload)
@@ -40,7 +44,6 @@ class AniLibriaClient:
         :param coro: Функция, которая будет вызываться.
         :param name: Название ивента. Например: on_title_update.
         :param data: Дополнительные данные.
-        :return:
         """
         if coro is not None:
             self._websocket._listener.add_event(name or coro.__name__, {"coro": coro, "data": data})
@@ -79,7 +82,7 @@ class AniLibriaClient:
 
         :param id: Уникальные id тайтла.
         :param code: Уникальные код тайтла
-        :param names: Словарь с названием тайтла. {"ru": "..."}
+        :param names: Словарь с названием тайтла. ``{"ru": "..."}``
         :param announce: Строка с анонсом.
         :param status: Словарь со статусом тайтла.
         :param posters: Словарь с постерами тайтла.
@@ -88,13 +91,12 @@ class AniLibriaClient:
         :param type: Словарь с типом тайтла.
         :param genres: Список с жанрами.
         :param team: Словарь с командой, которая работала над тайтлом.
-        :param season: Словарь с сезоном тайтла. {"year": 2022, "string": "лето"}.
+        :param season: Словарь с сезоном тайтла. ``{"year": 2022, "string": "лето"}``.
         :param description: Описание тайтла.
         :param in_favorites: Количество добавленных в избранное.
         :param blocked: Словарь со статусом блокировки.
         :param player: Словарь с информацией о плеере, сериях и т.п.
         :param torrents: Словарь с информацией о торрентах.
-        :return:
         """
 
         def decorator(coro: Coroutine):
@@ -133,6 +135,7 @@ class AniLibriaClient:
         :param mail: Логин или эл.почта
         :param password: Пароль
         :return: ID сессии
+        :rtype: str
         """
         data = await self._websocket._http.public.login(mail, password)
         return data.get("sessionId")
@@ -159,7 +162,8 @@ class AniLibriaClient:
         :param include: Список типов файлов которые будут возвращены в виде base64 строки
         :param description_type: Тип получаемого описания.
         :param playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
-        :return: Title
+        :return: Объект тайтла
+        :rtype: Title
         """
         data = await self._websocket._http.v2.get_title(
             id=id,
@@ -193,6 +197,8 @@ class AniLibriaClient:
         :param include: Список типов файлов которые будут возвращены в виде base64 строки
         :param description_type: Тип получаемого описания.
         :param playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
+        :return: Список тайтлов
+        :rtype: List[Title]
         """
         data = await self._websocket._http.v2.get_titles(
             id_list=id_list,
@@ -227,6 +233,8 @@ class AniLibriaClient:
         :param playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
         :param after: Удаляет первые n записей из выдачи
         :param limit: Количество объектов в ответе. По умолчанию 5
+        :return: Список тайтлов
+        :rtype: List[Title]
         """
         data = await self._websocket._http.v2.get_updates(
             filter=filter,
@@ -260,6 +268,8 @@ class AniLibriaClient:
         :param description_type: Тип получаемого описания.
         :param after: Удаляет первые n записей из выдачи
         :param limit: Количество объектов в ответе. По умолчанию 5
+        :return: Список тайтлов
+        :rtype: List[Title]
         """
         data = await self._websocket._http.v2.get_changes(
             filter=filter,
@@ -290,6 +300,8 @@ class AniLibriaClient:
         :param days: Список дней недели, на которые нужно расписание
         :param description_type: Тип получаемого описания.
         :param playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
+        :return: Список расписаний
+        :rtype: List[Schedule]
         """
         data = await self._websocket._http.v2.get_schedule(
             filter=filter,
@@ -317,6 +329,8 @@ class AniLibriaClient:
         :param include: Список типов файлов которые будут возвращены в виде base64 строки
         :param description_type: Тип получаемого описания.
         :param playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
+        :return: Объект тайтла
+        :rtype: Title
         """
         data = await self._websocket._http.v2.get_random_title(
             filter=filter,
@@ -345,6 +359,8 @@ class AniLibriaClient:
         :param since: Список тайтлов, у которых время обновления больше указанного timestamp
         :param after: Удаляет первые n записей из выдачи
         :param limit: Количество объектов в ответе. По умолчанию 5
+        :return: Список youtube видео
+        :rtype: List[YouTubeData]
         """
         data = await self._websocket._http.v2.get_youtube(
             filter=filter,
@@ -379,6 +395,8 @@ class AniLibriaClient:
         :param playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
         :param after: Удаляет первые n записей из выдачи
         :param limit: Количество объектов в ответе. По умолчанию 5
+        :return: Список тайтлов
+        :rtype: List[Title]
         """
         data = await self._websocket._http.v2.get_feed(
             filter=filter,
@@ -414,6 +432,7 @@ class AniLibriaClient:
         Список кеш серверов с которых можно брать данные отсортированные по нагрузке
 
         :return: Список серверов.
+        :rtype: List[str]
         """
         return await self._websocket._http.v2.get_caching_nodes()
 
@@ -421,7 +440,8 @@ class AniLibriaClient:
         """
         Возвращает список участников команды когда-либо существовавших на проекте.
 
-        :return: Team
+        :return: Объект команды
+        :type: Team
         """
         data = await self._websocket._http.v2.get_team()
         return Team(**data)
@@ -481,7 +501,7 @@ class AniLibriaClient:
         :param since: Список тайтлов у которых время обновления больше указанного timestamp
         :param after: Удаляет первые n записей из выдачи
         :param limit: Количество объектов в ответе
-        :return: str
+        :return: RSS
         """
         data = await self._websocket._http.v2.get_rss(
             rss_type=rss_type,
@@ -531,6 +551,7 @@ class AniLibriaClient:
         :param after: Удаляет первые n записей из выдачи.
         :param limit: Количество объектов в ответе.
         :return: Список тайтлов
+        :rtype: List[Title]
         """
         data = await self._websocket._http.v2.search_titles(
             search=search,
@@ -579,6 +600,7 @@ class AniLibriaClient:
         :param limit: Количество объектов в ответе.
         :param sort_direction: Направление сортировки. 0 - По возрастанию, 1 - По убыванию
         :return: Список тайтлов
+        :rtype: List[Title]
         """
         data = await self._websocket._http.v2.advanced_search(
             query=query,
@@ -612,8 +634,8 @@ class AniLibriaClient:
         :param include: Список типов файлов, которые будут возвращены в виде base64 строки
         :param description_type: Тип получаемого описания.
         :param playlist_type: Формат получаемого списка серий. Словарь(object) или список(list).
-
         :return: Список тайтлов
+        :rtype: List[Title]
         """
         data = await self._websocket._http.v2.get_favorites(
             session=session_id,
@@ -645,15 +667,14 @@ class AniLibriaClient:
     def start(self):
         """
         Запускает клиент.
-        :return:
         """
         self._loop.run_until_complete(self._start())
 
     def startwith(self, coro: Coroutine):
         """
         Запускает клиент вместе с другой функцией.
-        :param coro:
-        :return:
+
+        :param coro: Корутина
         """
         task1 = self._loop.create_task(self._start())
         task2 = self._loop.create_task(coro)

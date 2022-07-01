@@ -1,10 +1,7 @@
-anilibria.api.models.v2 package
+Модели ответов на запросы
 ===============================
 
-Submodules
-----------
-
-anilibria.api.models.v2.misc module
+Другие модели
 -----------------------------------
 
 .. automodule:: anilibria.api.models.v2.misc
@@ -12,7 +9,7 @@ anilibria.api.models.v2.misc module
    :undoc-members:
    :show-inheritance:
 
-anilibria.api.models.v2.title module
+Модели тайтла
 ------------------------------------
 
 .. automodule:: anilibria.api.models.v2.title
@@ -20,7 +17,7 @@ anilibria.api.models.v2.title module
    :undoc-members:
    :show-inheritance:
 
-Module contents
+Контент
 ---------------
 
 .. automodule:: anilibria.api.models.v2
