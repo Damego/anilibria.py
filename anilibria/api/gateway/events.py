@@ -6,6 +6,9 @@ from ..models import Player, Serie, Title
 
 
 class EventType(Enum):
+    """
+    Обозначает все(нет) ивенты, которые принимает вебсокет
+    """
     TITLE_UPDATE = "title_update"
     PLAYLIST_UPDATE = "playlist_update"
     ENCODE_START = "encode_start"
@@ -18,6 +21,14 @@ class EventType(Enum):
 
 @dataclass(slots=True, frozen=True)
 class EncodeEvent:
+    """
+    Модель для ивентов ``on_encode_start``, ``on_encode_progress``, ``on_encode_end``
+
+    .. code-block:: python
+       @client.event
+       async def on_encode_start(event: EncodeEvent):
+           ...
+    """
     id: str
     episode: str
     resolution: str
@@ -27,6 +38,14 @@ class EncodeEvent:
 
 @dataclass(slots=True, frozen=True)
 class PlayListUpdateEvent:
+    """
+    Модель для ивента ``on_playlist_update``
+
+    .. code-block:: python
+       @client.event
+       async def on_playlist_update(event: PlayListUpdateEvent):
+           ...
+    """
     id: int
     player: Player
     updated_episode: Serie
@@ -37,6 +56,14 @@ class PlayListUpdateEvent:
 
 @dataclass(slots=True, frozen=True)
 class TitleUpdateEvent:
+    """
+    Модель для ивента ``on_title_update``
+
+    .. code-block:: python
+       @client.event
+       async def on_title_update(event: TitleUpdateEvent):
+           ...
+    """
     hash: str
     title: Title
     diff: dict

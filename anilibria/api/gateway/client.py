@@ -17,6 +17,11 @@ URL = "ws://api.anilibria.tv/v2/ws/"
 
 class WebSocketClient:
     def __init__(self, proxy: str = None):
+        """
+        Клиент для управления вебсокетом.
+
+        :param proxy: Ссылка на прокси-сервер.
+        """
         try:
             self._loop = get_event_loop() if version_info < (3, 10) else get_running_loop()
         except RuntimeError:
@@ -30,10 +35,21 @@ class WebSocketClient:
         self.api_version: str = None
 
     async def run(self, subscribes: List[dict]):
+        """
+        Запускает вебсокет.
+
+        :param subscribes: Список с данными о тайтлах, на которые вебсокет подпишется при запуске.
+        """
         self._subscribes = subscribes
         await self.__connect()
 
     async def __connect(self):
+        """
+        Устанавливает соединение с вебсокетом.
+
+        .. warning::
+           Не пытайтесь самостоятельно использовать этот метод!
+        """
         async with self._http.request.session.ws_connect(URL) as self._client:
             log.debug("Connected to websocket")
             self._closed = self._client._closed
@@ -45,9 +61,18 @@ class WebSocketClient:
 
             while not self._closed:
                 packet = await self._client.receive()
-                await self.process_packet(packet)
+                await self._process_packet(packet)
 
-    async def process_packet(self, packet: WSMessage):
+    async def _process_packet(self, packet: WSMessage):
+        """
+        Принимает пакет и диспатчит ивенты.
+
+        .. warning::
+           Не пытайтесь самостоятельно использовать этот метод!
+
+        :param packet: Пакет
+        :type packet: WSMessage
+        """
         data = loads(packet.data)
         self._listener.dispatch("on_raw_packet", data)
 
@@ -73,6 +98,15 @@ class WebSocketClient:
             log.debug(f"Not documented event type {type} dispatched with data: {data}")
 
     def _dispatch_title_update_event(self, data: dict):
+        """
+        Диспачит ивенты ``on_title_update`` и ``on_title``.
+
+        .. warning::
+           Не пытайтесь самостоятельно использовать этот метод!
+
+        :param data: Словарь с данными об ивенте
+        :type data: dict
+        """
         event_model = TitleUpdateEvent(**data[type])
         self._listener.dispatch(data["type"], event_model)
 
@@ -85,6 +119,15 @@ class WebSocketClient:
                     self._listener.dispatch("on_title", event_model)
 
     async def _process_other_events(self, data: dict):
+        """
+        Диспатчит ивент ``on_connect``
+
+        .. warning::
+           Не пытайтесь самостоятельно использовать этот метод!
+
+        :param data: словарь с данными об ивенте
+        :type data: dict
+        """
         if api_version := data.get("api_version"):
             self.api_version = api_version
             log.debug(f"Successfully connected to API. API version {api_version}")
@@ -93,10 +136,24 @@ class WebSocketClient:
             log.debug(data)
 
     async def __subscribe_on_titles(self):
+        """
+        Подписывается на все тайтлы.
+
+        .. warning::
+           Не пытайтесь самостоятельно использовать этот метод!
+        """
         for subscribe in self._subscribes:
             await self._subscribe(subscribe)
         self._subscribes = None
 
     async def _subscribe(self, data: dict):
+        """
+        Подписывается на тайтл, отправкой пакета
+
+        .. warning::
+           Не пытайтесь самостоятельно использовать этот метод!
+
+        :param data: Словарь с данными о подписке.
+        """
         await self._client.send_json(data)
         log.debug(f"Send json to websocket with data: {data}")

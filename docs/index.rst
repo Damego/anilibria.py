@@ -28,15 +28,15 @@ anilibria.py - это REST API и Websocket обёртка API.
 
 Ниже представлено самое простое использование библиотеки.
 
-Функция `on_connect` будет вызвана после успешного подключения к API anilibria.
+Функция ``on_connect`` будет вызвана после успешного подключения к API anilibria.
 
-Функция `on_title_update` будет вызываться после того, как на сервер будет залита новая серия любого тайтла.
+Функция ``on_title_update`` будет вызываться после того, как на сервер будет залита новая серия любого тайтла.
 
 .. code-block:: python
 
   from anilibria import AniLibriaClient, TitleUpdateEvent
 
-  client = AniLibriaClient(proxy="http://0.0.0.0:80")  # proxy - не обязательный аргумент
+  client = AniLibriaClient(proxy="http://0.0.0.0:80")  # proxy - необязательный аргумент
 
   @client.event
   async def on_connect():
