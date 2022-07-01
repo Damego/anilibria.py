@@ -441,7 +441,7 @@ class AniLibriaClient:
         Возвращает список участников команды когда-либо существовавших на проекте.
 
         :return: Объект команды
-        :type: Team
+        :rtype: Team
         """
         data = await self._websocket._http.v2.get_team()
         return Team(**data)
@@ -470,7 +470,8 @@ class AniLibriaClient:
         :param sort_by: По какому полю производить сортировку, допустимые значения: downloaded, uploaded, user
         :param order: Направление сортировки 0 - DESC, 1 - ASC.
         :param limit: Количество объектов в ответе. По умолчанию 5
-        :return: List[SeedStats]
+        :return: Список с пользователями
+        :rtype: List[SeedStats]
         """
         data = await self._websocket._http.v2.get_seed_stats(
             users=users,
@@ -502,6 +503,7 @@ class AniLibriaClient:
         :param after: Удаляет первые n записей из выдачи
         :param limit: Количество объектов в ответе
         :return: RSS
+        :rtype: str
         """
         data = await self._websocket._http.v2.get_rss(
             rss_type=rss_type,
