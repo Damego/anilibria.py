@@ -3,7 +3,7 @@
 """
 
 
-from aiogram import Bot, Dispatcher, types, executor
+from aiogram import Bot, Dispatcher, types
 from anilibria import AniLibriaClient, TitleUpdateEvent
 
 import logging
@@ -36,4 +36,6 @@ async def random(message: types.Message):
     await message.answer(name)
 
 if __name__ == "__main__":
+    # В executor.start_polling() происходит много чего ещё, перед стартом бота,
+    # если эти действия необходимы, откройте Issue об этом
     ani_client.startwith(dp.start_polling())  # ! Not executor.start_polling(dp)
