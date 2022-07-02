@@ -86,9 +86,8 @@ class TorrentUpdateEvent:
     id: str
     torrents: Torrents
     updated_torrent_id: int
-    diff: Torrents
+    diff: dict
     hash: str
 
     def __post_init__(self):
         self.torrents = Torrents(**self.torrents)  # type: ignore
-        self.diff = Torrents(**self.diff)  # type: ignore
