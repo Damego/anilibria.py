@@ -4,9 +4,10 @@ from typing import List
 from logging import getLogger
 from sys import version_info
 
-from aiohttp import WSMessage, ClientWebSocketResponse
+from aiohttp import WSMessage, ClientWebSocketResponse, WSMsgType
+from aiohttp.http import WS_CLOSED_MESSAGE
 
-from .events import TitleUpdateEvent, PlayListUpdateEvent, EncodeEvent, EventType
+from .events import TitleUpdateEvent, PlayListUpdateEvent, EncodeEvent, EventType, TorrentUpdateEvent
 from ..http import HTTPCLient
 from ..listener import EventListener
 
@@ -61,6 +62,9 @@ class WebSocketClient:
 
             while not self._closed:
                 packet = await self._client.receive()
+                if self._client is None or packet in [WSMsgType.CLOSE, WS_CLOSED_MESSAGE]:
+                    await self.__connect()
+                    break
                 await self._process_packet(packet)
 
     async def _process_packet(self, packet: WSMessage):
@@ -73,9 +77,6 @@ class WebSocketClient:
         :param packet: Пакет
         :type packet: WSMessage
         """
-        if packet.data is None:  # Need to figure it out because it's not documented.
-            log.warning("Packet data is None", packet)
-            raise Exception  # В консоли одно и тоже, невозможно долистать до причины
         data = loads(packet.data)
         self._listener.dispatch("on_raw_packet", data)
 
@@ -93,8 +94,12 @@ class WebSocketClient:
             EventType.ENCODE_START,
             EventType.ENCODE_END,
             EventType.ENCODE_PROGRESS,
+            EventType.ENCODE_FINISH
         ]:
             event = EncodeEvent(**data[type])
+            self._listener.dispatch(event_name, event)
+        elif type == EventType.TORRENT_UPDATE:
+            event = TorrentUpdateEvent(**data[type])
             self._listener.dispatch(event_name, event)
         else:
             self._listener.dispatch(event_name, data)
