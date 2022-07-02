@@ -82,7 +82,7 @@ class WebSocketClient:
 
         event_name = f"on_{type}"
         if type == EventType.TITLE_UPDATE:
-            self._dispatch_title_update_event(data)
+            self._dispatch_title_update_event(data["title_update"])
         elif type == EventType.PLAYLIST_UPDATE:
             event = PlayListUpdateEvent(**data[type])
             self._listener.dispatch(event_name, event)
@@ -107,8 +107,8 @@ class WebSocketClient:
         :param data: Словарь с данными об ивенте
         :type data: dict
         """
-        event_model = TitleUpdateEvent(**data[type])
-        self._listener.dispatch(data["type"], event_model)
+        event_model = TitleUpdateEvent(**data)
+        self._listener.dispatch("on_title_update", event_model)
 
         title_data = data["title"]
         events = self._listener.events
