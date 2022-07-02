@@ -2,18 +2,20 @@ from typing import Optional
 from dataclasses import dataclass, field
 
 from enum import Enum
-from ..models import Player, Serie, Title
+from ..models import Player, Serie, Title, Torrents
 
 
 class EventType(Enum):
     """
-    Обозначает все(нет) ивенты, которые принимает вебсокет
+    Обозначает ивенты, которые принимает вебсокет
     """
     TITLE_UPDATE = "title_update"
     PLAYLIST_UPDATE = "playlist_update"
     ENCODE_START = "encode_start"
     ENCODE_PROGRESS = "encode_progress"
     ENCODE_END = "encode_end"
+    ENCODE_FINISH = "encode_finish"
+    TORRENT_UPDATE = "torrent_update"
 
     def __eq__(self, __o: object) -> bool:
         return self.value == __o
@@ -30,10 +32,10 @@ class EncodeEvent:
       async def on_encode_start(event: EncodeEvent):
           ...
     """
-    id: str
-    episode: str
-    resolution: str
-    quality: str
+    id: Optional[str] = field(default=None)
+    episode: Optional[str] = field(default=None)
+    resolution: Optional[str] = field(default=None)
+    quality: Optional[str] = field(default=None)
     encoded_percent: Optional[str] = field(default=None)
 
 
@@ -77,3 +79,16 @@ class TitleUpdateEvent:
 
     def __post_init__(self):
         self.title = Title(**self.title)  # type: ignore
+
+
+@dataclass(slots=True)
+class TorrentUpdateEvent:
+    id: str
+    torrents: Torrents
+    updated_torrent_id: int
+    diff: Torrents
+    hash: str
+
+    def __post_init__(self):
+        self.torrents = Torrents(**self.torrents)  # type: ignore
+        self.diff = Torrents(**self.diff)  # type: ignore
