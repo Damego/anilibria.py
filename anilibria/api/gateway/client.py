@@ -73,6 +73,9 @@ class WebSocketClient:
         :param packet: Пакет
         :type packet: WSMessage
         """
+        if packet.data is None:  # Need to figure it out because it's not documented.
+            log.warning("Packet data is None", packet)
+            return
         data = loads(packet.data)
         self._listener.dispatch("on_raw_packet", data)
 
