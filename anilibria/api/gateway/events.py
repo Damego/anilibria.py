@@ -37,7 +37,7 @@ class EncodeEvent:
     encoded_percent: Optional[str] = field(default=None)
 
 
-@dataclass(slots=True, frozen=True)
+@dataclass(slots=True)
 class PlayListUpdateEvent:
     """
     Модель для ивента ``on_playlist_update``
@@ -55,8 +55,12 @@ class PlayListUpdateEvent:
     diff: dict
     reupload: bool
 
+    def __post_init__(self):
+        self.player = Player(**self.player)  # type: ignore
+        self.updated_episode = Serie(**self.updated_episode)  # type: ignore
 
-@dataclass(slots=True, frozen=True)
+
+@dataclass(slots=True)
 class TitleUpdateEvent:
     """
     Модель для ивента ``on_title_update``
@@ -70,3 +74,6 @@ class TitleUpdateEvent:
     hash: str
     title: Title
     diff: dict
+
+    def __post_init__(self):
+        self.title = Title(**self.title)  # type: ignore
