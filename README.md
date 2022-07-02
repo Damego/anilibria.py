@@ -34,10 +34,10 @@ client = AniLibriaClient(proxy="http://0.0.0.0:80")  # proxy - не обязат
 @client.event
 async def on_connect():
   print("Подключено")
-  
+
 @client.event
 async def on_title_update(event: TitleUpdateEvent):
-  print(event.title.names["ru"])  # Выведет название тайтла на русском, который обновили.
+  print(event.title.names.ru)  # Выведет название тайтла на русском, который обновили.
   
 client.start()
 ```
