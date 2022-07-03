@@ -55,75 +55,8 @@ class AniLibriaClient:
 
         return decorator
 
-    def on_title(
-        self,
-        id: int = None,
-        code: str = None,
-        names: Dict[str, Union[str, None]] = None,
-        announce: str = None,
-        status: Dict[str, Union[str, int]] = None,
-        posters: Dict[str, str] = None,
-        updated: int = None,
-        last_change: int = None,
-        type: Type = None,
-        genres: List[str] = None,
-        team: Dict[str, List[str]] = None,
-        season: Dict[str, Union[str, int]] = None,
-        description: str = None,
-        in_favorites: int = None,
-        blocked: Dict[str, bool] = None,
-        player: Dict[str, Any] = None,
-        torrents: Dict[str, Any] = None,
-    ):
-        """
-        Подписывается на тайтл(ы) перед запуском клиента.
-        Не знаю, будет ли кто-нибудь использовать все эти аргументы,
-        но многие их них явно лишние и их трудно будет описать.
-
-        :param id: Уникальные id тайтла.
-        :param code: Уникальные код тайтла
-        :param names: Словарь с названием тайтла. ``{"ru": "..."}``
-        :param announce: Строка с анонсом.
-        :param status: Словарь со статусом тайтла.
-        :param posters: Словарь с постерами тайтла.
-        :param updated: Время обновления тайтла. В timestamp.
-        :param last_change: Последнее измнение тайтла. В timestamp.
-        :param type: Словарь с типом тайтла.
-        :param genres: Список с жанрами.
-        :param team: Словарь с командой, которая работала над тайтлом.
-        :param season: Словарь с сезоном тайтла. ``{"year": 2022, "string": "лето"}``.
-        :param description: Описание тайтла.
-        :param in_favorites: Количество добавленных в избранное.
-        :param blocked: Словарь со статусом блокировки.
-        :param player: Словарь с информацией о плеере, сериях и т.п.
-        :param torrents: Словарь с информацией о торрентах.
-        """
-
-        def decorator(coro: Coroutine):
-            return self.event(coro, name="on_title", data=data)
-
-        data = self._to_dict(
-            id=id,
-            code=code,
-            names=names,
-            announce=announce,
-            status=status,
-            posters=posters,
-            updated=updated,
-            last_change=last_change,
-            type=type,
-            genres=genres,
-            team=team,
-            season=season,
-            description=description,
-            in_favorites=in_favorites,
-            blocked=blocked,
-            player=player,
-            torrents=torrents,
-        )
-        self._subscribes.append({"subscribe": data})
-
-        return decorator
+    # Оказалось, что ивент `title_update` вызывается каждый раз при любом обновление тайтла (логично как бы)
+    # Временно удалил этот метод `on_title`, чтобы чуть позже переписать его уже под свой ивент `title_serie`
 
     def _to_dict(self, **kwargs):
         return {key: value for key, value in kwargs.items() if value is not None}

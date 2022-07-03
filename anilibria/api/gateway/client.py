@@ -1,6 +1,5 @@
 from asyncio import get_event_loop, get_running_loop, new_event_loop
-from json import loads
-from typing import List
+from typing import List, Union, Optional
 from logging import getLogger
 from sys import version_info
 
@@ -61,56 +60,32 @@ class WebSocketClient:
                 await self.__connect()
 
             while not self._closed:
-                packet = await self._client.receive()
-                if self._client is None or packet.type == WSMsgType.CLOSE or packet == WS_CLOSED_MESSAGE:
+                data = await self.__receive_packet_data()
+                if data is None:
+                    continue
+                if self._client is None or data == WS_CLOSED_MESSAGE:
                     await self.__connect()
                     break
-                if packet.type != WSMsgType.TEXT:
-                    log.warning(packet)
-                    raise Exception
-                await self._process_packet(packet)
 
-    async def _process_packet(self, packet: WSMessage):
+                await self.__dispatch_events(data)
+
+    async def __receive_packet_data(self) -> Optional[Union[dict, WSMessage]]:
+        packet: WSMessage = await self._client.receive()
+        if packet.type == WSMsgType.CLOSE:
+            await self._client.close()
+            return WS_CLOSED_MESSAGE
+
+        if packet.type != WSMsgType.TEXT:
+            # I need this for a moment because message types are not documented in the API
+            # and I should to wait for a new event a long time
+            log.warning(packet)
+            raise Exception
+
+        return packet.json() if packet and isinstance(packet.data, str) else None
+
+    async def __dispatch_events(self, data: dict):
         """
-        Принимает пакет и диспатчит ивенты.
-
-        .. warning::
-           Не пытайтесь самостоятельно использовать этот метод!
-
-        :param packet: Пакет
-        :type packet: WSMessage
-        """
-        data = loads(packet.data)
-        self._listener.dispatch("on_raw_packet", data)
-
-        type = data.get("type")
-        if type is None:
-            return await self._process_other_events(data)
-
-        event_name = f"on_{type}"
-        if type == EventType.TITLE_UPDATE:
-            self._dispatch_title_update_event(data["title_update"])
-        elif type == EventType.PLAYLIST_UPDATE:
-            event = PlayListUpdateEvent(**data[type])
-            self._listener.dispatch(event_name, event)
-        elif type in [
-            EventType.ENCODE_START,
-            EventType.ENCODE_END,
-            EventType.ENCODE_PROGRESS,
-            EventType.ENCODE_FINISH
-        ]:
-            event = EncodeEvent(**data[type])
-            self._listener.dispatch(event_name, event)
-        elif type == EventType.TORRENT_UPDATE:
-            event = TorrentUpdateEvent(**data[type])
-            self._listener.dispatch(event_name, event)
-        else:
-            self._listener.dispatch(event_name, data)
-            log.debug(f"Not documented event type {type} dispatched with data: {data}")
-
-    def _dispatch_title_update_event(self, data: dict):
-        """
-        Диспачит ивенты ``on_title_update`` и ``on_title``.
+        Принимает словарь с данными об ивенте и диспатчит их.
 
         .. warning::
            Не пытайтесь самостоятельно использовать этот метод!
@@ -118,20 +93,33 @@ class WebSocketClient:
         :param data: Словарь с данными об ивенте
         :type data: dict
         """
-        event_model = TitleUpdateEvent(**data)
-        self._listener.dispatch("on_title_update", event_model)
+        self._listener.dispatch("on_raw_packet", data)
 
-        title_data = data["title"]
-        events = self._listener.events
-        for event in events:
-            if event == "on_title":
-                coro_data = events[event]["data"]
-                if all(value == title_data[key] for key, value in coro_data.items()):
-                    self._listener.dispatch("on_title", event_model)
+        type = data.get("type")
+        if type is None:
+            return await self.__dispatch_other_events(data)
 
-    async def _process_other_events(self, data: dict):
+        event_name = f"on_{type}"
+        if type == EventType.TITLE_UPDATE:
+            self._listener.dispatch(event_name, TitleUpdateEvent(**data[type]))
+        elif type == EventType.PLAYLIST_UPDATE:
+            self._listener.dispatch(event_name, PlayListUpdateEvent(**data[type]))
+        elif type in [
+            EventType.ENCODE_START,
+            EventType.ENCODE_END,
+            EventType.ENCODE_PROGRESS,
+            EventType.ENCODE_FINISH
+        ]:
+            self._listener.dispatch(event_name, EncodeEvent(**data[type]))
+        elif type == EventType.TORRENT_UPDATE:
+            self._listener.dispatch(event_name, TorrentUpdateEvent(**data[type]))
+        else:
+            self._listener.dispatch(event_name, data)
+            log.debug(f"Not documented event type {type} dispatched with data: {data}")
+
+    async def __dispatch_other_events(self, data: dict):
         """
-        Диспатчит ивент ``on_connect``
+        Диспатчит ивенты ``on_connect``
 
         .. warning::
            Не пытайтесь самостоятельно использовать этот метод!
@@ -144,7 +132,7 @@ class WebSocketClient:
             log.debug(f"Successfully connected to API. API version {api_version}")
             self._listener.dispatch("on_connect")
         else:
-            log.debug(data)
+            log.debug(f"Not documented event data: {data}")
 
     async def __subscribe_on_titles(self):
         """
