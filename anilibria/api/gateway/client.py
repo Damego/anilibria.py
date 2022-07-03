@@ -65,6 +65,9 @@ class WebSocketClient:
                 if self._client is None or packet in [WSMsgType.CLOSE, WS_CLOSED_MESSAGE]:
                     await self.__connect()
                     break
+                if packet != WSMsgType.TEXT:
+                    log.warning(packet)
+                    raise Exception
                 await self._process_packet(packet)
 
     async def _process_packet(self, packet: WSMessage):
