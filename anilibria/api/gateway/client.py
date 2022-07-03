@@ -62,10 +62,10 @@ class WebSocketClient:
 
             while not self._closed:
                 packet = await self._client.receive()
-                if self._client is None or packet in [WSMsgType.CLOSE, WS_CLOSED_MESSAGE]:
+                if self._client is None or packet.type == WSMsgType.CLOSE or packet == WS_CLOSED_MESSAGE:
                     await self.__connect()
                     break
-                if packet != WSMsgType.TEXT:
+                if packet.type != WSMsgType.TEXT:
                     log.warning(packet)
                     raise Exception
                 await self._process_packet(packet)
