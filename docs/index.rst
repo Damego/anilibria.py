@@ -56,7 +56,6 @@ anilibria.py - это REST API и Websocket обёртка API.
 
 .. code-block:: python
 
-  #  Первый способ
   @client.event
   async def on_connect():
     print("Подключено")
@@ -65,13 +64,6 @@ anilibria.py - это REST API и Websocket обёртка API.
     # Подпишется на тайтл с id 8700.
     # Теперь ивент `on_title_update` будет вызываться только тогда, 
     # когда обновится тайтл, на который вы подписались
-
-  #  Второй способ
-  @client.on_title(id=8700)
-  async def texhnolyze(event: TitleUpdateEvent):  # Название функции может быть любое
-    print("Вышла новая серия технолайза! (хз что это)")
-
-  # Оба способа работают даже вместе.
 
 
 Использование с другими библиотеками
