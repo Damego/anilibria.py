@@ -60,7 +60,7 @@ class PlayListUpdateEvent:
     def __post_init__(self):
         if self.player is not None:  # АПИ может вернуть None
             self.player = Player(**self.player)  # type: ignore
-        if self.player is not None:
+        if self.updated_episode is not None:
             self.updated_episode = Serie(**self.updated_episode)  # type: ignore
 
 
