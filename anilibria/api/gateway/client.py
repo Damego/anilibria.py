@@ -116,6 +116,8 @@ class WebSocketClient:
     async def __dispatch_subscriptions(self, event_model: PlayListUpdateEvent, data: dict):
         if "on_title_serie" not in self._listener.events:
             return
+        if not event_model.updated_episode:
+            return 
         hls = event_model.updated_episode.hls
         if not hls.fhd or not hls.hd:  # Can `or not hls.sd` be removed?
             return
