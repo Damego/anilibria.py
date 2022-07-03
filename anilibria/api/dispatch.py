@@ -6,7 +6,7 @@ from logging import getLogger
 log = getLogger("anilibria.dispatch")
 
 
-class EventListener:
+class EventDispatcher:
     def __init__(self) -> None:
         self.loop = get_event_loop()
         self.events: Dict[str, List[Dict[str, Union[Callable, str]]]] = {}

@@ -8,7 +8,7 @@ from aiohttp.http import WS_CLOSED_MESSAGE
 
 from .events import TitleUpdateEvent, PlayListUpdateEvent, EncodeEvent, EventType, TorrentUpdateEvent
 from ..http import HTTPCLient
-from ..listener import EventListener
+from ..dispatch import EventDispatcher
 
 
 log = getLogger("anilibria.gateway")
@@ -27,20 +27,17 @@ class WebSocketClient:
         except RuntimeError:
             self._loop = new_event_loop()
         self._http = HTTPCLient(proxy)
-        self._listener = EventListener()
+        self._listener = EventDispatcher()
         self.proxy: str = proxy
         self._client: ClientWebSocketResponse = None
         self._closed: bool = False
         self._subscribes: List[dict] = None
         self.api_version: str = None
 
-    async def run(self, subscribes: List[dict]):
+    async def run(self):
         """
         Запускает вебсокет.
-
-        :param subscribes: Список с данными о тайтлах, на которые вебсокет подпишется при запуске.
         """
-        self._subscribes = subscribes
         await self.__connect()
 
     async def __connect(self):
@@ -53,9 +50,6 @@ class WebSocketClient:
         async with self._http.request.session.ws_connect(URL) as self._client:
             log.debug("Connected to websocket")
             self._closed = self._client._closed
-            if self._subscribes:
-                await self.__subscribe_on_titles()
-
             if self._closed:
                 await self.__connect()
 
@@ -103,7 +97,9 @@ class WebSocketClient:
         if type == EventType.TITLE_UPDATE:
             self._listener.dispatch(event_name, TitleUpdateEvent(**data[type]))
         elif type == EventType.PLAYLIST_UPDATE:
-            self._listener.dispatch(event_name, PlayListUpdateEvent(**data[type]))
+            event_model = PlayListUpdateEvent(**data[type])
+            self._listener.dispatch(event_name, event_model)
+            await self.__dispatch_subscriptions(event_model, data[type])
         elif type in [
             EventType.ENCODE_START,
             EventType.ENCODE_END,
@@ -117,9 +113,39 @@ class WebSocketClient:
             self._listener.dispatch(event_name, data)
             log.debug(f"Not documented event type {type} dispatched with data: {data}")
 
+    async def __dispatch_subscriptions(self, event_model: PlayListUpdateEvent, data: dict):
+        if "on_title_serie" not in self._listener.events:
+            return
+        hls = event_model.updated_episode.hls
+        if not hls.fhd or not hls.hd:  # Can `or not hls.sd` be removed?
+            return
+        events = self._listener.events["on_title_serie"]
+        title_data = data["title"]
+        for event in events:
+            filled_data = event["data"]
+            if filled_data is None:
+                continue  # Can be data is None?
+            is_equal = self.__check_equal(filled_data, title_data)
+            if not is_equal:
+                continue
+            await event["coro"](event_model)  # It should be called in the Dispatcher but im not smart to do this.
+
+    def __check_equal(self, checker: dict, verifiable: dict):
+        for key, value in checker.items():
+            if verifiable.get(key, "MISSING") == "MISSING":  # Can be None btw
+                return False
+            value_2 = verifiable[key]  # Can be first None and value_2 will be None???
+            if isinstance(value, (int, str)) and value != value_2:
+                return False
+            if isinstance(value, list) and not all(list_value in value_2 for list_value in value):
+                return False
+            if isinstance(value, dict):
+                if not self.__check_equal(value, value_2):
+                    return False
+
     async def __dispatch_other_events(self, data: dict):
         """
-        Диспатчит ивенты ``on_connect``
+        Диспатчит ивент ``on_connect``.
 
         .. warning::
            Не пытайтесь самостоятельно использовать этот метод!
@@ -133,26 +159,3 @@ class WebSocketClient:
             self._listener.dispatch("on_connect")
         else:
             log.debug(f"Not documented event data: {data}")
-
-    async def __subscribe_on_titles(self):
-        """
-        Подписывается на все тайтлы.
-
-        .. warning::
-           Не пытайтесь самостоятельно использовать этот метод!
-        """
-        for subscribe in self._subscribes:
-            await self._subscribe(subscribe)
-        self._subscribes = None
-
-    async def _subscribe(self, data: dict):
-        """
-        Подписывается на тайтл, отправкой пакета
-
-        .. warning::
-           Не пытайтесь самостоятельно использовать этот метод!
-
-        :param data: Словарь с данными о подписке.
-        """
-        await self._client.send_json(data)
-        log.debug(f"Send json to websocket with data: {data}")

@@ -1,8 +1,9 @@
 from asyncio import get_event_loop, gather, AbstractEventLoop
-from typing import Coroutine, Optional, Any, List, Dict, Union
+from typing import Coroutine, Optional, List, Dict, Union
 
 from .api import WebSocketClient
-from .api.models.v2 import Title, Schedule, Type, YouTubeData, Team, SeedStats
+from .api.error import IsEmpty
+from .api.models.v2 import Title, Schedule, YouTubeData, Team, SeedStats
 
 
 class AniLibriaClient:
@@ -17,25 +18,13 @@ class AniLibriaClient:
         self._loop: AbstractEventLoop = None
         self._loop = get_event_loop()
         self._websocket: WebSocketClient = WebSocketClient(proxy=self.proxy)
-        self._subscribes: List[dict] = []
 
     async def _start(self):
         """
         Запускает websocket.
         """
         while not self._websocket._closed:
-            await self._websocket.run(self._subscribes)
-
-    async def subscribe(self, subscribe: dict, filter: str = None, remove: str = None):
-        """
-        Подписывает на тайтл(ы)
-
-        :param subscribe: Словарь, в котором описано, что должно входить в тайтл. Например: {"season": {"year": 2022}}.
-        :param filter: Список? значений, которые будут в ответе.
-        :param remove: Список? значений, которые будут удалены.
-        """
-        payload = {"subscribe": subscribe, "filter": filter, "remove": remove}
-        await self._websocket._subscribe(payload)
+            await self._websocket.run()
 
     def event(self, coro: Coroutine = None, *, name: str = None, data: dict = None):
         """
@@ -55,10 +44,57 @@ class AniLibriaClient:
 
         return decorator
 
-    # Оказалось, что ивент `title_update` вызывается каждый раз при любом обновление тайтла (логично как бы)
-    # Временно удалил этот метод `on_title`, чтобы чуть позже переписать его уже под свой ивент `title_serie`
+    def on_title_serie(
+        self,
+        id: int = None,
+        code: str = None,
+        names: Dict[str, Union[str, None]] = None,
+        status: Dict[str, Union[str, int]] = None,
+        type: Dict[str, Union[str, int]] = None,
+        genres: List[str] = None,
+        season: Dict[str, Union[str, int]] = None,
+        blocked: Dict[str, bool] = None,
+    ):
+        """
+        Делает из функции ивент слушатель.
+        Будет вызываться каждый раз, когда появится новая серия тайтла с заданными параметрами.
 
-    def _to_dict(self, **kwargs):
+        :param id: Уникальные id тайтла.
+        :param code: Уникальные код тайтла
+        :param names: Словарь с названием тайтла.
+        :param status: Словарь со статусом тайтла.
+        :param type: Словарь с типом тайтла.
+        :param genres: Список с жанрами.
+        :param season: Словарь с сезоном тайтла.
+        :param blocked: Словарь со статусом блокировки.
+        """
+
+        def decorator(coro: Coroutine):
+            return self.event(coro, name="on_title_serie", data=data)
+
+        data = self._to_dict(
+            id=id,
+            code=code,
+            names=names,
+            status=status,
+            type=type,
+            genres=genres,
+            season=season,
+            blocked=blocked,
+        )
+        if not data:
+            raise IsEmpty()
+
+        return decorator
+
+    def _to_dict(self, **kwargs) -> dict:
+        """
+        Возвращает словарь, но без пустых значений
+
+        :param kwargs: Ключевые аргументы
+        :return: Словарь
+        :rtype: dict
+        """
         return {key: value for key, value in kwargs.items() if value is not None}
 
     async def login(self, mail: str, password: str) -> str:
