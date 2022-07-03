@@ -50,12 +50,12 @@ class PlayListUpdateEvent:
       async def on_playlist_update(event: PlayListUpdateEvent):
           ...
     """
-    id: int
-    player: Player
-    updated_episode: Serie
-    episode: str
-    diff: dict
-    reupload: bool
+    id: Optional[int] = field(default=None)
+    player: Optional[Player] = field(default_factory=dict)
+    updated_episode: Optional[Serie] = field(default_factory=dict)
+    episode: Optional[str] = field(default=None)
+    diff: Optional[dict] = field(default_factory=dict)
+    reupload: Optional[bool] = field(default=None)
 
     def __post_init__(self):
         self.player = Player(**self.player)  # type: ignore
@@ -73,9 +73,9 @@ class TitleUpdateEvent:
       async def on_title_update(event: TitleUpdateEvent):
           ...
     """
-    hash: str
-    title: Title
-    diff: dict
+    hash: Optional[str] = field(default=None)
+    title: Optional[Title] = field(default_factory=dict)
+    diff: Optional[dict] = field(default_factory=dict)
 
     def __post_init__(self):
         self.title = Title(**self.title)  # type: ignore
@@ -83,11 +83,11 @@ class TitleUpdateEvent:
 
 @dataclass(slots=True)
 class TorrentUpdateEvent:
-    id: str
-    torrents: Torrents
-    updated_torrent_id: int
-    diff: dict
-    hash: str
+    id: Optional[str] = field(default=None)
+    torrents: Optional[Torrents] = field(default_factory=dict)
+    updated_torrent_id: Optional[int] = field(default=None)
+    diff: Optional[dict] = field(default_factory=dict)
+    hash: Optional[str] = field(default=None)
 
     def __post_init__(self):
         self.torrents = Torrents(**self.torrents)  # type: ignore
