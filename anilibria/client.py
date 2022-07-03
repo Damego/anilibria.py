@@ -26,7 +26,7 @@ class AniLibriaClient:
         while not self._websocket._closed:
             await self._websocket.run(self._subscribes)
 
-    async def subscribe(self, subscribe: dict, filter: str, remove: str):
+    async def subscribe(self, subscribe: dict, filter: str = None, remove: str = None):
         """
         Подписывает на тайтл(ы)
 
