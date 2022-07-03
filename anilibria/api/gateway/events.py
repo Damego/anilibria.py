@@ -58,8 +58,10 @@ class PlayListUpdateEvent:
     reupload: Optional[bool] = field(default=None)
 
     def __post_init__(self):
-        self.player = Player(**self.player)  # type: ignore
-        self.updated_episode = Serie(**self.updated_episode)  # type: ignore
+        if self.player is not None:  # АПИ может вернуть None
+            self.player = Player(**self.player)  # type: ignore
+        if self.player is not None:
+            self.updated_episode = Serie(**self.updated_episode)  # type: ignore
 
 
 @dataclass(slots=True)
@@ -78,7 +80,8 @@ class TitleUpdateEvent:
     diff: Optional[dict] = field(default_factory=dict)
 
     def __post_init__(self):
-        self.title = Title(**self.title)  # type: ignore
+        if self.title is not None:  # АПИ может вернуть None
+            self.title = Title(**self.title)  # type: ignore
 
 
 @dataclass(slots=True)
@@ -90,4 +93,5 @@ class TorrentUpdateEvent:
     hash: Optional[str] = field(default=None)
 
     def __post_init__(self):
-        self.torrents = Torrents(**self.torrents)  # type: ignore
+        if self.torrents is not None:  # АПИ может вернуть None
+            self.torrents = Torrents(**self.torrents)  # type: ignore
