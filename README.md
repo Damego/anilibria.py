@@ -6,12 +6,7 @@
 ## О библиотеке
 anilibria.py - это REST API и Websocket обёртка API. <br>
 Вы можете ей пользоваться для получение уведомлений о выходе новой серии, получение информации о тайтлах и других вещей.
-
-## Предупреждение
-На данный момент https://anilibria.tv/ заблокирован на территории РФ. <br>
-Для того, чтобы воспользоваться библиотекой, вам необходимо использовать VPN или прокси. <br>
-Если вы не из России, то можете спокойно ей пользоваться.
-
+ 
 ## Установка
 
 `pip install anilibria.py`
@@ -29,7 +24,7 @@ anilibria.py - это REST API и Websocket обёртка API. <br>
 ```py
 from anilibria import AniLibriaClient, TitleUpdateEvent
 
-client = AniLibriaClient(proxy="http://0.0.0.0:80")  # proxy - не обязательный аргумент
+client = AniLibriaClient()
 
 @client.event
 async def on_connect():
