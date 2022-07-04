@@ -79,9 +79,9 @@ class WebSocketClient:
             # I need this for a moment because message types are not documented in the API
             # and I should to wait for a new event a long time
             log.warning(packet)
-            raise Exception
+            return
 
-        return packet.json() if packet and isinstance(packet.data, str) else None
+        return packet.json() if packet.data and isinstance(packet.data, str) else None
 
     async def __dispatch_events(self, data: dict):
         """
@@ -105,7 +105,7 @@ class WebSocketClient:
         elif type == EventType.PLAYLIST_UPDATE:
             event_model = PlayListUpdateEvent(**data[type])
             self._listener.dispatch(event_name, event_model)
-            await self.__dispatch_subscriptions(event_model, data[type])
+            await self.__dispatch_new_series(event_model, data[type])
         elif type in [
             EventType.ENCODE_START,
             EventType.ENCODE_END,
@@ -119,9 +119,9 @@ class WebSocketClient:
             self._listener.dispatch(event_name, data)
             log.debug(f"Not documented event type {type} dispatched with data: {data}")
 
-    async def __dispatch_subscriptions(self, event_model: PlayListUpdateEvent, data: dict):
+    async def __dispatch_new_series(self, event_model: PlayListUpdateEvent, data: dict):
         """
-        Диспатчит(самостоятельно вызывает пока что) ивенты, на тайтлы которых, имеется подписка.
+        Диспатчит ивент ``on_title_serie`` и вызывает функции с подпиской на тайтл, если найдёт
 
         .. warning::
            Не пытайтесь самостоятельно использовать этот метод!
@@ -130,14 +130,16 @@ class WebSocketClient:
         :param data:
         :return:
         """
-        if "on_title_serie" not in self._listener.events:
-            return
         if not event_model.updated_episode:
             return
         hls = event_model.updated_episode.hls
         if not hls.fhd or not hls.hd:  # Can `or not hls.sd` be removed?
             return
-        events = self._listener.events["on_title_serie"]
+        self._listener.dispatch("on_title_serie", event_model)
+
+        if "on_subscription_title_serie" not in self._listener.events:
+            return
+        events = self._listener.events["on_subscription_title_serie"]
         title_data = data["updated_episode"]
         for event in events:
             filled_data = event["data"]
