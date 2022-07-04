@@ -37,6 +37,13 @@ class Request:
             raw = await response.text()
             data = loads(raw)
             log.debug(f"Got response from request {data}")
-            if isinstance(data, dict) and (error := data.get("error")):
-                raise HTTPException(error["code"], error["message"])
+            self.__catch_error(data)
             return data
+
+    def __catch_error(self, data: dict):
+        if not isinstance(data, dict):
+            return
+        if error := data.get("error"):
+            raise HTTPException(error["code"], error["message"])
+        if err := data.get("err"):
+            raise HTTPException(0, err["mes"])
