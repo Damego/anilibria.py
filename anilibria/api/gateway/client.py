@@ -171,6 +171,7 @@ class WebSocketClient:
             if isinstance(value, dict):
                 if not self.check_equal(value, value_2):
                     return False
+        return True
 
     async def __dispatch_other_events(self, data: dict):
         """
