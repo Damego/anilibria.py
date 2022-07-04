@@ -9,17 +9,15 @@ anilibria.py - это REST API и Websocket обёртка API. <br>
  
 ## Установка
 
-`pip install anilibria.py`
-
-или
-
-`pip install git+https://github.com/Damego/anilibria.py.git`
+`pip install anilibria.py`  
+или  
+`pip install git+https://github.com/Damego/anilibria.py.git` - (Рекомендуется на текущий момент)
 
 ## Использование
 
-Ниже представлено самое простое использование библиотеки. <br>
-Функция `on_connect` будет вызвана после успешного подключения к API anilibria.
-Функция `on_title_update` будет вызываться после того, как на сервер будет залита новая серия любого тайтла. <br>
+Ниже представлено самое простое использование библиотеки.  
+Функция `on_connect` будет вызвана после успешного подключения к API anilibria.  
+Функция `on_title_update` будет вызываться после того, как на сервер будет залита новая серия любого тайтла.
 
 ```py
 from anilibria import AniLibriaClient, TitleUpdateEvent
@@ -38,7 +36,6 @@ client.start()
 ```
 
 ### Подписка на определённые тайтлы.
-
 Если вы хотите получать уведомления об определённых тайтлах, то вы можете подписаться на них. <br>
 
 ```py
@@ -59,5 +56,5 @@ async def on_connect():
 Примеры использования представлены в папке [examples](https://github.com/Damego/anilibria.py/tree/main/examples)
 
 ## Документация
-[Оффициальная документация API](https://github.com/anilibria/docs/blob/master/api_v2.md) <br>
+[Оффициальная документация API](https://github.com/anilibria/docs/blob/master/api_v2.md)  
 [Документация](https://anilibriapy.readthedocs.io/ru/latest/)
