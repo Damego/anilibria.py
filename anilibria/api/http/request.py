@@ -45,5 +45,5 @@ class Request:
             return
         if error := data.get("error"):
             raise HTTPException(error["code"], error["message"])
-        if err := data.get("err"):
-            raise HTTPException(0, err["mes"])
+        if data.get("err"):
+            raise HTTPException(0, data["mes"])
