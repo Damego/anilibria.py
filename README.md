@@ -40,7 +40,7 @@ client.start()
 
 ```py
 @client.on_title_serie(code="texhnolyze")  # Код можно взять из ссылки тайтла
-async def texhnolyze(event: TitleUpdateEvent):  # Название функции может быть любое
+async def texhnolyze(event: PlayListUpdateEvent):  # Название функции может быть любое
     ...
   # Подпишется на тайтл `технолайз`.
   # Функция будет вызываться тогда, когда выйдет новая серия технолайза.
