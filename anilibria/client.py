@@ -7,16 +7,12 @@ from .api.models.v2 import Title, Schedule, YouTubeData, Team, SeedStats
 
 
 class AniLibriaClient:
+    """
+    Основной клиент для взаимодействия с API anilibria.tv.
+    """
     def __init__(self, *, proxy: str = None) -> None:
-        """
-        Основной клиент для взаимодействия с API anilibria.tv.
-
-        :param proxy:
-        :type proxy: str
-        """
         self.proxy: str = proxy
-        self._loop: AbstractEventLoop = None
-        self._loop = get_event_loop()
+        self._loop: AbstractEventLoop = get_event_loop()
         self._websocket: WebSocketClient = WebSocketClient(proxy=self.proxy)
 
     async def _start(self):
@@ -100,6 +96,9 @@ class AniLibriaClient:
     async def login(self, mail: str, password: str) -> str:
         """
         Входит в аккаунт и возвращает айди сессии.
+
+        .. warning::
+           Если запрос идёт из РФ, то для использования необходим VPN или proxy!
 
         :param mail: Логин или эл.почта
         :param password: Пароль
@@ -621,15 +620,16 @@ class AniLibriaClient:
     async def add_favorite(self, session_id: str, title_id: int):
         """
         Добавляет тайтл в список избранных
+
         :param session_id: ID сессии.
         :param title_id: айди тайтла.
-        :return: словарь с успехом
         """
         await self._websocket._http.v2.add_favorite(session=session_id, title_id=title_id)
 
     async def del_favorite(self, session_id: str, title_id: int):
         """
         Добавляет тайтл в список избранных
+
         :param session_id: ID сессии.
         :param title_id: айди тайтла.
         """
