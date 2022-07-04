@@ -7,7 +7,7 @@ from aiohttp import WSMessage, ClientWebSocketResponse, WSMsgType
 from aiohttp.http import WS_CLOSED_MESSAGE
 
 from .events import TitleUpdateEvent, PlayListUpdateEvent, EncodeEvent, EventType, TorrentUpdateEvent
-from ..http import HTTPCLient
+from ..http import HTTPClient
 from ..dispatch import EventDispatcher
 
 
@@ -24,7 +24,7 @@ class WebSocketClient:
             self._loop = get_event_loop() if version_info < (3, 10) else get_running_loop()
         except RuntimeError:
             self._loop = new_event_loop()
-        self._http = HTTPCLient(proxy)
+        self._http = HTTPClient(proxy)
         self._listener = EventDispatcher()
         self.proxy: str = proxy
         self._client: ClientWebSocketResponse = None

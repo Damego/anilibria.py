@@ -3,7 +3,7 @@ from .v2 import V2Request
 from .public import PublicRequest
 
 
-class HTTPCLient:
+class HTTPClient:
     def __init__(self, proxy: str = None) -> None:
         """
 
