@@ -117,12 +117,12 @@ class WebSocketClient:
         if "on_title_serie" not in self._listener.events:
             return
         if not event_model.updated_episode:
-            return 
+            return
         hls = event_model.updated_episode.hls
         if not hls.fhd or not hls.hd:  # Can `or not hls.sd` be removed?
             return
         events = self._listener.events["on_title_serie"]
-        title_data = data["title"]
+        title_data = data["updated_episode"]
         for event in events:
             filled_data = event["data"]
             if filled_data is None:
