@@ -71,7 +71,7 @@ class WebSocketClient:
         :return:
         """
         packet: WSMessage = await self._client.receive()
-        if packet.type == WSMsgType.CLOSE:
+        if packet.type == WSMsgType.CLOSED:
             await self._client.close()
             return WS_CLOSED_MESSAGE
 
