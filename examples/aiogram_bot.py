@@ -4,7 +4,7 @@
 
 
 from aiogram import Bot, Dispatcher, types
-from anilibria import AniLibriaClient, TitleUpdateEvent
+from anilibria import AniLibriaClient, PlayListUpdateEvent
 
 import logging
 
@@ -14,7 +14,7 @@ logging.basicConfig(level=logging.INFO)
 
 bot = Bot("bot token")
 dp = Dispatcher(bot)
-ani_client = AniLibriaClient(proxy="your_proxy.com:80")
+ani_client = AniLibriaClient()
 
 
 @ani_client.event()
@@ -22,8 +22,8 @@ async def on_connect():
     print("Anilibria connected")
 
 
-@ani_client.on_title(id=8700)
-async def on_anime(event: TitleUpdateEvent):
+@ani_client.on_title_serie(code="texhnolyze")
+async def texhnolyze(event: PlayListUpdateEvent):
     print("Вышла новая серия технолайза! (хз что это)")
 
 
@@ -32,7 +32,7 @@ async def random(message: types.Message):
     if message.text != "!random":
         return
     title = await ani_client.get_random_title()
-    name = title.names["ru"]
+    name = title.names.ru
     await message.answer(name)
 
 if __name__ == "__main__":

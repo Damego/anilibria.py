@@ -4,8 +4,8 @@
 ![Discord Shield](https://discordapp.com/api/guilds/992384114667823194/widget.png?style=shield)
 
 ## О библиотеке
-anilibria.py - это REST API и Websocket обёртка API. <br>
-Вы можете ей пользоваться для получение уведомлений о выходе новой серии, получение информации о тайтлах и других вещей.
+anilibria.py - это RestAPI и Websocket обёртка API.  
+Вы можете ей пользоваться для получения уведомлений о выходе новой серии, получения информации о тайтлах.
  
 ## Установка
 
@@ -39,16 +39,24 @@ client.start()
 Если вы хотите получать уведомления об определённых тайтлах, то вы можете подписаться на них. <br>
 
 ```py
-@client.event
-async def on_connect():
-  print("Подключено")
-  data = {"id": 8700}
-  await client.subscribe(data)
-  # Подпишется на тайтл с id 8700.
-  # Теперь ивент `on_title_update` будет вызываться только тогда, 
-  # когда обновится тайтл, на который вы подписались
+@client.on_title_serie(code="texhnolyze")  # Код можно взять из ссылки тайтла
+async def texhnolyze(event: TitleUpdateEvent):  # Название функции может быть любое
+    ...
+  # Подпишется на тайтл `технолайз`.
+  # Функция будет вызываться тогда, когда выйдет новая серия технолайза.
 
 ```
+
+### Получение информации о тайтле
+В библиотеке реализована поддержка http запросов. Список всех возможных методов вы можете увидеть [здесь](https://anilibriapy.readthedocs.io/ru/latest/client.html)
+
+```py
+async def some_function():
+    title = await client.get_title(code="kimetsu-no-yaiba-yuukaku-hen")
+    print(title.description)  # Все атрибуты вы можете найти в документации моделей
+```
+
+### Использование с другими библиотеками
 Вы также можете использовать эту библиотеку вместе с другими:
 - `discord.py` и его форках.
 - `aiogram`
@@ -56,5 +64,5 @@ async def on_connect():
 Примеры использования представлены в папке [examples](https://github.com/Damego/anilibria.py/tree/main/examples)
 
 ## Документация
-[Оффициальная документация API](https://github.com/anilibria/docs/blob/master/api_v2.md)  
-[Документация](https://anilibriapy.readthedocs.io/ru/latest/)
+[Официальная документация API](https://github.com/anilibria/docs/blob/master/api_v2.md)  
+[Документация библиотеки](https://anilibriapy.readthedocs.io/ru/latest/)

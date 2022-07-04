@@ -86,6 +86,15 @@ class TitleUpdateEvent:
 
 @dataclass(slots=True)
 class TorrentUpdateEvent:
+    """
+    Модель для ивента `on_torrent_update`
+
+    .. code-block:: python
+
+      @client.event
+      async def on_torrent_update(event: TorrentUpdateEvent):
+          ...
+    """
     id: Optional[str] = field(default=None)
     torrents: Optional[Torrents] = field(default_factory=dict)
     updated_torrent_id: Optional[int] = field(default=None)

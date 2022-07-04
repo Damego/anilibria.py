@@ -4,7 +4,7 @@
 """
 
 
-from anilibria import AniLibriaClient, TitleUpdateEvent
+from anilibria import AniLibriaClient, PlayListUpdateEvent
 import disnake
 from disnake.ext import commands
 
@@ -23,15 +23,15 @@ async def on_connect():
     print("connected")
 
 
-@client.on_title(id=8700)
-async def on_anime(event: TitleUpdateEvent):
+@client.on_title_serie(code="texhnolyze")
+async def texhnolyze(event: PlayListUpdateEvent):
     print("Вышла новая серия технолайза! (хз что это)")
 
 
 @bot.slash_command(name="random")
 async def random(interaction: disnake.CommandInteraction):
     title = await client.get_random_title()
-    name = title.names["ru"]
+    name = title.names.ru
     await interaction.send(name)
 
 

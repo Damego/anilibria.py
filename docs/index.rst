@@ -15,6 +15,10 @@ anilibria.py - это REST API и Websocket обёртка API.
 
 ``pip install anilibria.py``
 
+или
+
+``pip install git+https://github.com/Damego/anilibria.py.git`` - (Рекомендуется на текущий момент)
+
 Использование
 *************
 
@@ -36,7 +40,7 @@ anilibria.py - это REST API и Websocket обёртка API.
   
   @client.event
   async def on_title_update(event: TitleUpdateEvent):
-    print(event.title.names["ru"])  # Выведет название тайтла на русском, который обновили.
+    print(event.title.names.ru)  # Выведет название тайтла на русском, который обновили.
   
   client.start()
 
@@ -48,15 +52,21 @@ anilibria.py - это REST API и Websocket обёртка API.
 
 .. code-block:: python
 
-  @client.event
-  async def on_connect():
-    print("Подключено")
-    data = {"id": 8700}
-    await client.subscribe(data)
-    # Подпишется на тайтл с id 8700.
-    # Теперь ивент `on_title_update` будет вызываться только тогда, 
-    # когда обновится тайтл, на который вы подписались
+   @client.on_title_serie(code="texhnolyze")  # Код можно взять из ссылки тайтла
+   async def texhnolyze(event: TitleUpdateEvent):  # Название функции может быть любое
+       ...
+       # Подпишется на тайтл `технолайз`.
+       # Функция будет вызываться тогда, когда выйдет новая серия технолайза.
 
+Получение информации о тайтле
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+В библиотеке реализована поддержка http запросов. Список всех возможных методов вы можете увидеть [здесь](https://anilibriapy.readthedocs.io/ru/latest/client.html)
+
+.. code-block:: python
+
+   async def some_function():
+       title = await client.get_title(code="kimetsu-no-yaiba-yuukaku-hen")
+       print(title.description)  # Все атрибуты вы можете найти в документации моделей
 
 Использование с другими библиотеками
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
