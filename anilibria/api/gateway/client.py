@@ -137,9 +137,9 @@ class WebSocketClient:
             return
         self._listener.dispatch("on_title_serie", event_model)
 
-        if "on_subscription_title_serie" not in self._listener.events:
+        events = self._listener.events.get("on_subscribed_title_serie")
+        if events is None:
             return
-        events = self._listener.events["on_subscription_title_serie"]
         title_data = data["updated_episode"]
         for event in events:
             filled_data = event["data"]
@@ -148,7 +148,7 @@ class WebSocketClient:
             is_equal = self.check_equal(filled_data, title_data)
             if not is_equal:
                 continue
-            await event["coro"](event_model)  # It should be called in the Dispatcher but im not smart to do this.
+            self._listener._dispatch(event["coro"](event_model))
 
     def check_equal(self, checker: dict, verifiable: dict):
         """

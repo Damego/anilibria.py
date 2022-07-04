@@ -66,7 +66,7 @@ class AniLibriaClient:
         """
 
         def decorator(coro: Coroutine):
-            return self.event(coro, name="on_title_serie", data=data)
+            return self.event(coro, name="on_subscribed_title_serie", data=data)
 
         data = self._to_dict(
             id=id,
