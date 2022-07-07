@@ -1,7 +1,16 @@
 from enum import Enum, IntEnum
 
 
-__all__ = ["StrEnum", "StatusCode", "TitleType", "SeasonCode", "RSSType", "DescriptionType", "Include", "PlayListType"]
+__all__ = [
+    "StrEnum",
+    "StatusCode",
+    "TitleType",
+    "SeasonCode",
+    "RSSType",
+    "DescriptionType",
+    "Include",
+    "PlayListType",
+]
 
 
 class StrEnum(str, Enum):

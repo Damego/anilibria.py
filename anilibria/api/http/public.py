@@ -4,6 +4,7 @@ from .request import Request
 URL = "https://www.anilibria.tv/public"
 __all__ = ["PublicRequest"]
 
+
 class PublicRequest:
     """
     Представляет собой запросы на сайт "https://www.anilibria.tv/public"
