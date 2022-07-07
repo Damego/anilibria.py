@@ -57,7 +57,7 @@ anilibria.py - это REST API и Websocket обёртка API.
 
 Получение информации о тайтле
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-В библиотеке реализована поддержка http запросов. Список всех возможных методов вы можете увидеть [здесь](https://anilibriapy.readthedocs.io/ru/latest/client.html)
+В библиотеке реализована поддержка http запросов. Список всех возможных методов вы можете увидеть `здесь <https://anilibriapy.readthedocs.io/ru/latest/client.html>`__
 
 .. code-block:: python
 
