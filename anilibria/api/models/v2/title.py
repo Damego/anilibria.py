@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Dict, Union
 
 from attrs import define, field
 
@@ -169,18 +169,13 @@ class Serie:
 @define
 class Player:
     """
-    Модель с информацией о плеере. Содержит все серии.
-
-    .. note::
-       Изначально playlist должно был быть типа Dict[str, Serie],
-       так как ключ выступает в роли номера серии, но номер серии дают в самом Serie,
-       поэтому решено убрать ключи, оставив только список с сериями.
+    Модель с информацией о плеере и сериях.
     """
 
     alternative_player: Optional[str] = field(default=None)
     host: Optional[str] = field(default=None)
     series: Optional[Series] = field(converter=convert(Series), default=None)
-    playlist: Optional[List[Serie]] = field(converter=convert_playlist(Serie), factory=list)
+    playlist: Optional[Union[List[Serie], Dict[str, Serie]]] = field(converter=convert_playlist(Serie), factory=list)
 
 
 @define
