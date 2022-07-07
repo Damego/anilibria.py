@@ -1,14 +1,27 @@
 from typing import Optional
-from dataclasses import dataclass, field
+
+from attrs import define, field
 
 from enum import Enum
 from ..models import Player, Serie, Title, Torrents
+from ..models.attrs_utils import convert
 
 
-class EventType(Enum):
+__all__ = [
+    "EventType",
+    "EncodeEvent",
+    "PlayListUpdateEvent",
+    "TitleUpdateEvent",
+    "TorrentUpdateEvent",
+    "TitleSerieEvent",
+]
+
+
+class EventType(str, Enum):
     """
-    Обозначает ивенты, которые принимает вебсокет
+    Обозначает ивенты, которые принимает Websocket
     """
+
     TITLE_UPDATE = "title_update"
     PLAYLIST_UPDATE = "playlist_update"
     ENCODE_START = "encode_start"
@@ -17,11 +30,8 @@ class EventType(Enum):
     ENCODE_FINISH = "encode_finish"
     TORRENT_UPDATE = "torrent_update"
 
-    def __eq__(self, __o: object) -> bool:
-        return self.value == __o
 
-
-@dataclass(slots=True, frozen=True)
+@define
 class EncodeEvent:
     """
     Модель для ивентов ``on_encode_start``, ``on_encode_progress``, ``on_encode_end``
@@ -32,6 +42,7 @@ class EncodeEvent:
       async def on_encode_start(event: EncodeEvent):
           ...
     """
+
     id: Optional[str] = field(default=None)
     episode: Optional[str] = field(default=None)
     resolution: Optional[str] = field(default=None)
@@ -39,7 +50,7 @@ class EncodeEvent:
     encoded_percent: Optional[str] = field(default=None)
 
 
-@dataclass(slots=True)
+@define
 class PlayListUpdateEvent:
     """
     Модель для ивента ``on_playlist_update``
@@ -50,21 +61,16 @@ class PlayListUpdateEvent:
       async def on_playlist_update(event: PlayListUpdateEvent):
           ...
     """
+
     id: Optional[int] = field(default=None)
-    player: Optional[Player] = field(default_factory=dict)
-    updated_episode: Optional[Serie] = field(default_factory=dict)
+    player: Optional[Player] = field(converter=convert(Player), default=None)
+    updated_episode: Optional[Serie] = field(converter=convert(Serie), default=None)
     episode: Optional[str] = field(default=None)
-    diff: Optional[dict] = field(default_factory=dict)
+    diff: Optional[dict] = field(default=None)
     reupload: Optional[bool] = field(default=None)
 
-    def __post_init__(self):
-        if self.player is not None:  # АПИ может вернуть None
-            self.player = Player(**self.player)  # type: ignore
-        if self.updated_episode is not None:
-            self.updated_episode = Serie(**self.updated_episode)  # type: ignore
 
-
-@dataclass(slots=True)
+@define
 class TitleUpdateEvent:
     """
     Модель для ивента ``on_title_update``
@@ -75,16 +81,13 @@ class TitleUpdateEvent:
       async def on_title_update(event: TitleUpdateEvent):
           ...
     """
+
     hash: Optional[str] = field(default=None)
-    title: Optional[Title] = field(default_factory=dict)
-    diff: Optional[dict] = field(default_factory=dict)
-
-    def __post_init__(self):
-        if self.title is not None:  # АПИ может вернуть None
-            self.title = Title(**self.title)  # type: ignore
+    title: Optional[Title] = field(converter=convert(Title), default=None)
+    diff: Optional[dict] = field(default=None)
 
 
-@dataclass(slots=True)
+@define
 class TorrentUpdateEvent:
     """
     Модель для ивента `on_torrent_update`
@@ -95,12 +98,25 @@ class TorrentUpdateEvent:
       async def on_torrent_update(event: TorrentUpdateEvent):
           ...
     """
+
     id: Optional[str] = field(default=None)
-    torrents: Optional[Torrents] = field(default_factory=dict)
+    torrents: Optional[Torrents] = field(converter=convert(Torrents), default=None)
     updated_torrent_id: Optional[int] = field(default=None)
-    diff: Optional[dict] = field(default_factory=dict)
+    diff: Optional[dict] = field(default=None)
     hash: Optional[str] = field(default=None)
 
-    def __post_init__(self):
-        if self.torrents is not None:  # АПИ может вернуть None
-            self.torrents = Torrents(**self.torrents)  # type: ignore
+
+@define
+class TitleSerieEvent:
+    """
+    Модель для ивента `on_title_serie` и подписок.
+
+    .. code-block:: python
+
+      @client.event
+      async def on_title_serie(event: TitleSerieEvent):
+          ...
+    """
+
+    title: Title = field(converter=convert(Title), default=None)
+    episode: Serie = field(converter=convert(Serie), default=None)

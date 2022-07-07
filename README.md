@@ -35,15 +35,13 @@ async def on_title_update(event: TitleUpdateEvent):
 client.start()
 ```
 
-### Подписка на определённые тайтлы.
-Если вы хотите получать уведомления об определённых тайтлах, то вы можете подписаться на них. <br>
+### Уведомления о новых сериях.
 
 ```py
-@client.on_title_serie(code="texhnolyze")  # Код можно взять из ссылки тайтла
-async def texhnolyze(event: PlayListUpdateEvent):  # Название функции может быть любое
-    ...
-  # Подпишется на тайтл `технолайз`.
-  # Функция будет вызываться тогда, когда выйдет новая серия технолайза.
+@client.event
+async def on_title_serie(event: TitleSerieEvent):
+    if event.title.code == "texhnolyze":  # Ещё один способ: event.title.names.ru == "Технолайз"
+        ...  # Если выйдет новая серия Технолайза, то вызовется эта функция и выполнится условие
 
 ```
 

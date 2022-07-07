@@ -4,6 +4,7 @@ from .request import Request
 
 
 URL = "http://api.anilibria.tv/v2"
+__all__ = ["V2Request"]
 
 
 class V2Request:
@@ -291,7 +292,7 @@ class V2Request:
             after=after,
             limit=limit,
         )
-        return await self.request.request("GET", f"{URL}/getUpdates", payload)
+        return await self.request.request("GET", f"{URL}/getFeed", payload)
 
     async def get_years(self) -> List[int]:
         """
@@ -536,7 +537,7 @@ class V2Request:
 
     async def del_favorite(self, session: str, title_id: int) -> dict:
         """
-        
+
         :param session:
         :param title_id:
         :return:

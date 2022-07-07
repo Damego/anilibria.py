@@ -1,8 +1,5 @@
 anilibria.py
 ============
-**Python async wrapper for anilibria.tv**
-
-
 
 О библиотеке
 ************
@@ -52,11 +49,11 @@ anilibria.py - это REST API и Websocket обёртка API.
 
 .. code-block:: python
 
-   @client.on_title_serie(code="texhnolyze")  # Код можно взять из ссылки тайтла
-   async def texhnolyze(event: PlayListUpdateEvent):  # Название функции может быть любое
-       ...
-       # Подпишется на тайтл `технолайз`.
-       # Функция будет вызываться тогда, когда выйдет новая серия технолайза.
+   @client.event
+   async def on_title_serie(event: TitleSerieEvent):
+       if event.title.code == "texhnolyze":  # Ещё один способ: event.title.names.ru == "Технолайз"
+           ...  # Если выйдет новая серия Технолайза, то вызовется эта функция и выполнится условие
+
 
 Получение информации о тайтле
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

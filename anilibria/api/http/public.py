@@ -2,7 +2,7 @@ from .request import Request
 
 
 URL = "https://www.anilibria.tv/public"
-
+__all__ = ["PublicRequest"]
 
 class PublicRequest:
     """
@@ -10,6 +10,7 @@ class PublicRequest:
     Здесь не будут реализованы методы для "/api", так как существует v2, в котором точно такие же запросы,
     и к тому же документация к "/api" не обновлялась более двух лет.
     """
+
     request: Request
 
     def __init__(self, request: Request) -> None:
@@ -24,4 +25,3 @@ class PublicRequest:
         """
         payload: dict = {"mail": mail, "passwd": password}
         return await self.request.request("POST", f"{URL}/login.php", data=payload)
-

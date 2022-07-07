@@ -1,140 +1,172 @@
-from typing import List, Dict, Union, Optional
-from dataclasses import dataclass, field
+from typing import List, Optional
+
+from attrs import define, field
+
+from .enums import StatusCode, TitleType, SeasonCode
+from ..attrs_utils import convert_list, convert, convert_playlist
 
 
-@dataclass(slots=True, frozen=True)
+__all__ = [
+    "Names",
+    "Status",
+    "Poster",
+    "Posters",
+    "Type",
+    "Team",
+    "Season",
+    "Blocked",
+    "Series",
+    "HLS",
+    "SerieSkips",
+    "Serie",
+    "Player",
+    "Quality",
+    "TorrentFile",
+    "TorrentMetaData",
+    "Torrent",
+    "Torrents",
+    "Title",
+]
+
+
+@define
 class Names:
     """
     Содержит в себе названия тайтла на русском, английском и альтернативном языках
     """
-    ru: Optional[str] = field(default=None)
-    en: Optional[str] = field(default=None)
+
+    ru: str = field(default=None)
+    en: str = field(default=None)
     alternative: Optional[str] = field(default=None)
 
 
-@dataclass(slots=True, frozen=True)
+@define
 class Status:
     """
     Содержит в себе текущий статус тайтла
     """
+
     string: Optional[str] = field(default=None)
-    code: Optional[int] = field(default=None)
+    code: Optional[StatusCode] = field(converter=StatusCode, default=None)
 
 
-@dataclass(slots=True, frozen=True)
+@define
 class Poster:
     """
     Модель постера.
     """
+
     url: Optional[str] = field(default=None)
     raw_base64_file: Optional[str] = field(default=None)
 
 
-@dataclass(slots=True)
+@define
 class Posters:
     """
     Модель, которая содержит в себе постеры разных размеров.
     """
-    small: Optional[Poster] = field(default_factory=dict)
-    medium: Optional[Poster] = field(default_factory=dict)
-    original: Optional[Poster] = field(default_factory=dict)
 
-    def __post_init__(self):
-        self.small = Poster(**self.small) # type: ignore
-        self.medium = Poster(**self.medium) # type: ignore
-        self.original = Poster(**self.original)  # type: ignore
+    small: Optional[Poster] = field(converter=convert(Poster), default=None)
+    medium: Optional[Poster] = field(converter=convert(Poster), default=None)
+    original: Optional[Poster] = field(converter=convert(Poster), default=None)
 
 
-@dataclass(slots=True, frozen=True)
+@define
 class Type:
     """
     Модель с информацией о типе тайтла.
     """
+
     full_string: Optional[str] = field(default=None)
-    code: Optional[int] = field(default=None)
+    code: Optional[TitleType] = field(converter=TitleType, default=None)
     string: Optional[str] = field(default=None)
     series: Optional[int] = field(default=None)
     length: Optional[str] = field(default=None)
 
 
-@dataclass(slots=True, frozen=True)
+@define
 class Team:
     """
     Модель с участниками, которые принимали участие в переводе тайтла.
     """
-    voice: Optional[List[str]] = field(default_factory=list)
-    translator: Optional[List[str]] = field(default_factory=list)
-    editing: Optional[List[str]] = field(default_factory=list)
-    decor: Optional[List[str]] = field(default_factory=list)
-    timing: Optional[List[str]] = field(default_factory=list)
+
+    voice: Optional[List[str]] = field(factory=list)
+    translator: Optional[List[str]] = field(factory=list)
+    editing: Optional[List[str]] = field(factory=list)
+    decor: Optional[List[str]] = field(factory=list)
+    timing: Optional[List[str]] = field(factory=list)
 
 
-@dataclass(slots=True, frozen=True)
+@define
 class Season:
     """
     Модель с информацией о сезоне тайтла.
     """
+
     string: Optional[str] = field(default=None)
-    code: Optional[int] = field(default=None)
+    code: Optional[SeasonCode] = field(converter=SeasonCode, default=None)
     year: Optional[int] = field(default=None)
     week_day: Optional[int] = field(default=None)
 
 
-@dataclass(slots=True, frozen=True)
+@define
 class Blocked:
     """
     Модель с информацией о статусе блокировки тайтла.
     """
+
     blocked: Optional[bool] = field(default=None)
     bakanim: Optional[bool] = field(default=None)
 
 
-@dataclass(slots=True, frozen=True)
+@define
 class Series:
     """
     Модель, которая содержит информацию о
     """
+
     first: Optional[int] = field(default=None)
     last: Optional[int] = field(default=None)
     string: Optional[str] = field(default=None)
 
 
-@dataclass(slots=True, frozen=True)
+@define
 class HLS:
     """
     Модель с ссылками на разные разрешения серий.
     """
+
     fhd: Optional[str] = field(default=None)
     hd: Optional[str] = field(default=None)
     sd: Optional[str] = field(default=None)
 
 
-@dataclass(slots=True, frozen=True)
+@define
 class SerieSkips:
     """
     Модель с таймкодами для пропуска опенинга и эндинга.
     """
-    opening: Optional[List[str]] = field(default_factory=list)
-    ending: Optional[List[str]] = field(default_factory=list)
+
+    opening: Optional[List[str]] = field(factory=list)
+    ending: Optional[List[str]] = field(factory=list)
 
 
-@dataclass(slots=True)
+@define
 class Serie:
     """
     Модель с информацией о серии.
     """
+
     serie: Optional[int] = field(default=None)
     created_timestamp: Optional[int] = field(default=None)
-    hls: Optional[HLS] = field(default_factory=dict)
+    hls: Optional[HLS] = field(converter=convert(HLS), default=None)
     preview: Optional[str] = field(default=None)  # Not documented in the docs
-    skips: Optional[SerieSkips] = field(default_factory=dict) # Not documented in the docs
-
-    def __post_init__(self):
-        self.hls = HLS(**self.hls)  # type: ignore
-        self.skips = SerieSkips(**self.skips)  # type: ignore
+    skips: Optional[SerieSkips] = field(
+        converter=convert(SerieSkips), default=None
+    )  # Not documented in the docs
 
 
-@dataclass(slots=True)
+@define
 class Player:
     """
     Модель с информацией о плеере. Содержит все серии.
@@ -144,21 +176,19 @@ class Player:
        так как ключ выступает в роли номера серии, но номер серии дают в самом Serie,
        поэтому решено убрать ключи, оставив только список с сериями.
     """
+
     alternative_player: Optional[str] = field(default=None)
     host: Optional[str] = field(default=None)
-    series: Optional[Series] = field(default_factory=dict)
-    playlist: Optional[List[Serie]] = field(default_factory=list)
-
-    def __post_init__(self):
-        self.series: Series = Series(**self.series)  # type: ignore
-        self.playlist: List[Serie] = [Serie(**serie) for serie in self.playlist.values()]  # type: ignore
+    series: Optional[Series] = field(converter=convert(Series), default=None)
+    playlist: Optional[List[Serie]] = field(converter=convert_playlist(Serie), factory=list)
 
 
-@dataclass(slots=True, frozen=True)
+@define
 class Quality:
     """
     Модель с информацией о качестве тайтла.
     """
+
     string: Optional[str] = field(default=None)
     type: Optional[str] = field(default=None)
     resolution: Optional[int] = field(default=None)
@@ -166,74 +196,75 @@ class Quality:
     lq_audio: Optional[bool] = field(default=None)
 
 
-@dataclass(slots=True)
+@define
+class TorrentFile:
+    file: str
+    size: int
+    offset: int
+
+
+@define
+class TorrentMetaData:
+    hash: str = field()
+    name: str = field()
+    announce: List[str] = field(converter=list)
+    created_timestamp: int = field()
+    files_list: List[TorrentFile] = field(converter=convert_list(TorrentFile))
+
+
+@define
 class Torrent:
     """
     Модель с информацией о торренте
     """
+
     torrent_id: Optional[int] = field(default=None)
-    series: Optional[Series] = field(default_factory=dict)
-    quality: Optional[Quality] = field(default_factory=dict)
+    series: Optional[Series] = field(converter=convert(Series), default=None)
+    quality: Optional[Quality] = field(converter=convert(Quality), default=None)
     leechers: Optional[int] = field(default=None)
     seeders: Optional[int] = field(default=None)
     downloads: Optional[int] = field(default=None)
     total_size: Optional[int] = field(default=None)
     url: Optional[str] = field(default=None)
     uploaded_timestamp: Optional[int] = field(default=None)
-    metadata: Optional[str] = field(default=None)
+    metadata: Optional[TorrentMetaData] = field(converter=convert(TorrentMetaData), default=None)
     raw_base64_file: Optional[str] = field(default=None)
     hash: Optional[str] = field(default=None)
-        
-    def __post_init__(self):
-        self.quality = Quality(**self.quality)  # type: ignore
 
 
-@dataclass(slots=True)
+@define
 class Torrents:
     """
     Модель со списком торрентов и информации о сериях.
     """
-    series: Optional[Series] = field(default_factory=dict)
-    list: Optional[List[Torrent]] = field(default_factory=list)
 
-    def __post_init__(self):
-        self.series = Series(**self.series)  # type: ignore
-        self.list = [Torrent(**torrent) for torrent in self.list]  # type: ignore
+    series: Optional[Series] = field(converter=convert(Series), default=None)
+    list: Optional[List[Torrent]] = field(converter=convert_list(Torrent), factory=list)
 
 
-@dataclass(slots=True)
+@define
 class Title:
     """
     Модель тайтла
     """
+
     id: Optional[int] = field(default=None)
     code: Optional[str] = field(default=None)
-    names: Optional[Names] = field(default_factory=dict)
+    names: Optional[Names] = field(converter=convert(Names), default=None)
     announce: Optional[str] = field(default=None)
-    status: Optional[Status] = field(default_factory=dict)
-    posters: Optional[Posters] = field(default_factory=dict)
+    status: Optional[Status] = field(converter=convert(Status), default=None)
+    posters: Optional[Posters] = field(converter=convert(Posters), default=None)
     updated: Optional[int] = field(default=None)
     last_change: Optional[int] = field(default=None)
-    type: Optional[Type] = field(default_factory=dict)
-    genres: Optional[List[str]] = field(default_factory=list)
-    team: Optional[Team] = field(default_factory=dict)
-    season: Optional[Season] = field(default_factory=dict)
+    type: Optional[Type] = field(converter=convert(Type), default=None)
+    genres: Optional[List[str]] = field(factory=list)
+    team: Optional[Team] = field(converter=convert(Team), default=None)
+    season: Optional[Season] = field(converter=convert(Season), default=None)
     description: Optional[str] = field(default=None)
     in_favorites: Optional[int] = field(default=None)
-    blocked: Optional[Blocked] = field(default_factory=dict)
-    player: Optional[Player] = field(default_factory=dict)
-    torrents: Optional[Torrents] = field(default_factory=dict)
-
-    def __post_init__(self):
-        self.names = Names(**self.names)  # type: ignore
-        self.status = Status(**self.status)  # type: ignore
-        self.posters = Posters(**self.posters)  # type: ignore
-        self.type = Type(**self.type)  # type: ignore
-        self.team = Team(**self.team)  # type: ignore
-        self.season = Season(**self.season)  # type: ignore
-        self.blocked = Blocked(**self.blocked)  # type: ignore
-        self.player = Player(**self.player)  # type: ignore
-        self.torrents = Torrents(**self.torrents)  # type: ignore
+    blocked: Optional[Blocked] = field(converter=convert(Blocked), default=None)
+    player: Optional[Player] = field(converter=convert(Player), default=None)
+    torrents: Optional[Torrents] = field(converter=convert(Torrents), default=None)
 
     @property
     def url(self):

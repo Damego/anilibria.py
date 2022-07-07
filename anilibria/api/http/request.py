@@ -1,4 +1,4 @@
-from json import loads
+from json import loads, JSONDecodeError
 from logging import getLogger
 
 from aiohttp import ClientSession
@@ -8,6 +8,7 @@ from ..error import HTTPException
 
 log = getLogger("anilibria.request")
 _session = ClientSession()
+__all__ = ["Request", "_session"]
 
 
 class Request:
@@ -35,7 +36,10 @@ class Request:
         log.debug(f"Send {method} request to {url}?{payload} with data: {kwargs}")
         async with _session.request(method, f"{url}?{payload}", **kwargs) as response:
             raw = await response.text()
-            data = loads(raw)
+            try:
+                data = loads(raw)
+            except JSONDecodeError:  # Can be RSS
+                data = raw
             log.debug(f"Got response from request {data}")
             self.__catch_error(data)
             return data

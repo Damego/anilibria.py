@@ -1,15 +1,23 @@
 from asyncio import get_event_loop, gather, AbstractEventLoop
-from typing import Coroutine, Optional, List, Dict, Union
+from typing import Coroutine, Dict, Union, Optional, List, Callable
+from logging import getLogger
 
-from .api import WebSocketClient
-from .api.error import IsEmpty
-from .api.models.v2 import Title, Schedule, YouTubeData, Team, SeedStats
+from aiohttp.client_exceptions import WSServerHandshakeError
+
+from anilibria.api import WebSocketClient
+from anilibria.api.error import IsEmpty
+from anilibria.api.models.v2 import Title, Schedule, YouTubeData, Team, SeedStats
+
+
+log = getLogger("anilibria.client")
+__all__ = ["AniLibriaClient"]
 
 
 class AniLibriaClient:
     """
     Основной клиент для взаимодействия с API anilibria.tv.
     """
+
     def __init__(self, *, proxy: str = None) -> None:
         self.proxy: str = proxy
         self._loop: AbstractEventLoop = get_event_loop()
@@ -19,8 +27,19 @@ class AniLibriaClient:
         """
         Запускает websocket.
         """
-        while not self._websocket._closed:
-            await self._websocket.run()
+        try:
+            while not self._websocket._closed:
+                await self._websocket.run()
+        except WSServerHandshakeError as exc:
+            if (
+                exc.status == 500 and exc.message == "Invalid response status"
+            ):  # Появляется в рандомное время
+                log.debug(
+                    f"Websocket lost connection. Code: {exc.status} message: {exc.message}. Reconnecting..."
+                )
+                await self._start()
+            else:
+                raise exc from exc
 
     def event(self, coro: Coroutine = None, *, name: str = None, data: dict = None):
         """
@@ -40,8 +59,10 @@ class AniLibriaClient:
 
         return decorator
 
-    def on_title_serie(
+    def subscribe(
         self,
+        coro: Callable = None,
+        *,
         id: int = None,
         code: str = None,
         names: Dict[str, Union[str, None]] = None,
@@ -55,6 +76,7 @@ class AniLibriaClient:
         Делает из функции ивент слушатель.
         Будет вызываться каждый раз, когда появится новая серия тайтла с заданными параметрами.
 
+        :param coro: Корутина, для создания из неё ивент слушатель без использования декоратора.
         :param id: Уникальные id тайтла.
         :param code: Уникальные код тайтла
         :param names: Словарь с названием тайтла.
@@ -66,7 +88,7 @@ class AniLibriaClient:
         """
 
         def decorator(coro: Coroutine):
-            return self.event(coro, name="on_subscribed_title_serie", data=data)
+            return self.event(coro, name="subscription", data=data)
 
         data = self._to_dict(
             id=id,
@@ -80,6 +102,9 @@ class AniLibriaClient:
         )
         if not data:
             raise IsEmpty()
+
+        if coro is not None:
+            return self.event(coro, name="subscription", data=data)
 
         return decorator
 
@@ -350,10 +375,9 @@ class AniLibriaClient:
         playlist_type: Optional[str] = None,
         after: Optional[int] = None,
         limit: Optional[int] = None,
-    ) -> List[Title]:
-        # ? Can be here youtube videos? Docs says yes, but I didn't see any data about this
+    ) -> List[Union[Title, YouTubeData]]:
         """
-        Возвращает список тайтлов и ?youtube видео? в хронологическом порядке с заданными параметрами.
+        Возвращает список тайтлов и youtube видео в хронологическом порядке с заданными параметрами.
 
         :param filter: То, что должно быть в ответе.
         :param remove: То, чего не должно быть в ответе.
@@ -363,8 +387,8 @@ class AniLibriaClient:
         :param playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
         :param after: Удаляет первые n записей из выдачи
         :param limit: Количество объектов в ответе. По умолчанию 5
-        :return: Список тайтлов
-        :rtype: List[Title]
+        :return: Список тайтлов и youtube видео.
+        :rtype: List[Union[Title, YouTubeData]]
         """
         data = await self._websocket._http.v2.get_feed(
             filter=filter,
@@ -376,7 +400,9 @@ class AniLibriaClient:
             after=after,
             limit=limit,
         )
-        return [Title(**_) for _ in data]
+        return [
+            Title(**_["title"]) if _.get("title") else YouTubeData(**_["youtube"]) for _ in data
+        ]
 
     async def get_years(self) -> List[int]:
         """
@@ -416,7 +442,7 @@ class AniLibriaClient:
 
     async def get_seed_stats(
         self,
-        users: List[str],
+        users: Optional[List[str]] = None,
         remove: Optional[List[str]] = None,
         include: Optional[List[str]] = None,
         description_type: Optional[str] = None,
@@ -456,8 +482,8 @@ class AniLibriaClient:
 
     async def get_rss(
         self,
-        rss_type: str,
-        session_id: str,
+        rss_type: Optional[str] = None,
+        session_id: Optional[str] = None,
         since: Optional[int] = None,
         after: Optional[int] = None,
         limit: Optional[int] = None,

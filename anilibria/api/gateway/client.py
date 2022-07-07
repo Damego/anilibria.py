@@ -6,19 +6,28 @@ from sys import version_info
 from aiohttp import WSMessage, ClientWebSocketResponse, WSMsgType
 from aiohttp.http import WS_CLOSED_MESSAGE
 
-from .events import TitleUpdateEvent, PlayListUpdateEvent, EncodeEvent, EventType, TorrentUpdateEvent
+from .events import (
+    TitleUpdateEvent,
+    PlayListUpdateEvent,
+    EncodeEvent,
+    EventType,
+    TorrentUpdateEvent,
+    TitleSerieEvent,
+)
 from ..http import HTTPClient
 from ..dispatch import EventDispatcher
 
 
 log = getLogger("anilibria.gateway")
 URL = "ws://api.anilibria.tv/v2/ws/"
+__all__ = ["WebSocketClient"]
 
 
 class WebSocketClient:
     """
     Клиент для управления вебсокетом.
     """
+
     def __init__(self, proxy: str = None):
         try:
             self._loop = get_event_loop() if version_info < (3, 10) else get_running_loop()
@@ -104,12 +113,12 @@ class WebSocketClient:
         elif type == EventType.PLAYLIST_UPDATE:
             event_model = PlayListUpdateEvent(**data[type])
             self._listener.dispatch(event_name, event_model)
-            await self.__dispatch_new_series(event_model, data[type])
+            await self.__dispatch_new_series(event_model)
         elif type in [
             EventType.ENCODE_START,
             EventType.ENCODE_END,
             EventType.ENCODE_PROGRESS,
-            EventType.ENCODE_FINISH
+            EventType.ENCODE_FINISH,
         ]:
             self._listener.dispatch(event_name, EncodeEvent(**data[type]))
         elif type == EventType.TORRENT_UPDATE:
@@ -118,59 +127,25 @@ class WebSocketClient:
             self._listener.dispatch(event_name, data)
             log.debug(f"Not documented event type {type} dispatched with data: {data}")
 
-    async def __dispatch_new_series(self, event_model: PlayListUpdateEvent, data: dict):
+    async def __dispatch_new_series(self, event_model: PlayListUpdateEvent):
         """
-        Диспатчит ивент ``on_title_serie`` и вызывает функции с подпиской на тайтл, если найдёт
+        Диспатчит ивент ``on_title_serie``
 
         .. warning::
            Не пытайтесь самостоятельно использовать этот метод!
 
         :param event_model:
-        :param data:
         :return:
         """
         if not event_model.updated_episode:
             return
         hls = event_model.updated_episode.hls
-        if not hls.fhd or not hls.hd:  # Can `or not hls.sd` be removed?
+        if not hls.fhd or not hls.hd or not hls.sd or event_model.reupload:
             return
+        title = await self._http.v2.get_title(id=event_model.id)
+        event_model = TitleSerieEvent(title=title, episode=event_model.updated_episode)
+
         self._listener.dispatch("on_title_serie", event_model)
-
-        events = self._listener.events.get("on_subscribed_title_serie")
-        if events is None:
-            return
-        title_data = data["updated_episode"]
-        for event in events:
-            filled_data = event["data"]
-            if filled_data is None:
-                continue  # Can be data is None?
-            is_equal = self.check_equal(filled_data, title_data)
-            if not is_equal:
-                continue
-            self._listener._dispatch(event["coro"](event_model))
-
-    def check_equal(self, checker: dict, verifiable: dict):
-        """
-        Проверяет, идентичны ли значения первого словаря ко второму.
-        Для списков проверяет наличие первого во втором.
-
-        :param checker: Словарь, по которому будут проходится значения
-        :param verifiable: Словарь, по которому будут проверять значения.
-        :return: True - Если всё идентично, False - если нет
-        :rtype: bool
-        """
-        for key, value in checker.items():
-            if verifiable.get(key, "MISSING") == "MISSING":  # Can be None btw
-                return False
-            value_2 = verifiable[key]  # Can be first None and value_2 will be None???
-            if isinstance(value, (int, str)) and value != value_2:
-                return False
-            if isinstance(value, list) and not all(list_value in value_2 for list_value in value):
-                return False
-            if isinstance(value, dict):
-                if not self.check_equal(value, value_2):
-                    return False
-        return True
 
     async def __dispatch_other_events(self, data: dict):
         """

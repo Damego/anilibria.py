@@ -4,7 +4,7 @@
 """
 
 
-from anilibria import AniLibriaClient, PlayListUpdateEvent
+from anilibria import AniLibriaClient, TitleSerieEvent
 import disnake
 from disnake.ext import commands
 
@@ -23,9 +23,10 @@ async def on_connect():
     print("connected")
 
 
-@client.on_title_serie(code="texhnolyze")
-async def texhnolyze(event: PlayListUpdateEvent):
-    print("Вышла новая серия технолайза! (хз что это)")
+@client.event
+async def on_title_serie(event: TitleSerieEvent):
+    if event.title.code == "texhnolyze":
+        print("Вышла новая серия технолайза! (хз что это)")
 
 
 @bot.slash_command(name="random")

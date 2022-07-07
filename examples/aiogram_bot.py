@@ -4,7 +4,7 @@
 
 
 from aiogram import Bot, Dispatcher, types
-from anilibria import AniLibriaClient, PlayListUpdateEvent
+from anilibria import AniLibriaClient, TitleSerieEvent
 
 import logging
 
@@ -22,9 +22,10 @@ async def on_connect():
     print("Anilibria connected")
 
 
-@ani_client.on_title_serie(code="texhnolyze")
-async def texhnolyze(event: PlayListUpdateEvent):
-    print("Вышла новая серия технолайза! (хз что это)")
+@ani_client.event
+async def on_title_serie(event: TitleSerieEvent):
+    if event.title.code == "texhnolyze":
+        print("Вышла новая серия технолайза! (хз что это)")
 
 
 @dp.message_handler()
@@ -34,6 +35,7 @@ async def random(message: types.Message):
     title = await ani_client.get_random_title()
     name = title.names.ru
     await message.answer(name)
+
 
 if __name__ == "__main__":
     # В executor.start_polling() происходит много чего ещё, перед стартом бота,

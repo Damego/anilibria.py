@@ -4,6 +4,7 @@ from logging import getLogger
 
 
 log = getLogger("anilibria.dispatch")
+__all__ = ["EventDispatcher"]
 
 
 class EventDispatcher:
