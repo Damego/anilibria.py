@@ -47,7 +47,7 @@ class Status:
     """
 
     string: Optional[str] = field(default=None)
-    code: Optional[StatusCode] = field(converter=StatusCode, default=None)
+    code: Optional[StatusCode] = field(converter=StatusCode.from_value, default=None)
 
 
 @define
@@ -78,7 +78,7 @@ class Type:
     """
 
     full_string: Optional[str] = field(default=None)
-    code: Optional[TitleType] = field(converter=TitleType, default=None)
+    code: Optional[TitleType] = field(converter=TitleType.from_value, default=None)
     string: Optional[str] = field(default=None)
     series: Optional[int] = field(default=None)
     length: Optional[str] = field(default=None)
@@ -104,7 +104,7 @@ class Season:
     """
 
     string: Optional[str] = field(default=None)
-    code: Optional[SeasonCode] = field(converter=SeasonCode, default=None)
+    code: Optional[SeasonCode] = field(converter=SeasonCode.from_value, default=None)
     year: Optional[int] = field(default=None)
     week_day: Optional[int] = field(default=None)
 
