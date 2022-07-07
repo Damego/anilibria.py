@@ -34,7 +34,7 @@ class EventType(str, Enum):
 @define
 class EncodeEvent:
     """
-    Модель для ивентов ``on_encode_start``, ``on_encode_progress``, ``on_encode_end``
+    Модель для ивентов ``on_encode_start``, ``on_encode_progress``, ``on_encode_end`` и ``on_encode_finish``
 
     .. code-block:: python
 
@@ -43,8 +43,8 @@ class EncodeEvent:
           ...
     """
 
-    id: Optional[str] = field(default=None)
-    episode: Optional[str] = field(default=None)
+    id: str = field()
+    episode: str = field()
     resolution: Optional[str] = field(default=None)
     quality: Optional[str] = field(default=None)
     encoded_percent: Optional[str] = field(default=None)
@@ -62,12 +62,12 @@ class PlayListUpdateEvent:
           ...
     """
 
-    id: Optional[int] = field(default=None)
-    player: Optional[Player] = field(converter=convert(Player), default=None)
-    updated_episode: Optional[Serie] = field(converter=convert(Serie), default=None)
-    episode: Optional[str] = field(default=None)
-    diff: Optional[dict] = field(default=None)
-    reupload: Optional[bool] = field(default=None)
+    id: int = field()
+    player: Player = field(converter=convert(Player))
+    updated_episode: Serie = field(converter=convert(Serie))
+    episode: str = field()
+    diff: dict = field()
+    reupload: bool = field()
 
 
 @define
@@ -82,9 +82,9 @@ class TitleUpdateEvent:
           ...
     """
 
-    hash: Optional[str] = field(default=None)
-    title: Optional[Title] = field(converter=convert(Title), default=None)
-    diff: Optional[dict] = field(default=None)
+    hash: str = field()
+    title: Title = field(converter=convert(Title))
+    diff: dict = field()
 
 
 @define
@@ -99,11 +99,11 @@ class TorrentUpdateEvent:
           ...
     """
 
-    id: Optional[str] = field(default=None)
-    torrents: Optional[Torrents] = field(converter=convert(Torrents), default=None)
-    updated_torrent_id: Optional[int] = field(default=None)
-    diff: Optional[dict] = field(default=None)
-    hash: Optional[str] = field(default=None)
+    id: str = field()
+    torrents: Torrents = field(converter=convert(Torrents))
+    updated_torrent_id: int = field()
+    diff: dict = field()
+    hash: str = field()
 
 
 @define
@@ -118,5 +118,5 @@ class TitleSerieEvent:
           ...
     """
 
-    title: Title = field(converter=convert(Title), default=None)
-    episode: Serie = field(converter=convert(Serie), default=None)
+    title: Title = field(converter=convert(Title))
+    episode: Serie = field(converter=convert(Serie))
