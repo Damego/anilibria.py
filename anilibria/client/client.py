@@ -1,12 +1,11 @@
 from asyncio import get_event_loop, gather, AbstractEventLoop
-from typing import Coroutine, Dict, Union, Optional, List, Callable
+from typing import Coroutine,  Union, Optional, List
 from logging import getLogger
 
 from aiohttp.client_exceptions import WSServerHandshakeError
 
-from anilibria.api import WebSocketClient
-from anilibria.api.error import IsEmpty
-from anilibria.api.models.v2 import Title, Schedule, YouTubeData, Team, SeedStats
+from ..api import WebSocketClient
+from ..api.models.v2 import Title, Schedule, YouTubeData, Team, SeedStats, Include, DescriptionType, PlayListType
 
 
 log = getLogger("anilibria.client")
@@ -59,65 +58,6 @@ class AniLibriaClient:
 
         return decorator
 
-    def subscribe(
-        self,
-        coro: Callable = None,
-        *,
-        id: int = None,
-        code: str = None,
-        names: Dict[str, Union[str, None]] = None,
-        status: Dict[str, Union[str, int]] = None,
-        type: Dict[str, Union[str, int]] = None,
-        genres: List[str] = None,
-        season: Dict[str, Union[str, int]] = None,
-        blocked: Dict[str, bool] = None,
-    ):
-        """
-        Делает из функции ивент слушатель.
-        Будет вызываться каждый раз, когда появится новая серия тайтла с заданными параметрами.
-
-        :param coro: Корутина, для создания из неё ивент слушатель без использования декоратора.
-        :param id: Уникальные id тайтла.
-        :param code: Уникальные код тайтла
-        :param names: Словарь с названием тайтла.
-        :param status: Словарь со статусом тайтла.
-        :param type: Словарь с типом тайтла.
-        :param genres: Список с жанрами.
-        :param season: Словарь с сезоном тайтла.
-        :param blocked: Словарь со статусом блокировки.
-        """
-
-        def decorator(coro: Coroutine):
-            return self.event(coro, name="subscription", data=data)
-
-        data = self._to_dict(
-            id=id,
-            code=code,
-            names=names,
-            status=status,
-            type=type,
-            genres=genres,
-            season=season,
-            blocked=blocked,
-        )
-        if not data:
-            raise IsEmpty()
-
-        if coro is not None:
-            return self.event(coro, name="subscription", data=data)
-
-        return decorator
-
-    def _to_dict(self, **kwargs) -> dict:
-        """
-        Возвращает словарь, но без пустых значений
-
-        :param kwargs: Ключевые аргументы
-        :return: Словарь
-        :rtype: dict
-        """
-        return {key: value for key, value in kwargs.items() if value is not None}
-
     async def login(self, mail: str, password: str) -> str:
         """
         Входит в аккаунт и возвращает айди сессии.
@@ -140,9 +80,9 @@ class AniLibriaClient:
         torrent_id: Optional[int] = None,
         filter: Optional[List[str]] = None,
         remove: Optional[List[str]] = None,
-        include: Optional[List[str]] = None,
-        description_type: Optional[str] = None,
-        playlist_type: Optional[str] = None,
+        include: Optional[List[Include]] = None,
+        description_type: Optional[DescriptionType] = None,
+        playlist_type: Optional[PlayListType] = None,
     ) -> Title:
         """
         Возвращает объект тайтла с заданными параметрами.
@@ -176,9 +116,9 @@ class AniLibriaClient:
         code_list: Optional[List[str]] = None,
         filter: Optional[List[str]] = None,
         remove: Optional[List[str]] = None,
-        include: Optional[List[str]] = None,
-        description_type: Optional[str] = None,
-        playlist_type: Optional[str] = None,
+        include: Optional[List[Include]] = None,
+        description_type: Optional[DescriptionType] = None,
+        playlist_type: Optional[PlayListType] = None,
     ) -> List[Title]:
         """
         Возвращает список тайтлов с заданными параметрами.
@@ -208,10 +148,10 @@ class AniLibriaClient:
         self,
         filter: Optional[List[str]] = None,
         remove: Optional[List[str]] = None,
-        include: Optional[List[str]] = None,
+        include: Optional[List[Include]] = None,
         since: Optional[int] = None,
-        description_type: Optional[str] = None,
-        playlist_type: Optional[str] = None,
+        description_type: Optional[DescriptionType] = None,
+        playlist_type: Optional[PlayListType] = None,
         after: Optional[int] = None,
         limit: Optional[int] = None,
     ) -> List[Title]:
@@ -245,9 +185,9 @@ class AniLibriaClient:
         self,
         filter: Optional[List[str]] = None,
         remove: Optional[List[str]] = None,
-        include: Optional[List[str]] = None,
+        include: Optional[List[Include]] = None,
         since: Optional[int] = None,
-        description_type: Optional[str] = None,
+        description_type: Optional[DescriptionType] = None,
         after: Optional[int] = None,
         limit: Optional[int] = None,
     ) -> List[Title]:
@@ -279,10 +219,10 @@ class AniLibriaClient:
         self,
         filter: Optional[List[str]] = None,
         remove: Optional[List[str]] = None,
-        include: Optional[List[str]] = None,
+        include: Optional[List[Include]] = None,
         days: List[int] = None,
-        description_type: Optional[str] = None,
-        playlist_type: Optional[str] = None,
+        description_type: Optional[DescriptionType] = None,
+        playlist_type: Optional[PlayListType] = None,
     ) -> List[Schedule]:
         """
         Возвращает список последних обновлений тайтлов с заданными параметрами по дням.
@@ -310,9 +250,9 @@ class AniLibriaClient:
         self,
         filter: Optional[List[str]] = None,
         remove: Optional[List[str]] = None,
-        include: Optional[List[str]] = None,
-        description_type: Optional[str] = None,
-        playlist_type: Optional[str] = None,
+        include: Optional[List[Include]] = None,
+        description_type: Optional[DescriptionType] = None,
+        playlist_type: Optional[PlayListType] = None,
     ) -> Title:
         """
         Возвращает рандомный тайтл с заданными параметрами.
@@ -338,7 +278,7 @@ class AniLibriaClient:
         self,
         filter: Optional[List[str]] = None,
         remove: Optional[List[str]] = None,
-        include: Optional[List[str]] = None,
+        include: Optional[List[Include]] = None,
         since: Optional[int] = None,
         after: Optional[int] = None,
         limit: Optional[int] = None,
@@ -369,10 +309,10 @@ class AniLibriaClient:
         self,
         filter: Optional[List[str]] = None,
         remove: Optional[List[str]] = None,
-        include: Optional[List[str]] = None,
+        include: Optional[List[Include]] = None,
         since: Optional[int] = None,
-        description_type: Optional[str] = None,
-        playlist_type: Optional[str] = None,
+        description_type: Optional[DescriptionType] = None,
+        playlist_type: Optional[PlayListType] = None,
         after: Optional[int] = None,
         limit: Optional[int] = None,
     ) -> List[Union[Title, YouTubeData]]:
@@ -444,9 +384,9 @@ class AniLibriaClient:
         self,
         users: Optional[List[str]] = None,
         remove: Optional[List[str]] = None,
-        include: Optional[List[str]] = None,
-        description_type: Optional[str] = None,
-        playlist_type: Optional[str] = None,
+        include: Optional[List[Include]] = None,
+        description_type: Optional[DescriptionType] = None,
+        playlist_type: Optional[PlayListType] = None,
         after: Optional[int] = None,
         sort_by: Optional[str] = None,
         order: Optional[int] = None,
@@ -521,9 +461,9 @@ class AniLibriaClient:
         timing: Optional[List[str]] = None,
         filter: Optional[List[str]] = None,
         remove: Optional[List[str]] = None,
-        include: Optional[List[str]] = None,
-        description_type: Optional[str] = None,
-        playlist_type: Optional[str] = None,
+        include: Optional[List[Include]] = None,
+        description_type: Optional[DescriptionType] = None,
+        playlist_type: Optional[PlayListType] = None,
         after: Optional[int] = None,
         limit: Optional[int] = None,
     ) -> List[Title]:
@@ -574,9 +514,9 @@ class AniLibriaClient:
         query: str,
         filter: Optional[List[str]] = None,
         remove: Optional[List[str]] = None,
-        include: Optional[List[str]] = None,
-        description_type: Optional[str] = None,
-        playlist_type: Optional[str] = None,
+        include: Optional[List[Include]] = None,
+        description_type: Optional[DescriptionType] = None,
+        playlist_type: Optional[PlayListType] = None,
         after: Optional[int] = None,
         order_by: str = None,
         limit: Optional[int] = None,
@@ -617,9 +557,9 @@ class AniLibriaClient:
         session_id: str,
         filter: Optional[List[str]] = None,
         remove: Optional[List[str]] = None,
-        include: Optional[List[str]] = None,
-        description_type: Optional[str] = None,
-        playlist_type: Optional[str] = None,
+        include: Optional[List[Include]] = None,
+        description_type: Optional[DescriptionType] = None,
+        playlist_type: Optional[PlayListType] = None,
     ) -> List[Title]:
         """
         Возвращает список избранных тайтлов пользователя
