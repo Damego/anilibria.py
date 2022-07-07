@@ -83,12 +83,6 @@ class WebSocketClient:
         if packet.type == WSMsgType.CLOSED:
             return WS_CLOSED_MESSAGE
 
-        if packet.type != WSMsgType.TEXT:
-            # I need this for a moment because message types are not documented in the API
-            # and I should to wait for a new event a long time
-            log.warning(packet)
-            return
-
         return packet.json() if packet.data and isinstance(packet.data, str) else None
 
     async def __dispatch_events(self, data: dict):
@@ -144,7 +138,6 @@ class WebSocketClient:
             return
         title = await self._http.v2.get_title(id=event_model.id)
         event_model = TitleSerieEvent(title=title, episode=event_model.updated_episode)
-
         self._listener.dispatch("on_title_serie", event_model)
 
     async def __dispatch_other_events(self, data: dict):

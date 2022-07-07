@@ -119,4 +119,4 @@ class TitleSerieEvent:
     """
 
     title: Title = field(converter=convert(Title))
-    episode: Serie = field(converter=convert(Serie))
+    episode: Serie = field()  # Нет конвертера, так как передаётся из другой модели

@@ -4,6 +4,7 @@ from enum import Enum
 __all__ = [
     "AttrEnum",
     "StrEnum",
+    "IntEnum",
     "StatusCode",
     "TitleType",
     "SeasonCode",
