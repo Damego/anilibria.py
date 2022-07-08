@@ -131,11 +131,22 @@ class WebSocketClient:
         :param event_model:
         :return:
         """
-        if not event_model.updated_episode:
+
+        # Cool logic of checking new series
+        if event_model.updated_episode is None:
             return
         hls = event_model.updated_episode.hls
-        if not hls.fhd or not hls.hd or not hls.sd or event_model.reupload:
+        if not hls.fhd or not hls.hd or not hls.sd:
             return
+        if (playlist := event_model.diff.get("playlist")) is None:
+            return
+        if (series := playlist.values()) is None:
+            return
+        if (hls := series[0].get("hls")) is None:
+            return
+        if hls.get("sd") and hls.get("hd") and hls.get("fhd"):
+            return
+
         title = await self._http.v2.get_title(id=event_model.id)
         event_model = TitleSerieEvent(title=title, episode=event_model.updated_episode)
         self._listener.dispatch("on_title_serie", event_model)
