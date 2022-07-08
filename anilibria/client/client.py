@@ -39,6 +39,8 @@ class AniLibriaClient:
                 await self._start()
             else:
                 raise exc from exc
+        except KeyboardInterrupt:
+            pass
 
     def event(self, coro: Coroutine = None, *, name: str = None, data: dict = None):
         """

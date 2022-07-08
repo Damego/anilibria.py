@@ -15,17 +15,20 @@ class DictSerializer:
         passed_kwargs: dict = {}
         attribs: Tuple[attrs.Attribute, ...] = self.__attrs_attrs__
 
-        for kwarg in kwargs:
-            if kwarg not in self.__slots__:
-                log.debug(f"Attribute `{kwarg}` is missing from the `{self.__class__.__name__}` data model!")
-
         for attrib in attribs:
             metadata = attrib.metadata
             attr_name = attrib.name
             if anilibria_name := metadata.get("anilibria_name"):
-                passed_kwargs[attr_name] = kwargs.get(anilibria_name)
+                name = anilibria_name
             else:
-                passed_kwargs[attr_name] = kwargs.get(attr_name)
+                name = attr_name
+            value = kwargs.get(name, "MISSING")
+            if value != "MISSING":
+                del kwargs[name]
+            passed_kwargs[attr_name] = value
+
+        for kwarg in kwargs:
+            log.debug(f"Attribute `{kwarg}` is missing from the `{self.__class__.__name__}` data model!")
 
         self.__attrs_init__(**passed_kwargs)
 
