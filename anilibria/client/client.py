@@ -58,6 +58,37 @@ class AniLibriaClient:
 
         return decorator
 
+    async def subscribe(self, subscribe: dict, filter: str = None, remove: str = None):
+        """
+        По умолчанию клиент получает все возможные уведомления от API.
+        Но можно подписаться на определённые ивенты, или ивенты с каким-то фильтром
+
+        .. code-block:: python
+
+           await subscribe(
+               {
+                   "title_update": {
+                       "title": {
+                           "season": {
+                               "year": 2022
+                           }
+                       }
+                   }
+               }
+           )
+
+        :param subscribe: Данные о подписке. Здесь может быть всё то, что принимает веб сокет.
+        :param filter: То, что должно быть включено в подписку.
+        :param remove: То, что нужно удалить из подписки.
+        """
+        data = {"subscribe": subscribe}
+        if filter is not None:
+            data["filter"] = filter
+        if remove is not None:
+            data["remove"] = remove
+
+        await self._websocket.subscribe(data)
+
     async def login(self, mail: str, password: str) -> str:
         """
         Входит в аккаунт и возвращает айди сессии.

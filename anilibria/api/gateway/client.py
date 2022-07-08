@@ -154,5 +154,16 @@ class WebSocketClient:
             self.api_version = api_version
             log.debug(f"Successfully connected to API. API version {api_version}")
             self._listener.dispatch("on_connect")
+        elif data.get("subscribe"):
+            log.debug(f"Successfully subscribed! subscription_id={data['subscription_id']}")
         else:
             log.debug(f"Not documented event data: {data}")
+
+    async def subscribe(self, data: dict):
+        """
+        Отправляет словарь с данными о подписке вебсокету
+
+        :param data:
+        :return:
+        """
+        await self._client.send_json(data)
