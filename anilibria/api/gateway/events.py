@@ -1,10 +1,8 @@
 from typing import Optional
 
-from attrs import define, field
-
 from enum import Enum
 from ..models import Player, Serie, Title, Torrents
-from ..models.attrs_utils import convert
+from ..models.attrs_utils import convert, define, field, DictSerializer
 
 
 __all__ = [
@@ -31,8 +29,8 @@ class EventType(str, Enum):
     TORRENT_UPDATE = "torrent_update"
 
 
-@define
-class EncodeEvent:
+@define()
+class EncodeEvent(DictSerializer):
     """
     Модель для ивентов ``on_encode_start``, ``on_encode_progress``, ``on_encode_end`` и ``on_encode_finish``
 
@@ -48,10 +46,11 @@ class EncodeEvent:
     resolution: Optional[str] = field(default=None)
     quality: Optional[str] = field(default=None)
     encoded_percent: Optional[str] = field(default=None)
+    is_reupload: Optional[bool] = field(default=None, anilibria_name="isReupload")  # idk this is optional or not
 
 
-@define
-class PlayListUpdateEvent:
+@define()
+class PlayListUpdateEvent(DictSerializer):
     """
     Модель для ивента ``on_playlist_update``
 
@@ -70,8 +69,8 @@ class PlayListUpdateEvent:
     reupload: bool = field()
 
 
-@define
-class TitleUpdateEvent:
+@define()
+class TitleUpdateEvent(DictSerializer):
     """
     Модель для ивента ``on_title_update``
 
@@ -87,8 +86,8 @@ class TitleUpdateEvent:
     diff: dict = field()
 
 
-@define
-class TorrentUpdateEvent:
+@define()
+class TorrentUpdateEvent(DictSerializer):
     """
     Модель для ивента `on_torrent_update`
 
@@ -106,8 +105,8 @@ class TorrentUpdateEvent:
     hash: str = field()
 
 
-@define
-class TitleSerieEvent:
+@define()
+class TitleSerieEvent(DictSerializer):
     """
     Модель для ивента `on_title_serie` и подписок.
 

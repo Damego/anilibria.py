@@ -1,9 +1,7 @@
 from typing import List, Optional, Dict, Union
 
-from attrs import define, field
-
 from .enums import StatusCode, TitleType, SeasonCode
-from ..attrs_utils import convert_list, convert, convert_playlist
+from ..attrs_utils import convert_list, convert, convert_playlist, define, field, DictSerializer
 
 
 __all__ = [
@@ -29,8 +27,8 @@ __all__ = [
 ]
 
 
-@define
-class Names:
+@define()
+class Names(DictSerializer):
     """
     Содержит в себе названия тайтла на русском, английском и альтернативном языках
     """
@@ -40,8 +38,8 @@ class Names:
     alternative: Optional[str] = field(default=None)
 
 
-@define
-class Status:
+@define()
+class Status(DictSerializer):
     """
     Содержит в себе текущий статус тайтла
     """
@@ -50,8 +48,8 @@ class Status:
     code: Optional[StatusCode] = field(converter=StatusCode.from_value, default=None)
 
 
-@define
-class Poster:
+@define()
+class Poster(DictSerializer):
     """
     Модель постера.
     """
@@ -60,8 +58,8 @@ class Poster:
     raw_base64_file: Optional[str] = field(default=None)
 
 
-@define
-class Posters:
+@define()
+class Posters(DictSerializer):
     """
     Модель, которая содержит в себе постеры разных размеров.
     """
@@ -71,8 +69,8 @@ class Posters:
     original: Optional[Poster] = field(converter=convert(Poster), default=None)
 
 
-@define
-class Type:
+@define()
+class Type(DictSerializer):
     """
     Модель с информацией о типе тайтла.
     """
@@ -84,8 +82,8 @@ class Type:
     length: Optional[str] = field(default=None)
 
 
-@define
-class Team:
+@define()
+class Team(DictSerializer):
     """
     Модель с участниками, которые принимали участие в переводе тайтла.
     """
@@ -97,8 +95,8 @@ class Team:
     timing: Optional[List[str]] = field(factory=list)
 
 
-@define
-class Season:
+@define()
+class Season(DictSerializer):
     """
     Модель с информацией о сезоне тайтла.
     """
@@ -109,8 +107,8 @@ class Season:
     week_day: Optional[int] = field(default=None)
 
 
-@define
-class Blocked:
+@define()
+class Blocked(DictSerializer):
     """
     Модель с информацией о статусе блокировки тайтла.
     """
@@ -119,8 +117,8 @@ class Blocked:
     bakanim: Optional[bool] = field(default=None)
 
 
-@define
-class Series:
+@define()
+class Series(DictSerializer):
     """
     Модель, которая содержит информацию о
     """
@@ -130,8 +128,8 @@ class Series:
     string: Optional[str] = field(default=None)
 
 
-@define
-class HLS:
+@define()
+class HLS(DictSerializer):
     """
     Модель с ссылками на разные разрешения серий.
     """
@@ -141,8 +139,8 @@ class HLS:
     sd: Optional[str] = field(default=None)
 
 
-@define
-class SerieSkips:
+@define()
+class SerieSkips(DictSerializer):
     """
     Модель с таймкодами для пропуска опенинга и эндинга.
     """
@@ -151,8 +149,8 @@ class SerieSkips:
     ending: Optional[List[str]] = field(factory=list)
 
 
-@define
-class Serie:
+@define()
+class Serie(DictSerializer):
     """
     Модель с информацией о серии.
     """
@@ -166,8 +164,8 @@ class Serie:
     )  # Not documented in the docs
 
 
-@define
-class Player:
+@define()
+class Player(DictSerializer):
     """
     Модель с информацией о плеере и сериях.
     """
@@ -178,8 +176,8 @@ class Player:
     playlist: Optional[Union[List[Serie], Dict[str, Serie]]] = field(converter=convert_playlist(Serie), factory=list)
 
 
-@define
-class Quality:
+@define()
+class Quality(DictSerializer):
     """
     Модель с информацией о качестве тайтла.
     """
@@ -191,15 +189,15 @@ class Quality:
     lq_audio: Optional[bool] = field(default=None)
 
 
-@define
-class TorrentFile:
+@define()
+class TorrentFile(DictSerializer):
     file: str
     size: int
     offset: int
 
 
-@define
-class TorrentMetaData:
+@define()
+class TorrentMetaData(DictSerializer):
     hash: str = field()
     name: str = field()
     announce: List[str] = field(converter=list)
@@ -207,8 +205,8 @@ class TorrentMetaData:
     files_list: List[TorrentFile] = field(converter=convert_list(TorrentFile))
 
 
-@define
-class Torrent:
+@define()
+class Torrent(DictSerializer):
     """
     Модель с информацией о торренте
     """
@@ -227,8 +225,8 @@ class Torrent:
     hash: Optional[str] = field(default=None)
 
 
-@define
-class Torrents:
+@define()
+class Torrents(DictSerializer):
     """
     Модель со списком торрентов и информации о сериях.
     """
@@ -237,8 +235,8 @@ class Torrents:
     list: Optional[List[Torrent]] = field(converter=convert_list(Torrent), factory=list)
 
 
-@define
-class Title:
+@define()
+class Title(DictSerializer):
     """
     Модель тайтла
     """
