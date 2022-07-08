@@ -16,10 +16,10 @@ class EventDispatcher:
         self.loop.create_task(coro)
 
     def dispatch(self, name: str, *args, **kwargs):
+        log.debug(f"Dispatching event {name}")
         for event_data in self.events.get(name, []):
             event = event_data["coro"]
             self._dispatch(event(*args, **kwargs))
-        log.debug(f"Event {name} dispatched")
 
     def add_event(self, name: str, data: Dict[str, Union[Callable, str]]):
         event = self.events.get(name, [])

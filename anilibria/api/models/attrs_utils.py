@@ -23,9 +23,9 @@ class DictSerializer:
             metadata = attrib.metadata
             attr_name = attrib.name
             if anilibria_name := metadata.get("anilibria_name"):
-                passed_kwargs[attr_name] = kwargs[anilibria_name]
+                passed_kwargs[attr_name] = kwargs.get(anilibria_name)
             else:
-                passed_kwargs[attr_name] = kwargs[attr_name]
+                passed_kwargs[attr_name] = kwargs.get(attr_name)
 
         self.__attrs_init__(**passed_kwargs)
 
