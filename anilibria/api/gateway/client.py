@@ -144,7 +144,7 @@ class WebSocketClient:
             return
         if (hls := series[0].get("hls")) is None:
             return
-        if hls.get("sd") and hls.get("hd") and hls.get("fhd"):
+        if hls.get("sd") is None or hls.get("hd") is None or hls.get("fhd") is None:
             return
 
         title = await self._http.v2.get_title(id=event_model.id)
