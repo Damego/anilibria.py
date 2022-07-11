@@ -6,7 +6,7 @@ from aiohttp.client_exceptions import WSServerHandshakeError
 
 from ..api import WebSocketClient
 from ..api.models.v2 import Title, Schedule, YouTubeData, Team, SeedStats, Include, DescriptionType, PlayListType
-
+from ..api.dispatch import Event
 
 log = getLogger("anilibria.client")
 __all__ = ["AniLibriaClient"]
@@ -51,11 +51,11 @@ class AniLibriaClient:
         :param data: Дополнительные данные.
         """
         if coro is not None:
-            self._websocket._listener.add_event(name or coro.__name__, {"coro": coro, "data": data})
+            self._websocket.dispatcher.add_event(name or coro.__name__, Event(coro=coro, data=data))
             return coro
 
         def decorator(coro: Coroutine):
-            self._websocket._listener.add_event(name or coro.__name__, {"coro": coro, "data": data})
+            self._websocket.dispatcher.add_event(name or coro.__name__, Event(coro=coro, data=data))
             return coro
 
         return decorator

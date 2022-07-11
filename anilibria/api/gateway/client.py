@@ -1,4 +1,4 @@
-from asyncio import get_event_loop, get_running_loop, new_event_loop
+from asyncio import get_event_loop, get_running_loop, new_event_loop, AbstractEventLoop
 from typing import List, Union, Optional
 from logging import getLogger
 from sys import version_info
@@ -29,17 +29,21 @@ class WebSocketClient:
     """
 
     def __init__(self, proxy: str = None):
-        try:
-            self._loop = get_event_loop() if version_info < (3, 10) else get_running_loop()
-        except RuntimeError:
-            self._loop = new_event_loop()
+        self._loop: AbstractEventLoop = self.__get_event_loop()
         self._http = HTTPClient(proxy)
-        self._listener = EventDispatcher()
+        self.dispatcher = EventDispatcher()
         self.proxy: str = proxy
-        self._client: ClientWebSocketResponse = None
+        self._client: ClientWebSocketResponse = None  # type: ignore
         self._closed: bool = False
-        self._subscribes: List[dict] = None
-        self.api_version: str = None
+        self._subscribes: List[dict] = None  # type: ignore
+        self.api_version: str = None  # type: ignore
+
+    def __get_event_loop(self):
+        try:
+            loop = get_event_loop() if version_info < (3, 10) else get_running_loop()
+        except RuntimeError:
+            loop = new_event_loop()
+        return loop
 
     async def run(self):
         """
@@ -87,7 +91,7 @@ class WebSocketClient:
 
     async def __dispatch_events(self, data: dict):
         """
-        Принимает словарь с данными об ивенте и диспатчит их.
+        Диспатчит ивенты
 
         .. warning::
            Не пытайтесь самостоятельно использовать этот метод!
@@ -95,33 +99,35 @@ class WebSocketClient:
         :param data: Словарь с данными об ивенте
         :type data: dict
         """
-        self._listener.dispatch("on_raw_packet", data)
+        self.dispatcher.dispatch("on_raw_packet", data)
 
         type = data.get("type")
         if type is None:
             return await self.__dispatch_other_events(data)
 
         event_name = f"on_{type}"
-        if type == EventType.TITLE_UPDATE:
-            self._listener.dispatch(event_name, TitleUpdateEvent(**data[type]))
-        elif type == EventType.PLAYLIST_UPDATE:
-            event_model = PlayListUpdateEvent(**data[type])
-            self._listener.dispatch(event_name, event_model)
-            await self.__dispatch_new_series(event_model)
-        elif type in [
-            EventType.ENCODE_START,
-            EventType.ENCODE_END,
-            EventType.ENCODE_PROGRESS,
-            EventType.ENCODE_FINISH,
-        ]:
-            self._listener.dispatch(event_name, EncodeEvent(**data[type]))
-        elif type == EventType.TORRENT_UPDATE:
-            self._listener.dispatch(event_name, TorrentUpdateEvent(**data[type]))
+        event_model = self.__get_event_model(EventType(type), data[type])
+        if event_model is not None:
+            self.dispatcher.dispatch(event_name, event_model)
+            if type == EventType.PLAYLIST_UPDATE:
+                await self.__dispatch_title_serie(event_model)
         else:
-            self._listener.dispatch(event_name, data)
+            self.dispatcher.dispatch(event_name, data)
             log.debug(f"Not documented event type {type} dispatched with data: {data}")
 
-    async def __dispatch_new_series(self, event_model: PlayListUpdateEvent):
+    def __get_event_model(self, event_type: EventType, data: dict):
+        events = {
+            EventType.TITLE_UPDATE: TitleUpdateEvent,
+            EventType.PLAYLIST_UPDATE: PlayListUpdateEvent,
+            EventType.ENCODE_START: EncodeEvent,
+            EventType.ENCODE_PROGRESS: EncodeEvent,
+            EventType.ENCODE_END: EncodeEvent,
+            EventType.ENCODE_FINISH: EncodeEvent,
+            EventType.TORRENT_UPDATE: TorrentUpdateEvent
+        }
+        return model(**data) if (model := events.get(event_type)) else None
+
+    async def __dispatch_title_serie(self, event_model: PlayListUpdateEvent):
         """
         Диспатчит ивент ``on_title_serie``
 
@@ -129,7 +135,7 @@ class WebSocketClient:
            Не пытайтесь самостоятельно использовать этот метод!
 
         :param event_model:
-        :return:
+        :type event_model: PlayListUpdateEvent
         """
 
         # Cool(hehe no. pls help me) logic of checking new series
@@ -142,12 +148,12 @@ class WebSocketClient:
             return
         if (series := list(playlist.values())) is None:
             return
-        if series[0].get("hls") is None:
+        if series and series[0].get("hls") is None:
             return
 
         title = await self._http.v2.get_title(id=event_model.id)
         event_model = TitleSerieEvent(title=title, episode=event_model.updated_episode)
-        self._listener.dispatch("on_title_serie", event_model)
+        self.dispatcher.dispatch("on_title_serie", event_model)
 
     async def __dispatch_other_events(self, data: dict):
         """
@@ -162,7 +168,7 @@ class WebSocketClient:
         if api_version := data.get("api_version"):
             self.api_version = api_version
             log.debug(f"Successfully connected to API. API version {api_version}")
-            self._listener.dispatch("on_connect")
+            self.dispatcher.dispatch("on_connect")
         elif data.get("subscribe"):
             log.debug(f"Successfully subscribed! subscription_id={data['subscription_id']}")
         else:
