@@ -12,7 +12,7 @@ log = getLogger("anilibria.attrs")
 @attrs.define(eq=False, init=False)
 class DictSerializer:
     def __init__(self, **kwargs):
-        passed_kwargs: dict = {}
+        passed_kwargs = {}
         attribs: Tuple[attrs.Attribute, ...] = self.__attrs_attrs__
 
         for attrib in attribs:
