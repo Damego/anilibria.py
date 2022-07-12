@@ -148,7 +148,7 @@ class WebSocketClient:
             return
         if (series := list(playlist.values())) is None:
             return
-        if series and series[0].get("hls") is None:
+        if (not series) or (series and series[0].get("hls") is None):
             return
 
         title = await self._http.v2.get_title(id=event_model.id)
