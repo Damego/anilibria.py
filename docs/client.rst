@@ -1,6 +1,6 @@
 Anilibria Client
 ================
 
-.. automodule:: anilibria.client
+.. automodule:: anilibria.client.client
    :members:
    :undoc-members:
