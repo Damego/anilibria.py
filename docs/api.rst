@@ -25,3 +25,9 @@ API Reference
     :caption: HTTP клиент
 
     anilibria.api.http.rst
+
+.. toctree::
+    :maxdepth: 2
+    :caption: Объекты Enum
+
+    anilibria.api.models.v2.enums.rst
