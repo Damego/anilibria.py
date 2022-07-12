@@ -139,21 +139,32 @@ class WebSocketClient:
         """
 
         # Cool(hehe no. pls help me) logic of checking new series
-        if event_model.updated_episode is None:
-            return
-        hls = event_model.updated_episode.hls
-        if hls.fhd and hls.hd and hls.sd:
-            return
-        if (playlist := event_model.diff.get("playlist")) is None:
-            return
-        if (series := list(playlist.values())) is None:
-            return
-        if (not series) or (series and series[0].get("hls") is None):
+        if not self.is_new_serie(event_model):
             return
 
         title = await self._http.v2.get_title(id=event_model.id)
         event_model = TitleSerieEvent(title=title, episode=event_model.updated_episode)
         self.dispatcher.dispatch("on_title_serie", event_model)
+
+    def is_new_serie(self, event: PlayListUpdateEvent):
+        """
+        Проверяет, это новая серия или перезалив/другое
+
+        :param event:
+        """
+        if event.updated_episode is None:
+            return False
+        hls = event.updated_episode.hls
+        if hls.fhd and hls.hd and hls.sd:
+            return False
+        if (playlist := event.diff.get("playlist")) is None:
+            return False
+        if (series := list(playlist.values())) is None:
+            return False
+        if (not series) or (series and series[0].get("hls") is None):
+            return False
+
+        return True
 
     async def __dispatch_other_events(self, data: dict):
         """
