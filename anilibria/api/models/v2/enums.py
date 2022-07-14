@@ -59,6 +59,7 @@ class TitleType(IntEnum):
     OVA = 2
     ONA = 3
     SPECIAL = 4
+    WEB = 5
 
 
 class SeasonCode(IntEnum):
