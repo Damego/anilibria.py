@@ -5,7 +5,7 @@ from logging import getLogger
 from aiohttp.client_exceptions import WSServerHandshakeError
 
 from ..api import WebSocketClient
-from ..api.models.v2 import Title, Schedule, YouTubeData, Team, SeedStats, Include, DescriptionType, PlayListType
+from ..api.models.v2 import Title, Schedule, YouTubeData, Team, SeedStats, Include, DescriptionType, PlayListType, RSSType
 from ..api.dispatch import Event
 
 log = getLogger("anilibria.client")
@@ -455,12 +455,12 @@ class AniLibriaClient:
 
     async def get_rss(
         self,
-        rss_type: Optional[str] = None,
+        rss_type: Optional[RSSType] = None,
         session_id: Optional[str] = None,
         since: Optional[int] = None,
         after: Optional[int] = None,
         limit: Optional[int] = None,
-    ) -> str:  # ? str?
+    ) -> str:
         """
         Возвращает список обновлений на сайте в одном из форматов RSS ленты.
 
@@ -484,7 +484,7 @@ class AniLibriaClient:
     async def search_titles(
         self,
         search: Optional[List[str]] = None,
-        year: Optional[List[str]] = None,
+        year: Optional[List[Union[str, int]]] = None,
         season_code: Optional[List[str]] = None,
         genres: Optional[List[str]] = None,
         voice: Optional[List[str]] = None,
