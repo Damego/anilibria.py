@@ -27,7 +27,7 @@ class V2Request:
             if isinstance(value, (str, int)):
                 list_data.append(f"{kwarg}={value}")
             elif isinstance(value, list):
-                list_data.append(f"{kwarg}={','.join(value)}")
+                list_data.append(f"{kwarg}={','.join([str(val) for val in value])}")
             elif value is None:
                 continue
 
