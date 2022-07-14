@@ -19,11 +19,12 @@ class AttrEnum(Enum):
     @classmethod
     def from_value(cls, value):
         """
-        Similar to Enum(value) but if value not found then value will be None
+        Similar to Enum(value) but if value not found then returns value
         """
-        if value is None:
-            return None
-        return cls(value)
+        try:
+            return cls(value)
+        except ValueError:
+            return value
 
 
 class StrEnum(str, AttrEnum):
