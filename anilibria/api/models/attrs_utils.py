@@ -5,8 +5,12 @@ from logging import getLogger
 import attrs
 
 
-__all__ = ["DictSerializer", "define", "field", "convert", "convert_list", "convert_playlist"]
+__all__ = ["MISSING", "DictSerializer", "define", "field", "convert", "convert_list", "convert_playlist"]
 log = getLogger("anilibria.attrs")
+
+
+class MISSING:
+    ...
 
 
 @attrs.define(eq=False, init=False)
@@ -22,8 +26,8 @@ class DictSerializer:
                 name = anilibria_name
             else:
                 name = attr_name
-            value = kwargs.get(name, "MISSING")
-            if value != "MISSING":
+            value = kwargs.get(name, MISSING)
+            if value != MISSING:
                 del kwargs[name]
             passed_kwargs[attr_name] = value
 
@@ -52,10 +56,10 @@ def field(anilibria_name: str = None, **kwargs):
 
 def convert(obj):
     def wrapper(kwargs):
+        if kwargs == "MISSING" or kwargs is MISSING:
+            return MISSING
         if kwargs is None:
             return None
-        if kwargs == "MISSING":
-            return "MISSING"
         return obj(**kwargs)
 
     return wrapper
@@ -63,6 +67,8 @@ def convert(obj):
 
 def convert_list(obj):
     def wrapper(list):
+        if list == "MISSING" or list is MISSING:
+            return MISSING
         if list is None:
             return []
         return [obj(**_) for _ in list]
@@ -72,6 +78,8 @@ def convert_list(obj):
 
 def convert_playlist(obj):
     def wrapper(playlist: Union[dict, list]):
+        if playlist == "MISSING" or playlist is MISSING:
+            return MISSING
         if isinstance(playlist, list):
             return [obj(**_) for _ in playlist]
         else:
