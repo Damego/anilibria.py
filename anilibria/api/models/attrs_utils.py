@@ -54,6 +54,8 @@ def convert(obj):
     def wrapper(kwargs):
         if kwargs is None:
             return None
+        if kwargs == "MISSING":
+            return "MISSING"
         return obj(**kwargs)
 
     return wrapper
