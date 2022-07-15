@@ -7,6 +7,7 @@ from aiohttp.client_exceptions import WSServerHandshakeError
 from ..api import WebSocketClient
 from ..api.models.v2 import Title, Schedule, YouTubeData, Team, SeedStats, Include, DescriptionType, PlayListType, RSSType
 from ..api.dispatch import Event
+from ..api.error import NoArgumentsError
 
 log = getLogger("anilibria.client")
 __all__ = ["AniLibriaClient"]
@@ -131,6 +132,9 @@ class AniLibriaClient:
         :return: Объект тайтла
         :rtype: Title
         """
+        if id is None and code is None:
+            raise NoArgumentsError("id", "code")
+
         data = await self._websocket._http.v2.get_title(
             id=id,
             code=code,
@@ -166,6 +170,9 @@ class AniLibriaClient:
         :return: Список тайтлов
         :rtype: List[Title]
         """
+        if id_list is None and code_list is None:
+            raise NoArgumentsError("id_list", "code_list")
+
         data = await self._websocket._http.v2.get_titles(
             id_list=id_list,
             code_list=code_list,

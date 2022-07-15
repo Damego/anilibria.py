@@ -1,11 +1,8 @@
 class HTTPException(Exception):
     def __init__(self, code: int, message: str) -> None:
-        self.code = code
-        self.message = message
-
-        super().__init__(f"HTTP error with code: {self.code}!\nMessage: {self.message}")
+        super().__init__(f"HTTP error with code: {code}!\nMessage: {message}")
 
 
-class IsEmpty(Exception):
-    def __init__(self) -> None:
-        super().__init__(f"Dict cannot be empty!")
+class NoArgumentsError(Exception):
+    def __init__(self, *missed_args):
+        super().__init__(f"Should be at least one argument of {', '.join(missed_args)}")
