@@ -1,11 +1,21 @@
 from asyncio import get_event_loop, gather, AbstractEventLoop
-from typing import Coroutine,  Union, Optional, List
+from typing import Coroutine, Union, Optional, List
 from logging import getLogger
 
 from aiohttp.client_exceptions import WSServerHandshakeError
 
-from ..api import WebSocketClient
-from ..api.models.v2 import Title, Schedule, YouTubeData, Team, SeedStats, Include, DescriptionType, PlayListType, RSSType
+from ..api import WebSocketClient, HTTPClient
+from ..api.models.v2 import (
+    Title,
+    Schedule,
+    YouTubeData,
+    Team,
+    SeedStats,
+    Include,
+    DescriptionType,
+    PlayListType,
+    RSSType,
+)
 from ..api.dispatch import Event
 from ..api.error import NoArgumentsError
 

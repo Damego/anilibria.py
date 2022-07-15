@@ -173,7 +173,9 @@ class Player(DictSerializer):
     alternative_player: Optional[str] = field(default=None)
     host: Optional[str] = field(default=None)
     series: Optional[Series] = field(converter=convert(Series), default=None)
-    playlist: Optional[Union[List[Serie], Dict[str, Serie]]] = field(converter=convert_playlist(Serie), factory=list)
+    playlist: Optional[Union[List[Serie], Dict[str, Serie]]] = field(
+        converter=convert_playlist(Serie), factory=list
+    )
 
 
 @define()

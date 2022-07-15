@@ -5,7 +5,15 @@ from logging import getLogger
 import attrs
 
 
-__all__ = ["MISSING", "DictSerializer", "define", "field", "convert", "convert_list", "convert_playlist"]
+__all__ = [
+    "MISSING",
+    "DictSerializer",
+    "define",
+    "field",
+    "convert",
+    "convert_list",
+    "convert_playlist",
+]
 log = getLogger("anilibria.attrs")
 
 
@@ -32,7 +40,9 @@ class DictSerializer:
             passed_kwargs[attr_name] = value
 
         for kwarg in kwargs:
-            log.debug(f"Attribute `{kwarg}` is missing from the `{self.__class__.__name__}` data model!")
+            log.debug(
+                f"Attribute `{kwarg}` is missing from the `{self.__class__.__name__}` data model!"
+            )
 
         self.__attrs_init__(**passed_kwargs)
 

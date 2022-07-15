@@ -46,7 +46,9 @@ class EncodeEvent(DictSerializer):
     resolution: Optional[str] = field(default=None)
     quality: Optional[str] = field(default=None)
     encoded_percent: Optional[str] = field(default=None)
-    is_reupload: Optional[bool] = field(default=None, anilibria_name="isReupload")  # idk this is optional or not
+    is_reupload: Optional[bool] = field(
+        default=None, anilibria_name="isReupload"
+    )  # idk this is optional or not
 
 
 @define()
