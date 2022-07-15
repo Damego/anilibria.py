@@ -10,28 +10,17 @@ __all__ = ["V2Request"]
 class V2Request:
     def __init__(self, request: Request) -> None:
         """
-
         :param request:
         """
         self.request = request
 
-    def _to_string(self, **kwargs) -> str:
+    def _to_dict(self, **kwargs) -> dict:
         """
-
         :param kwargs:
         :return:
         :rtype: str
         """
-        list_data = []
-        for kwarg, value in kwargs.items():
-            if isinstance(value, (str, int)):
-                list_data.append(f"{kwarg}={value}")
-            elif isinstance(value, list):
-                list_data.append(f"{kwarg}={','.join([str(val) for val in value])}")
-            elif value is None:
-                continue
-
-        return "&".join(list_data)
+        return {key: value for key, value in kwargs.items() if value is not None}
 
     async def get_title(
         self,
@@ -57,7 +46,7 @@ class V2Request:
         :return:
         :rtype: dict
         """
-        payload: str = self._to_string(
+        payload: dict = self._to_dict(
             id=id,
             code=code,
             torrent_id=torrent_id,
@@ -91,7 +80,7 @@ class V2Request:
         :return:
         :rtype: List[dict]
         """
-        payload: str = self._to_string(
+        payload: dict = self._to_dict(
             id_list=id_list,
             code_list=code_list,
             filter=filter,
@@ -126,7 +115,7 @@ class V2Request:
         :return:
         :rtype: List[dict]
         """
-        payload: str = self._to_string(
+        payload: dict = self._to_dict(
             filter=filter,
             remove=remove,
             include=include,
@@ -160,7 +149,7 @@ class V2Request:
         :return:
         :rtype: List[dict]
         """
-        payload: str = self._to_string(
+        payload: dict = self._to_dict(
             filter=filter,
             remove=remove,
             include=include,
@@ -191,7 +180,7 @@ class V2Request:
         :return:
         :rtype: List[dict]
         """
-        payload: str = self._to_string(
+        payload: dict = self._to_dict(
             filter=filter,
             remove=remove,
             include=include,
@@ -219,7 +208,7 @@ class V2Request:
         :return:
         :rtype: dict
         """
-        payload: str = self._to_string(
+        payload: dict = self._to_dict(
             filter=filter,
             remove=remove,
             include=include,
@@ -248,7 +237,7 @@ class V2Request:
         :return:
         :rtype: List[dict]
         """
-        payload: str = self._to_string(
+        payload: dict = self._to_dict(
             filter=filter,
             remove=remove,
             include=include,
@@ -282,7 +271,7 @@ class V2Request:
         :return:
         :rtype: List[dict]
         """
-        payload: str = self._to_string(
+        payload: dict = self._to_dict(
             filter=filter,
             remove=remove,
             include=include,
@@ -309,7 +298,7 @@ class V2Request:
         :return:
         :rtype: List[str]
         """
-        payload: str = self._to_string(
+        payload: dict = self._to_dict(
             sorting_type=sorting_type,
         )
         return await self.request.request("GET", f"{URL}/getGenres", payload)
@@ -356,7 +345,7 @@ class V2Request:
         :return:
         :rtype: List[dict]
         """
-        payload: str = self._to_string(
+        payload: dict = self._to_dict(
             users=users,
             remove=remove,
             include=include,
@@ -387,7 +376,7 @@ class V2Request:
         :return:
         :rtype: str
         """
-        payload: str = self._to_string(
+        payload: dict = self._to_dict(
             rss_type=rss_type, session=session, since=since, after=after, limit=limit
         )
         return await self.request.request("GET", f"{URL}/getRSS", payload)
@@ -432,7 +421,7 @@ class V2Request:
         :return:
         :rtype: List[dict]
         """
-        payload: str = self._to_string(
+        payload: dict = self._to_dict(
             search=search,
             year=year,
             season_code=season_code,
@@ -480,7 +469,7 @@ class V2Request:
         :return:
         :rtype: List[dict]
         """
-        payload: str = self._to_string(
+        payload: dict = self._to_dict(
             query=query,
             filter=filter,
             remove=remove,
@@ -514,7 +503,7 @@ class V2Request:
         :return:
         :rtype: List[dict]
         """
-        payload: str = self._to_string(
+        payload: dict = self._to_dict(
             session=session,
             filter=filter,
             remove=remove,
@@ -532,7 +521,7 @@ class V2Request:
         :return:
         :rtype: dict
         """
-        payload: str = self._to_string(session=session, title_id=title_id)
+        payload: dict = self._to_dict(session=session, title_id=title_id)
         return await self.request.request("PUT", f"{URL}/addFavorite", payload)
 
     async def del_favorite(self, session: str, title_id: int) -> dict:
@@ -543,5 +532,5 @@ class V2Request:
         :return:
         :rtype: dict
         """
-        payload: str = self._to_string(session=session, title_id=title_id)
+        payload: dict = self._to_dict(session=session, title_id=title_id)
         return await self.request.request("DELETE", f"{URL}/delFavorite", payload)

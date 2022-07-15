@@ -21,20 +21,19 @@ class Request:
         """
         self.proxy = proxy
 
-    async def request(self, method: str, url: str, payload: str = "", **kwargs):
+    async def request(self, method: str, url: str, data: dict = None, **kwargs):
         """
-
         :param method:
         :param url:
-        :param payload:
+        :param data:
         :param kwargs:
         :return:
         """
         if self.proxy is not None:
             kwargs["proxy"] = self.proxy
 
-        log.debug(f"Send {method} request to {url}?{payload} with data: {kwargs}")
-        async with _session.request(method, f"{url}?{payload}", **kwargs) as response:
+        log.debug(f"Send {method} request to {url} with data: {data} and additional kwargs: {kwargs}")
+        async with _session.request(method, url, params=data, **kwargs) as response:
             raw = await response.text()
             try:
                 data = loads(raw)
