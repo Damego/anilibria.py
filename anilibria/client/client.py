@@ -32,6 +32,7 @@ class AniLibriaClient:
         self.proxy: str = proxy
         self._loop: AbstractEventLoop = get_event_loop()
         self._websocket: WebSocketClient = WebSocketClient(proxy=self.proxy)
+        self._http: HTTPClient = self._websocket._http
 
     async def _start(self):
         """
@@ -114,7 +115,7 @@ class AniLibriaClient:
         :return: ID сессии
         :rtype: str
         """
-        data = await self._websocket._http.public.login(mail, password)
+        data = await self._http.public.login(mail, password)
         return data.get("sessionId")
 
     async def get_title(
@@ -145,7 +146,7 @@ class AniLibriaClient:
         if id is None and code is None:
             raise NoArgumentsError("id", "code")
 
-        data = await self._websocket._http.v2.get_title(
+        data = await self._http.v2.get_title(
             id=id,
             code=code,
             torrent_id=torrent_id,
@@ -183,7 +184,7 @@ class AniLibriaClient:
         if id_list is None and code_list is None:
             raise NoArgumentsError("id_list", "code_list")
 
-        data = await self._websocket._http.v2.get_titles(
+        data = await self._http.v2.get_titles(
             id_list=id_list,
             code_list=code_list,
             filter=filter,
@@ -219,7 +220,7 @@ class AniLibriaClient:
         :return: Список тайтлов
         :rtype: List[Title]
         """
-        data = await self._websocket._http.v2.get_updates(
+        data = await self._http.v2.get_updates(
             filter=filter,
             remove=remove,
             include=include,
@@ -254,7 +255,7 @@ class AniLibriaClient:
         :return: Список тайтлов
         :rtype: List[Title]
         """
-        data = await self._websocket._http.v2.get_changes(
+        data = await self._http.v2.get_changes(
             filter=filter,
             remove=remove,
             include=include,
@@ -286,7 +287,7 @@ class AniLibriaClient:
         :return: Список расписаний
         :rtype: List[Schedule]
         """
-        data = await self._websocket._http.v2.get_schedule(
+        data = await self._http.v2.get_schedule(
             filter=filter,
             remove=remove,
             include=include,
@@ -315,7 +316,7 @@ class AniLibriaClient:
         :return: Объект тайтла
         :rtype: Title
         """
-        data = await self._websocket._http.v2.get_random_title(
+        data = await self._http.v2.get_random_title(
             filter=filter,
             remove=remove,
             include=include,
@@ -345,7 +346,7 @@ class AniLibriaClient:
         :return: Список youtube видео
         :rtype: List[YouTubeData]
         """
-        data = await self._websocket._http.v2.get_youtube(
+        data = await self._http.v2.get_youtube(
             filter=filter,
             remove=remove,
             include=include,
@@ -380,7 +381,7 @@ class AniLibriaClient:
         :return: Список тайтлов и youtube видео.
         :rtype: List[Union[Title, YouTubeData]]
         """
-        data = await self._websocket._http.v2.get_feed(
+        data = await self._http.v2.get_feed(
             filter=filter,
             remove=remove,
             include=include,
@@ -400,7 +401,7 @@ class AniLibriaClient:
 
         :return: Список с годами.
         """
-        return await self._websocket._http.v2.get_years()
+        return await self._http.v2.get_years()
 
     async def get_genres(self, sorting_type: int = 0) -> List[str]:
         """
@@ -409,7 +410,7 @@ class AniLibriaClient:
         :param sorting_type: Тип сортировки элементов.
         :return: Список с жанрами.
         """
-        return await self._websocket._http.v2.get_genres(sorting_type=sorting_type)
+        return await self._http.v2.get_genres(sorting_type=sorting_type)
 
     async def get_caching_nodes(self) -> List[str]:
         """
@@ -418,7 +419,7 @@ class AniLibriaClient:
         :return: Список серверов.
         :rtype: List[str]
         """
-        return await self._websocket._http.v2.get_caching_nodes()
+        return await self._http.v2.get_caching_nodes()
 
     async def get_team(self) -> Team:
         """
@@ -427,7 +428,7 @@ class AniLibriaClient:
         :return: Объект команды
         :rtype: Team
         """
-        data = await self._websocket._http.v2.get_team()
+        data = await self._http.v2.get_team()
         return Team(**data)
 
     async def get_seed_stats(
@@ -457,7 +458,7 @@ class AniLibriaClient:
         :return: Список с пользователями
         :rtype: List[SeedStats]
         """
-        data = await self._websocket._http.v2.get_seed_stats(
+        data = await self._http.v2.get_seed_stats(
             users=users,
             remove=remove,
             include=include,
@@ -489,7 +490,7 @@ class AniLibriaClient:
         :return: RSS
         :rtype: str
         """
-        data = await self._websocket._http.v2.get_rss(
+        data = await self._http.v2.get_rss(
             rss_type=rss_type,
             session=session_id,
             since=since,
@@ -539,7 +540,7 @@ class AniLibriaClient:
         :return: Список тайтлов
         :rtype: List[Title]
         """
-        data = await self._websocket._http.v2.search_titles(
+        data = await self._http.v2.search_titles(
             search=search,
             year=year,
             season_code=season_code,
@@ -588,7 +589,7 @@ class AniLibriaClient:
         :return: Список тайтлов
         :rtype: List[Title]
         """
-        data = await self._websocket._http.v2.advanced_search(
+        data = await self._http.v2.advanced_search(
             query=query,
             filter=filter,
             remove=remove,
@@ -623,7 +624,7 @@ class AniLibriaClient:
         :return: Список тайтлов
         :rtype: List[Title]
         """
-        data = await self._websocket._http.v2.get_favorites(
+        data = await self._http.v2.get_favorites(
             session=session_id,
             filter=filter,
             remove=remove,
@@ -640,7 +641,7 @@ class AniLibriaClient:
         :param session_id: ID сессии.
         :param title_id: айди тайтла.
         """
-        await self._websocket._http.v2.add_favorite(session=session_id, title_id=title_id)
+        await self._http.v2.add_favorite(session=session_id, title_id=title_id)
 
     async def del_favorite(self, session_id: str, title_id: int):
         """
@@ -649,7 +650,7 @@ class AniLibriaClient:
         :param session_id: ID сессии.
         :param title_id: айди тайтла.
         """
-        await self._websocket._http.v2.del_favorite(session=session_id, title_id=title_id)
+        await self._http.v2.del_favorite(session=session_id, title_id=title_id)
 
     def start(self):
         """
