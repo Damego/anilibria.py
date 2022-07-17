@@ -57,6 +57,10 @@ class Poster(DictSerializer):
     url: Optional[str] = field(default=None)
     raw_base64_file: Optional[str] = field(default=None)
 
+    @property
+    def full_url(self):
+        return f"https://anilibria.tv{self.url}"
+
 
 @define()
 class Posters(DictSerializer):
