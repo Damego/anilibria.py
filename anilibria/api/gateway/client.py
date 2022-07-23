@@ -123,7 +123,7 @@ class WebSocketClient:
             EventType.ENCODE_PROGRESS: EncodeEvent,
             EventType.ENCODE_END: EncodeEvent,
             EventType.ENCODE_FINISH: EncodeEvent,
-            EventType.TORRENT_UPDATE: TorrentUpdateEvent
+            EventType.TORRENT_UPDATE: TorrentUpdateEvent,
         }
         return model(**data) if (model := events.get(event_type)) else None
 
@@ -152,17 +152,25 @@ class WebSocketClient:
 
         :param event:
         """
-        if event.updated_episode is None:
-            return False
-        hls = event.updated_episode.hls
-        if hls.fhd and hls.hd and hls.sd:
-            return False
+        if (
+            event.updated_episode
+            and ((hls := event.updated_episode.hls) and hls.fhd and hls.hd and hls.sd)
+            and not event.diff.get("playlist")
+        ):
+            return True
         if (playlist := event.diff.get("playlist")) is None:
-            return False
+            return
         if (series := list(playlist.values())) is None:
-            return False
+            return
         if (not series) or (series and series[0].get("hls") is None):
-            return False
+            return
+        hls_diff = series[0]["hls"]
+        if all(v is not None for k, v in hls_diff.items()):
+            return
+        if event.updated_episode is None:
+            return
+        if not hls.fhd or not hls.hd or not hls.sd:
+            return
 
         return True
 

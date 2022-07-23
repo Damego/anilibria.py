@@ -32,7 +32,9 @@ class Request:
         if self.proxy is not None:
             kwargs["proxy"] = self.proxy
 
-        log.debug(f"Send {method} request to {url} with data: {data} and additional kwargs: {kwargs}")
+        log.debug(
+            f"Send {method} request to {url} with data: {data} and additional kwargs: {kwargs}"
+        )
         async with _session.request(method, url, params=data, **kwargs) as response:
             raw = await response.text()
             try:
