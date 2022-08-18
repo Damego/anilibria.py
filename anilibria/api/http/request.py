@@ -7,19 +7,17 @@ from ..error import HTTPException
 
 
 log = getLogger("anilibria.request")
-_session = ClientSession()
-__all__ = ["Request", "_session"]
+__all__ = ["Request"]
 
 
 class Request:
-    session: ClientSession = _session
-
     def __init__(self, proxy: str = None) -> None:
         """
 
         :param proxy:
         """
         self.proxy = proxy
+        self.session = ClientSession()
 
     async def request(self, method: str, url: str, data: dict = None, **kwargs):
         """
@@ -35,7 +33,7 @@ class Request:
         log.debug(
             f"Send {method} request to {url} with data: {data} and additional kwargs: {kwargs}"
         )
-        async with _session.request(method, url, params=data, **kwargs) as response:
+        async with self.session.request(method, url, params=data, **kwargs) as response:
             raw = await response.text()
             try:
                 data = loads(raw)
