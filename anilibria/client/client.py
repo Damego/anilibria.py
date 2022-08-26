@@ -668,3 +668,9 @@ class AniLibriaClient:
         task2 = self._loop.create_task(coro)
         gathered = gather(task1, task2)
         self._loop.run_until_complete(gathered)
+
+    async def close(self):
+        """
+        Закрывает HTTP клиент.
+        """
+        await self._http.request.session.close()
