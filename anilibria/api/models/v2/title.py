@@ -167,6 +167,15 @@ class Serie(DictSerializer):
         converter=convert(SerieSkips), default=None
     )  # Not documented in the docs
 
+@define()
+class RutubeSerie(DictSerializer):
+    """
+    Модель с информацией о серии в rutube
+    """
+    created_timestamp: int = field(default=None)
+    rutube_id: str = field(default=None)
+    serie: int = field(default=None)
+
 
 @define()
 class Player(DictSerializer):
@@ -180,6 +189,7 @@ class Player(DictSerializer):
     playlist: Optional[Union[List[Serie], Dict[str, Serie]]] = field(
         converter=convert_playlist(Serie), factory=list
     )
+    rutube_playlist: Optional[Union[List[RutubeSerie], Dict[str, RutubeSerie]]] = field(converter=convert_playlist(RutubeSerie), default=None)
 
 
 @define()
