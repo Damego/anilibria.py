@@ -19,7 +19,7 @@ from ..dispatch import EventDispatcher
 
 
 log = getLogger("anilibria.gateway")
-URL = "ws://api.anilibria.tv/v2.13/ws/"
+URL = "wss://api.anilibria.tv/v2.13/ws/"
 __all__ = ["WebSocketClient"]
 
 
