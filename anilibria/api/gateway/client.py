@@ -8,6 +8,7 @@ from typing import List, Union, Optional
 from logging import getLogger
 from sys import version_info
 
+from cattrs import structure
 from aiohttp import WSMessage, ClientWebSocketResponse, WSMsgType
 from aiohttp.http import WS_CLOSED_MESSAGE
 import trio
@@ -79,7 +80,14 @@ class GatewayClient:
         return loads(response)
 
     async def _track_data(self, data: dict):
+        if not (type := data.get("type")):
+            return await self._track_unknown_event(data)
+
+        payload = data  # TODO: structure cattrs
+
+    async def _track_unknown_event(self, data: dict):
         ...
+
 
     async def _match_error(self):
         code: int = self._connection.closed.code
