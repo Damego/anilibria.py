@@ -1,7 +1,5 @@
-from typing import List, Optional, Dict, Union
-
 from .enums import StatusCode, TitleType, SeasonCode
-from ..attrs_utils import convert_list, convert, convert_playlist, define, field, DictSerializer
+from ..attrs_utils import define
 
 
 __all__ = [
@@ -28,256 +26,327 @@ __all__ = [
 
 
 @define()
-class Names(DictSerializer):
+class TitleNames:
     """
-    Содержит в себе названия тайтла на русском, английском и альтернативном языках
+    Объект, содержащий названия тайтла на различных языках.
     """
 
-    ru: str = field(default=None)
-    en: str = field(default=None)
-    alternative: Optional[str] = field(default=None)
+    ru: str
+    "Название тайтла на русском языке"
+    en: str
+    "Название тайтла на английском языке"
+    alternative: str | None
+    "Название тайтла на альтернативном языке"
 
 
 @define()
-class Status(DictSerializer):
+class Status:
     """
-    Содержит в себе текущий статус тайтла
+    Объект статуса тайтла
     """
 
-    string: Optional[str] = field(default=None)
-    code: Optional[StatusCode] = field(converter=StatusCode.from_value, default=None)
+    string: str | None
+    "Представление статуса в виде строки"
+    code: StatusCode | None
+    "Код статуса"
 
 
 @define()
-class Poster(DictSerializer):
+class Poster:
     """
-    Модель постера.
+    Объект с моделью постера
     """
 
-    url: Optional[str] = field(default=None)
-    raw_base64_file: Optional[str] = field(default=None)
+    url: str | None
+    "Относительная ссылка на постер"
+    raw_base64_file: str | None
+    "Закодированный в base64 постер"
 
     @property
-    def full_url(self):
-        return f"https://anilibria.tv{self.url}"
+    def full_url(self) -> str | None:
+        """
+        Возвращает полную ссылку на постер
+        """
+        if self.url is not None:
+            return f"https://anilibria.tv{self.url}"
 
 
 @define()
-class Posters(DictSerializer):
+class Posters:
     """
-    Модель, которая содержит в себе постеры разных размеров.
+    Объект с разными размерами постера
     """
 
-    small: Optional[Poster] = field(converter=convert(Poster), default=None)
-    medium: Optional[Poster] = field(converter=convert(Poster), default=None)
-    original: Optional[Poster] = field(converter=convert(Poster), default=None)
+    small: Poster
+    "Постер маленького размера"
+    medium: Poster
+    "Постер среднего размера"
+    original: Poster
+    "Постер оригинального размера"
 
 
 @define()
-class Type(DictSerializer):
+class Type:
     """
-    Модель с информацией о типе тайтла.
+    Объект с информацией о типе тайтла.
     """
 
-    full_string: Optional[str] = field(default=None)
-    code: Optional[TitleType] = field(converter=TitleType.from_value, default=None)
-    string: Optional[str] = field(default=None)
-    series: Optional[int] = field(default=None)
-    length: Optional[str] = field(default=None)
+    full_string: str
+    code: TitleType
+    string: str
+    series: int
+    length: str
 
 
 @define()
-class Team(DictSerializer):
+class Team:
     """
-    Модель с участниками, которые принимали участие в переводе тайтла.
+    Объект с участниками, которые принимали участие в переводе тайтла.
     """
 
-    voice: Optional[List[str]] = field(factory=list)
-    translator: Optional[List[str]] = field(factory=list)
-    editing: Optional[List[str]] = field(factory=list)
-    decor: Optional[List[str]] = field(factory=list)
-    timing: Optional[List[str]] = field(factory=list)
+    voice: list[str]
+    "Участники, работавших над озвучкой"
+    translator: list[str]
+    "Участники, работавших над переводом"
+    editing: list[str]
+    "Участники, работавших над субтитрами"
+    decor: list[str]
+    "Участники, работавших над оформлением"
+    timing: list[str]
+    "Участники, работавшие над таймингом"
 
 
 @define()
-class Season(DictSerializer):
+class Season:
     """
-    Модель с информацией о сезоне тайтла.
+    Объект с информацией о сезоне тайтла.
     """
 
-    string: Optional[str] = field(default=None)
-    code: Optional[SeasonCode] = field(converter=SeasonCode.from_value, default=None)
-    year: Optional[int] = field(default=None)
-    week_day: Optional[int] = field(default=None)
+    string: str
+    "Полное название сезона"
+    code: SeasonCode
+    "Код сезона"
+    year: int
+    "Год выпуска"
+    week_day: int
+    "День недели"
 
 
 @define()
-class Blocked(DictSerializer):
+class Blocked:
     """
-    Модель с информацией о статусе блокировки тайтла.
+    Объект с информацией о статусе блокировки тайтла.
     """
 
-    blocked: Optional[bool] = field(default=None)
-    bakanim: Optional[bool] = field(default=None)
+    blocked: bool
+    "Тайтл заблокирован на территории РФ"
+    bakanim: bool
+    "Тайлтл заблокирован из-за жалобы Wakanim"
 
 
 @define()
-class Series(DictSerializer):
+class Series:
     """
-    Модель, которая содержит информацию о
+    Объект с информацией о количестве серий
     """
 
-    first: Optional[int] = field(default=None)
-    last: Optional[int] = field(default=None)
-    string: Optional[str] = field(default=None)
+    first: int
+    "Номер первой серии"
+    last: int
+    "Номер последней серии"
+    string: str
+    "Представление количества серий в виде строки"
 
 
 @define()
-class HLS(DictSerializer):
+class HLS:
     """
-    Модель с ссылками на разные разрешения серий.
+    Объект, содержащий ссылки на серии в различных качествах.
+
+    ..warning
+        Ссылки являются относительными и не содержат домена!
     """
 
-    fhd: Optional[str] = field(default=None)
-    hd: Optional[str] = field(default=None)
-    sd: Optional[str] = field(default=None)
+    fhd: str
+    "Ссылка на видео в Full HD качестве"
+    hd: str
+    "Ссылка на видео в HD качестве"
+    sd: str
+    "Ссылка на видео в SD качестве"
 
 
 @define()
-class SerieSkips(DictSerializer):
+class SerieSkips:
     """
-    Модель с таймкодами для пропуска опенинга и эндинга.
+    Объект с таймкодами для пропуска опенинга и эндинга.
     """
 
-    opening: Optional[List[str]] = field(factory=list)
-    ending: Optional[List[str]] = field(factory=list)
+    opening: list[str]
+    "Таймкоды для опенинга"
+    ending: list[str]
+    "Таймкоды для эндинга"
 
 
 @define()
-class Serie(DictSerializer):
+class Serie:
     """
-    Модель с информацией о серии.
+    Объект, содержащий информацию о серии.
     """
 
-    serie: Optional[int] = field(default=None)
-    created_timestamp: Optional[int] = field(default=None)
-    hls: Optional[HLS] = field(converter=convert(HLS), default=None)
-    preview: Optional[str] = field(default=None)  # Not documented in the docs
-    skips: Optional[SerieSkips] = field(
-        converter=convert(SerieSkips), default=None
-    )  # Not documented in the docs
+    serie: int
+    "Номер серии"
+    created_timestamp: int
+    "Время создания/изменения в формате UNIX timestamp"
+    hls: HLS
+    "Ссылки на серию"
+    preview: str
+    "Ссылка на превью серии"
+    skips: SerieSkips
+    "Таймкоды на пропуски"
+
+    # TODO: Добавить свойство 'created_at' с datetime
 
 
 @define()
-class RutubeSerie(DictSerializer):
+class RutubeSerie:
     """
-    Модель с информацией о серии в rutube
+    Объект с информацией о серии в rutube
     """
 
-    created_timestamp: int = field(default=None)
-    rutube_id: str = field(default=None)
-    serie: int = field(default=None)
+    created_timestamp: int
+    "Время создания/изменения в формате UNIX timestamp"
+    rutube_id: str  # TODO: Возможно ли из айди собрать ссылку?
+    "ID серии"
+    serie: int
+    "Номер серии"
 
 
 @define()
-class Player(DictSerializer):
+class Player:
     """
-    Модель с информацией о плеере и сериях.
+    Объект с информацией о плеере и сериях.
     """
 
-    alternative_player: Optional[str] = field(default=None)
-    host: Optional[str] = field(default=None)
-    series: Optional[Series] = field(converter=convert(Series), default=None)
-    playlist: Optional[Union[List[Serie], Dict[str, Serie]]] = field(
-        converter=convert_playlist(Serie), factory=list
-    )
-    rutube_playlist: Optional[Union[List[RutubeSerie], Dict[str, RutubeSerie]]] = field(
-        converter=convert_playlist(RutubeSerie), default=None
-    )
+    alternative_player: str
+    "Ссылка на альтернативный плеер"
+    host: str
+    "Имена предпочитаемых серверов для построения ссылок на поток и скачивание"
+    series: Series
+    "Количество вышедших серий"
+    playlist: list[Serie] | dict[str, Serie]  # TODO: yeet
+    "Список релизов"
+    rutube_playlist: list[RutubeSerie] |  dict[str, RutubeSerie]  # TODO: yeet
+    "Список релизов на rutube"
 
 
 @define()
-class Quality(DictSerializer):
+class Quality:
     """
-    Модель с информацией о качестве тайтла.
+    Объект, содержащий информацию о разрешении, кодировщике и типе релиза
     """
 
-    string: Optional[str] = field(default=None)
-    type: Optional[str] = field(default=None)
-    resolution: Optional[int] = field(default=None)
-    encoder: Optional[str] = field(default=None)
-    lq_audio: Optional[bool] = field(default=None)
+    string: str
+    "Полная информация о качестве"
+    type: str  # TODO: Enum!
+    "Тип релиза"
+    resolution: int
+    "Разрешение серии"
+    encoder: str
+    "Название кодировщика"
+    lq_audio: bool
+    "Используется ли аудио дорожка с пониженным битрейтом"
 
 
 @define()
-class TorrentFile(DictSerializer):
+class TorrentFile:
+    """
+    Объект с информацией о торрент файле
+    """
+
     file: str
+    "Имя файла"
     size: int
+    "Размер файла в байтах"
     offset: int
+    "Смещение в байтах относительно предыдущего файла"
 
 
 @define()
-class TorrentMetaData(DictSerializer):
-    hash: str = field()
-    name: str = field()
-    announce: List[str] = field(converter=list)
-    created_timestamp: int = field()
-    files_list: List[TorrentFile] = field(converter=convert_list(TorrentFile))
-
-
-@define()
-class Torrent(DictSerializer):
+class TorrentMetaData:
     """
-    Модель с информацией о торренте
+    Объект с метадатой о торренте
     """
 
-    torrent_id: Optional[int] = field(default=None)
-    series: Optional[Series] = field(converter=convert(Series), default=None)
-    quality: Optional[Quality] = field(converter=convert(Quality), default=None)
-    leechers: Optional[int] = field(default=None)
-    seeders: Optional[int] = field(default=None)
-    downloads: Optional[int] = field(default=None)
-    total_size: Optional[int] = field(default=None)
-    url: Optional[str] = field(default=None)
-    uploaded_timestamp: Optional[int] = field(default=None)
-    metadata: Optional[TorrentMetaData] = field(converter=convert(TorrentMetaData), default=None)
-    raw_base64_file: Optional[str] = field(default=None)
-    hash: Optional[str] = field(default=None)
+    hash: str
+    "Хеш торрент файла"
+    name: str
+    "Имя тайтла в торрент файле"
+    announce: list[str]
+    "Список трекеров"
+    created_timestamp: int
+    "Время создания торрента в UNIX timestamp"
+    files_list: list[TorrentFile]
+    "Список файлов в торренте"
 
 
 @define()
-class Torrents(DictSerializer):
+class Torrent:
+    """
+    Объект с информацией о торренте
+    """
+
+    torrent_id: int
+    "ID торрент файла"
+    series: Series
+    "Серии, содержащиеся в файле"
+    quality: Quality
+    "Информаци о разрешении, кодировщике и типе релиза"
+    leechers: int
+    "Количество личей"
+    seeders: int
+    "Количество сидов"
+    downloads: int  # TODO: IM HERE
+    total_size: int
+    url: str
+    uploaded_timestamp: int
+    metadata: TorrentMetaData
+    raw_base64_file: str
+    hash: str
+
+
+@define()
+class Torrents:
     """
     Модель со списком торрентов и информации о сериях.
     """
 
-    series: Optional[Series] = field(converter=convert(Series), default=None)
-    list: Optional[List[Torrent]] = field(converter=convert_list(Torrent), factory=list)
+    series: Series
+    list: list[Torrent]
 
 
 @define()
-class Title(DictSerializer):
+class Title:
     """
     Модель тайтла
     """
 
-    id: Optional[int] = field(default=None)
-    code: Optional[str] = field(default=None)
-    names: Optional[Names] = field(converter=convert(Names), default=None)
-    announce: Optional[str] = field(default=None)
-    status: Optional[Status] = field(converter=convert(Status), default=None)
-    posters: Optional[Posters] = field(converter=convert(Posters), default=None)
-    updated: Optional[int] = field(default=None)
-    last_change: Optional[int] = field(default=None)
-    type: Optional[Type] = field(converter=convert(Type), default=None)
-    genres: Optional[List[str]] = field(factory=list)
-    team: Optional[Team] = field(converter=convert(Team), default=None)
-    season: Optional[Season] = field(converter=convert(Season), default=None)
-    description: Optional[str] = field(default=None)
-    in_favorites: Optional[int] = field(default=None)
-    blocked: Optional[Blocked] = field(converter=convert(Blocked), default=None)
-    player: Optional[Player] = field(converter=convert(Player), default=None)
-    torrents: Optional[Torrents] = field(converter=convert(Torrents), default=None)
+    id: int
+    code: str
+    names: TitleNames
+    announce: str
+    status: Status
+    posters: Posters
+    updated: int
+    last_change: int
+    type: Type
+    genres: list[str]
+    team: Team
+    season: Season
+    description: str
+    in_favorites: int
+    blocked: Blocked
+    player: Player
+    torrents: Torrents
 
     @property
     def url(self):
