@@ -47,7 +47,7 @@ class DictSerializer:
         self.__attrs_init__(**passed_kwargs)
 
 
-define_defaults = dict(kw_only=True, eq=False, init=False)
+define_defaults = dict(kw_only=True)
 
 
 @wraps(attrs.define)
