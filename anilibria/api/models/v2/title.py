@@ -1,20 +1,21 @@
-from .enums import StatusCode, TitleType, SeasonCode
+from .enums import StatusCode, TitleCodeType, SeasonCode
 from ..attrs_utils import define
 
 
 __all__ = [
-    "Names",
-    "Status",
+    "TitleNames",
+    "TitleStatus",
     "Poster",
     "Posters",
-    "Type",
-    "Team",
+    "TitleType",
+    "TitleTeam",
     "Season",
     "Blocked",
     "Series",
     "HLS",
     "SerieSkips",
     "Serie",
+    "RutubeSerie",
     "Player",
     "Quality",
     "TorrentFile",
@@ -40,7 +41,7 @@ class TitleNames:
 
 
 @define()
-class Status:
+class TitleStatus:
     """
     Объект статуса тайтла
     """
@@ -86,32 +87,37 @@ class Posters:
 
 
 @define()
-class Type:
+class TitleType:
     """
     Объект с информацией о типе тайтла.
     """
 
     full_string: str
-    code: TitleType
+    "Полная информация о типе в виде строки"
+    code: TitleCodeType
+    "Код типа"
     string: str
+    "Тип тайтла в виде строки"
     series: int
+    "Количество серий"
     length: str
+    "Длина серии"
 
 
 @define()
-class Team:
+class TitleTeam:
     """
     Объект с участниками, которые принимали участие в переводе тайтла.
     """
 
     voice: list[str]
-    "Участники, работавших над озвучкой"
+    "Участники, работавшие над озвучкой"
     translator: list[str]
-    "Участники, работавших над переводом"
+    "Участники, работавшие над переводом"
     editing: list[str]
-    "Участники, работавших над субтитрами"
+    "Участники, работавшие над субтитрами"
     decor: list[str]
-    "Участники, работавших над оформлением"
+    "Участники, работавшие над оформлением"
     timing: list[str]
     "Участники, работавшие над таймингом"
 
@@ -123,7 +129,7 @@ class Season:
     """
 
     string: str
-    "Полное название сезона"
+    "Название сезона"
     code: SeasonCode
     "Код сезона"
     year: int
@@ -233,9 +239,9 @@ class Player:
     "Имена предпочитаемых серверов для построения ссылок на поток и скачивание"
     series: Series
     "Количество вышедших серий"
-    playlist: list[Serie] | dict[str, Serie]  # TODO: yeet
+    playlist: dict[str, Serie] | list[Serie]
     "Список релизов"
-    rutube_playlist: list[RutubeSerie] |  dict[str, RutubeSerie]  # TODO: yeet
+    rutube_playlist: dict[str, RutubeSerie] | list[RutubeSerie]
     "Список релизов на rutube"
 
 
@@ -245,15 +251,15 @@ class Quality:
     Объект, содержащий информацию о разрешении, кодировщике и типе релиза
     """
 
-    string: str
+    string: str | None
     "Полная информация о качестве"
-    type: str  # TODO: Enum!
+    type: str | None  # TODO: Enum!
     "Тип релиза"
-    resolution: int
+    resolution: str | None
     "Разрешение серии"
-    encoder: str
+    encoder: str | None
     "Название кодировщика"
-    lq_audio: bool
+    lq_audio: bool | None
     "Используется ли аудио дорожка с пониженным битрейтом"
 
 
@@ -277,15 +283,15 @@ class TorrentMetaData:
     Объект с метадатой о торренте
     """
 
-    hash: str
+    hash: str | None
     "Хеш торрент файла"
-    name: str
+    name: str | None
     "Имя тайтла в торрент файле"
-    announce: list[str]
+    announce: list[str] | None
     "Список трекеров"
-    created_timestamp: int
+    created_timestamp: int | None
     "Время создания торрента в UNIX timestamp"
-    files_list: list[TorrentFile]
+    files_list: list[TorrentFile] | None
     "Список файлов в торренте"
 
 
@@ -300,18 +306,25 @@ class Torrent:
     series: Series
     "Серии, содержащиеся в файле"
     quality: Quality
-    "Информаци о разрешении, кодировщике и типе релиза"
+    "Информация о разрешении, кодировщике и типе релиза"
     leechers: int
     "Количество личей"
     seeders: int
     "Количество сидов"
-    downloads: int  # TODO: IM HERE
+    downloads: int
+    "Количество загрузок"
     total_size: int
+    "Размер файлов в торренте в байтах"
     url: str
+    "Ссылка на торрент без домена"
     uploaded_timestamp: int
-    metadata: TorrentMetaData
-    raw_base64_file: str
+    "Время загрузки домена в формате UNIX timestamp"
+    metadata: TorrentMetaData | None
+    "Метаданные торрент файла"
+    raw_base64_file: str | None
+    "Торрент файл в формате base64"
     hash: str
+    "Хэш торрент файла"
 
 
 @define()
@@ -321,33 +334,57 @@ class Torrents:
     """
 
     series: Series
+    "Серии, содержащиеся в файле"
     list: list[Torrent]
+    "Список с информацией о торрент файлах"
+
+
 
 
 @define()
 class Title:
     """
-    Модель тайтла
+    Объект тайтла
     """
 
     id: int
+    "ID тайтла"
     code: str
+    "Код тайтла"
     names: TitleNames
+    "Названия тайтла"
     announce: str
-    status: Status
+    "Объявление для тайтла"
+    status: TitleStatus
+    "Статус тайтла"
     posters: Posters
+    "Информация о постерах"
     updated: int
+    "Время последнего обновления тайтла в формате UNIX timestamp"
     last_change: int
-    type: Type
+    "Время последнего изменения тайтла в формате UNIX timestamp"
+    type: TitleType
+    "Информация о типе тайтла"
     genres: list[str]
-    team: Team
+    "Список жанров тайтла"
+    team: TitleTeam
+    "Члены команды, работавшие над тайтлом"
     season: Season
+    "Информация о сезоне"
     description: str
+    "Описание тайтла"
     in_favorites: int
+    "Сколько раз тайтл добавили в избранное"
     blocked: Blocked
+    "Информация о блокировке тайтла"
     player: Player
+    "Информация о плеере"
     torrents: Torrents
+    "Информация о торрентах"
 
     @property
-    def url(self):
+    def url(self) -> str:
+        """
+        Возвращает полную ссылку на тайтл
+        """
         return f"https://anilibria.tv/release/{self.code}.html"
