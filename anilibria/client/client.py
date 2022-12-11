@@ -658,16 +658,6 @@ class AniLibriaClient:
         """
         self._loop.run_until_complete(self._start())
 
-    def startwith(self, coro: Coroutine):
-        """
-        Запускает клиент вместе с другой функцией.
-
-        :param coro: Корутина
-        """
-        task1 = self._loop.create_task(self._start())
-        task2 = self._loop.create_task(coro)
-        gathered = gather(task1, task2)
-        self._loop.run_until_complete(gathered)
 
     async def close(self):
         """
