@@ -10,7 +10,7 @@ from ..api.models.v2 import (
     Title,
     Schedule,
     YouTubeData,
-    Team,
+    TitleTeam,
     SeedStats,
     Include,
     DescriptionType,
@@ -406,7 +406,7 @@ class AniLibriaClient:
         """
         return await self._http.v2.get_caching_nodes()
 
-    async def get_team(self) -> Team:
+    async def get_team(self) -> TitleTeam:
         """
         Возвращает список участников команды когда-либо существовавших на проекте.
 
@@ -414,7 +414,7 @@ class AniLibriaClient:
         :rtype: Team
         """
         data = await self._http.v2.get_team()
-        return Team(**data)
+        return TitleTeam(**data)
 
     async def get_seed_stats(
         self,
