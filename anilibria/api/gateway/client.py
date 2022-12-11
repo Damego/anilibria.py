@@ -1,7 +1,9 @@
+import pprint
+
 try:
-    from orjson import loads
+    from orjson import loads, dumps
 except ImportError:
-    from json import loads
+    from json import loads, dumps
 
 from asyncio import get_event_loop, get_running_loop, new_event_loop, AbstractEventLoop
 from typing import List, Union, Optional
@@ -11,9 +13,7 @@ from sys import version_info
 from cattrs import structure
 from aiohttp import WSMessage, ClientWebSocketResponse, WSMsgType
 from aiohttp.http import WS_CLOSED_MESSAGE
-import trio
-from trio import open_nursery, Nursery
-from trio._core._run import NurseryManager  # noqa
+from trio import open_nursery
 from trio_websocket import open_websocket_url, WebSocketConnection
 
 
@@ -31,27 +31,20 @@ from ..dispatch import EventDispatcher
 
 log = getLogger("anilibria.gateway")
 URL = "wss://api.anilibria.tv/v2.13/ws/"
-__all__ = ["WebSocketClient"]
+__all__ = ["WebSocketClient", "GatewayClient"]
 
 
 class GatewayClient:
-    def __init__(self, proxy: str):
-        self._nursery_manager: NurseryManager | None = None
+    def __init__(self, http: HTTPClient):
         self._connection: WebSocketConnection | None = None
         self._closed: bool = None  # noqa
         self._stopped: bool = None  # noqa
 
-        self._http: HTTPClient(proxy)
+        self._http: http
 
-    async def __aenter__(self):
-        self._nursery_manager = open_nursery()
-        nursery: Nursery = await self._nursery_manager.__aenter__()
-        nursery.start_soon(self.reconnect)
-
-        return self
-
-    async def __aexit__(self, *args):
-        await self._nursery_manager.__aexit__(*args)
+    async def start(self):
+        async with open_nursery() as nursery:
+            nursery.start_soon(self.reconnect)
 
     async def reconnect(self):
         self._closed = True
@@ -70,6 +63,9 @@ class GatewayClient:
             if self._closed:
                 await self._match_error()
 
+            data = await self._receive_data()
+            print(data)
+
             while not self._closed:
                 data = await self._receive_data()
 
@@ -80,19 +76,26 @@ class GatewayClient:
         return loads(response)
 
     async def _track_data(self, data: dict):
+        payload = data  # TODO: structure cattrs
+        pprint.pprint(payload)
+
         if not (type := data.get("type")):
             return await self._track_unknown_event(data)
 
-        payload = data  # TODO: structure cattrs
-
     async def _track_unknown_event(self, data: dict):
         ...
-
 
     async def _match_error(self):
         code: int = self._connection.closed.code
 
         print("ERROR", code)
+
+    async def _send_message(self, data: dict):
+        message = dumps(data)
+        await self._connection.send_message(message)
+
+    async def subscribe(self, data: dict):
+        await self._send_message(data)
 
 
 class WebSocketClient:
