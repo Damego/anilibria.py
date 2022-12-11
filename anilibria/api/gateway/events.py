@@ -7,11 +7,14 @@ from ..models.attrs_utils import convert, define, field, DictSerializer
 
 __all__ = [
     "EventType",
-    "EncodeEvent",
-    "PlayListUpdateEvent",
-    "TitleUpdateEvent",
-    "TorrentUpdateEvent",
-    "TitleSerieEvent",
+    "EncodeStart",
+    "EncodeProgress",
+    "EncodeEnd",
+    "EncodeFinish",
+    "PlayListUpdate",
+    "TitleUpdate",
+    "TorrentUpdate",
+    "TitleSerie",
 ]
 
 
@@ -32,13 +35,7 @@ class EventType(str, Enum):
 @define()
 class EncodeEvent(DictSerializer):
     """
-    Модель для ивентов ``on_encode_start``, ``on_encode_progress``, ``on_encode_end`` и ``on_encode_finish``
-
-    .. code-block:: python
-
-      @client.event
-      async def on_encode_start(event: EncodeEvent):
-          ...
+    Базовый объект для события кодирования
     """
 
     id: str = field()
@@ -52,14 +49,34 @@ class EncodeEvent(DictSerializer):
 
 
 @define()
-class PlayListUpdateEvent(DictSerializer):
+class EncodeStart(EncodeEvent):
+    ...
+
+
+@define()
+class EncodeProgress(EncodeEvent):
+    ...
+
+
+@define()
+class EncodeEnd(EncodeEvent):
+    ...
+
+
+@define()
+class EncodeFinish(EncodeEvent):
+    ...
+
+
+@define()
+class PlayListUpdate(DictSerializer):
     """
     Модель для ивента ``on_playlist_update``
 
     .. code-block:: python
 
       @client.event
-      async def on_playlist_update(event: PlayListUpdateEvent):
+      async def on_playlist_update(event: PlayListUpdate):
           ...
     """
 
@@ -72,31 +89,31 @@ class PlayListUpdateEvent(DictSerializer):
 
 
 @define()
-class TitleUpdateEvent(DictSerializer):
+class TitleUpdate:
     """
     Модель для ивента ``on_title_update``
 
     .. code-block:: python
 
       @client.event
-      async def on_title_update(event: TitleUpdateEvent):
+      async def on_title_update(event: TitleUpdate):
           ...
     """
 
-    hash: str = field()
-    title: Title = field(converter=convert(Title))
-    diff: dict = field()
+    hash: str
+    title: Title
+    diff: dict
 
 
 @define()
-class TorrentUpdateEvent(DictSerializer):
+class TorrentUpdate(DictSerializer):
     """
     Модель для ивента `on_torrent_update`
 
     .. code-block:: python
 
       @client.event
-      async def on_torrent_update(event: TorrentUpdateEvent):
+      async def on_torrent_update(event: TorrentUpdate):
           ...
     """
 
@@ -108,14 +125,14 @@ class TorrentUpdateEvent(DictSerializer):
 
 
 @define()
-class TitleSerieEvent(DictSerializer):
+class TitleSerie(DictSerializer):
     """
     Модель для ивента `on_title_serie` и подписок.
 
     .. code-block:: python
 
       @client.event
-      async def on_title_serie(event: TitleSerieEvent):
+      async def on_title_serie(event: TitleSerie):
           ...
     """
 
