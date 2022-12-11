@@ -3,8 +3,9 @@ from typing import Coroutine, Union, Optional, List
 from logging import getLogger
 
 from aiohttp.client_exceptions import WSServerHandshakeError
+from trio import run
 
-from ..api import WebSocketClient, HTTPClient
+from ..api import WebSocketClient, HTTPClient, GatewayClient
 from ..api.models.v2 import (
     Title,
     Schedule,
@@ -29,30 +30,14 @@ class AniLibriaClient:
     """
 
     def __init__(self, *, proxy: str = None) -> None:
-        self.proxy: str = proxy
-        self._loop: AbstractEventLoop = get_event_loop()
-        self._websocket: WebSocketClient = WebSocketClient(proxy=self.proxy)
-        self._http: HTTPClient = self._websocket._http
+        self._http: HTTPClient = HTTPClient(proxy=proxy)
+        self._websocket: GatewayClient = GatewayClient(http=self._http)
 
     async def _start(self):
         """
         Запускает websocket.
         """
-        try:
-            while not self._websocket._closed:
-                await self._websocket.run()
-        except WSServerHandshakeError as exc:
-            if (
-                exc.status == 500 and exc.message == "Invalid response status"
-            ):  # Появляется в рандомное время
-                log.debug(
-                    f"Websocket lost connection. Code: {exc.status} message: {exc.message}. Reconnecting..."
-                )
-                await self._start()
-            else:
-                raise exc from exc
-        except KeyboardInterrupt:
-            pass
+        await self._websocket.start()
 
     def event(self, coro: Coroutine = None, *, name: str = None, data: dict = None):
         """
@@ -656,8 +641,7 @@ class AniLibriaClient:
         """
         Запускает клиент.
         """
-        self._loop.run_until_complete(self._start())
-
+        run(self._start)
 
     async def close(self):
         """
