@@ -1,12 +1,14 @@
-from enum import Enum
+from enum import Enum as _Enum
+from typing import TypeVar
 
+T = TypeVar("T")
 
 __all__ = [
-    "AttrEnum",
+    "Enum",
     "StrEnum",
     "IntEnum",
     "StatusCode",
-    "TitleType",
+    "TitleCodeType",
     "SeasonCode",
     "RSSType",
     "DescriptionType",
@@ -15,50 +17,32 @@ __all__ = [
 ]
 
 
-class AttrEnum(Enum):
+class Enum(_Enum):
     @classmethod
-    def from_value(cls, value):
-        """
-        Similar to Enum(value) but if value not found then returns value
-        """
-        try:
-            return cls(value)
-        except ValueError:
-            return value
+    def _missing_(cls, value: T) -> T:
+        return value
 
 
-class StrEnum(str, AttrEnum):
-    """
-    ``enum.IntEnum``, но для строк и возвращает ``None``, если значение не найдено
-    """
-
+class StrEnum(str, Enum):
     ...
 
 
-class IntEnum(int, AttrEnum):
-    """
-    Похож на ``enum.IntEnum``, но возвращает ``None``, если значение не найдено
-    """
-
+class IntEnum(int, Enum):
     ...
 
 
 class StatusCode(IntEnum):
-    """
-    Представляет текущий статус тайтла
-    """
-
     AT_WORK = 1
+    "В работе"
     FINISHED = 2
+    "Закончен"
     HIDDEN = 3
+    "Скрыт"
     NO_ONGOING = 4
+    "Неонгоинг"
 
 
-class TitleType(IntEnum):
-    """
-    Представляет тип тайтла
-    """
-
+class TitleCodeType(IntEnum):
     FILM = 0
     TV = 1
     OVA = 2
@@ -72,12 +56,16 @@ class SeasonCode(IntEnum):
     Представляет код сезона
     """
 
-    EMPTY = 0
+    UNKNOWN = 0
+    "Неизвестный сезон"
     WINTER = 1
+    "Зимний сезон"
     SPRING = 2
+    "Весенний сезон"
     SUMMER = 3
-    AUTUMN = 4
-    FALL = 4
+    "Летний сезон"
+    AUTUMN = FALL = 4
+    "Осенний сезон"
 
 
 class RSSType(StrEnum):
@@ -115,7 +103,14 @@ class PlayListType(StrEnum):
     Представляет тип плейлиста
     """
 
-    ARRAY = "array"
-    LIST = "array"
-    OBJECT = "object"
-    DICT = "object"
+    ARRAY = LIST = "array"
+    "Плейлист в виде списка"
+    OBJECT = DICT = "object"
+    "Плейлист в виде словаря"
+
+    def __str__(self) -> str:
+        return self.value
+
+
+class QualityType(StrEnum):
+    WEBRip = "WEBRip"
