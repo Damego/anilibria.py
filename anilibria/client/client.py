@@ -31,7 +31,7 @@ class AniLibriaClient:
     Основной клиент для взаимодействия с API anilibria.tv.
     """
 
-    def __init__(self, *, proxy: str = MISSING) -> None:
+    def __init__(self, *, proxy: str = None) -> None:
         self._http: HTTPClient = HTTPClient(proxy=proxy)
         self._websocket: GatewayClient = GatewayClient(http=self._http)
 
@@ -119,8 +119,8 @@ class AniLibriaClient:
         """
         Возвращает объект тайтла с заданными параметрами.
 
-        :param id: Уникальный ID тайтла.
-        :param code: Унильный код тайтла.
+        :param id: ID тайтла.
+        :param code: Код тайтла.
         :param torrent_id: ID торрента
         :param filter: То, что должно быть в ответе.
         :param remove: То, чего не должно быть в ответе.
@@ -590,7 +590,7 @@ class AniLibriaClient:
         )
         return [Title(**_) for _ in data]
 
-    async def get_favorites(
+    async def get_favorites_titles(
         self,
         session_id: str,
         filter: Optional[List[str]] = MISSING,
@@ -621,7 +621,7 @@ class AniLibriaClient:
         )
         return [Title(**_) for _ in data]
 
-    async def add_favorite(self, session_id: str, title_id: int):
+    async def add_favorite_title(self, session_id: str, title_id: int):
         """
         Добавляет тайтл в список избранных
 
@@ -630,7 +630,7 @@ class AniLibriaClient:
         """
         await self._http.v2.add_favorite(session=session_id, title_id=title_id)
 
-    async def del_favorite(self, session_id: str, title_id: int):
+    async def delete_favorite_title(self, session_id: str, title_id: int):
         """
         Добавляет тайтл в список избранных
 
