@@ -1,6 +1,8 @@
-from typing import ClassVar
+from typing import ClassVar, TypeVar
 
-__all__ = ["MISSING"]
+__all__ = ["MISSING", "Absent"]
+
+T = TypeVar("T")
 
 
 class _Missing:
@@ -25,3 +27,4 @@ class _Missing:
 
 
 MISSING = _Missing()
+Absent = T | MISSING
