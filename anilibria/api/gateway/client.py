@@ -40,7 +40,7 @@ class GatewayClient:
         self._closed: bool = None  # noqa
         self._stopped: bool = None  # noqa
 
-        self._http: http
+        self._http: HTTPClient = http
 
     async def start(self):
         async with open_nursery() as nursery:
