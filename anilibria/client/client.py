@@ -35,7 +35,7 @@ class AniLibriaClient:
         self._http: HTTPClient = HTTPClient(proxy=proxy)
         self._websocket: GatewayClient = GatewayClient(http=self._http)
 
-    async def _start(self):
+    async def astart(self):
         """
         Запускает websocket.
         """
@@ -643,7 +643,7 @@ class AniLibriaClient:
         """
         Запускает клиент.
         """
-        run(self._start)
+        run(self.astart)
 
     async def close(self):
         """
