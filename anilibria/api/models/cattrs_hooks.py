@@ -2,7 +2,7 @@ from typing import Type
 
 from cattrs import register_structure_hook, structure
 
-from .v2.title import Serie, RutubeSerie
+from .title import Serie, RutubeSerie
 
 
 def _playlist_hook(data: dict | list, type_: Type[Serie | RutubeSerie]):

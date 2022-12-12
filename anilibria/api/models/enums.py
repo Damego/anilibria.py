@@ -19,16 +19,26 @@ __all__ = [
 
 class Enum(_Enum):
     @classmethod
-    def _missing_(cls, value: T) -> T:
-        return value
+    def _missing_(cls, value: T):
+        if isinstance(value, int):
+            new = int.__new__(cls)
+        else:
+            new = str.__new__(cls)
+
+        new._name_ = f"UNKNOWN-VALUE-{value}"
+        new._value_ = value
+
+        return cls._value2member_map_.setdefault(value, new)
 
 
 class StrEnum(str, Enum):
-    ...
+    def __str__(self) -> str:
+        return self.value
 
 
 class IntEnum(int, Enum):
-    ...
+    def __int__(self) -> int:
+        return self.value
 
 
 class StatusCode(IntEnum):
@@ -107,9 +117,6 @@ class PlayListType(StrEnum):
     "Плейлист в виде списка"
     OBJECT = DICT = "object"
     "Плейлист в виде словаря"
-
-    def __str__(self) -> str:
-        return self.value
 
 
 class QualityType(StrEnum):

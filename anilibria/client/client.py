@@ -5,8 +5,8 @@ from logging import getLogger
 from aiohttp.client_exceptions import WSServerHandshakeError
 from trio import run
 
-from ..api import WebSocketClient, HTTPClient, GatewayClient
-from ..api.models.v2 import (
+from ..api import HTTPClient, GatewayClient
+from ..api.models import (
     Title,
     Schedule,
     YouTubeData,

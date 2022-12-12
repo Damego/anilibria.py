@@ -1,5 +1,5 @@
 from .enums import StatusCode, TitleCodeType, SeasonCode
-from ..attrs_utils import define
+from .attrs_utils import define
 
 
 __all__ = [
