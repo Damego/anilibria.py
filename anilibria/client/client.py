@@ -4,6 +4,7 @@ from logging import getLogger
 
 from aiohttp.client_exceptions import WSServerHandshakeError
 from trio import run
+from cattrs import structure
 
 from ..api import HTTPClient, GatewayClient
 from ..api.models import (
@@ -19,6 +20,7 @@ from ..api.models import (
 )
 from ..api.dispatch import Event
 from ..api.error import NoArgumentsError
+from ..utils.missing import MISSING
 
 log = getLogger("anilibria.client")
 __all__ = ["AniLibriaClient"]
@@ -29,7 +31,7 @@ class AniLibriaClient:
     Основной клиент для взаимодействия с API anilibria.tv.
     """
 
-    def __init__(self, *, proxy: str = None) -> None:
+    def __init__(self, *, proxy: str = MISSING) -> None:
         self._http: HTTPClient = HTTPClient(proxy=proxy)
         self._websocket: GatewayClient = GatewayClient(http=self._http)
 
@@ -39,7 +41,7 @@ class AniLibriaClient:
         """
         await self._websocket.start()
 
-    def event(self, coro: Coroutine = None, *, name: str = None, data: dict = None):
+    def event(self, coro: Coroutine = MISSING, *, name: str = MISSING, data: dict = MISSING):
         """
         Делает из функции ивент, который будет вызываться из вебсокета.
 
@@ -57,7 +59,7 @@ class AniLibriaClient:
 
         return decorator
 
-    async def subscribe(self, subscribe: dict, filter: str = None, remove: str = None):
+    async def subscribe(self, subscribe: dict, filter: str = MISSING, remove: str = MISSING):
         """
         По умолчанию клиент получает все возможные уведомления от API.
         Но можно подписаться на определённые ивенты, или ивенты с каким-то фильтром
@@ -81,9 +83,9 @@ class AniLibriaClient:
         :param remove: То, что нужно удалить из подписки.
         """
         data = {"subscribe": subscribe}
-        if filter is not None:
+        if filter is not MISSING:
             data["filter"] = filter
-        if remove is not None:
+        if remove is not MISSING:
             data["remove"] = remove
 
         await self._websocket.subscribe(data)
@@ -105,14 +107,14 @@ class AniLibriaClient:
 
     async def get_title(
         self,
-        id: Optional[int] = None,
-        code: Optional[str] = None,
-        torrent_id: Optional[int] = None,
-        filter: Optional[List[str]] = None,
-        remove: Optional[List[str]] = None,
-        include: Optional[List[Include]] = None,
-        description_type: Optional[DescriptionType] = None,
-        playlist_type: Optional[PlayListType] = None,
+        id: Optional[int] = MISSING,
+        code: Optional[str] = MISSING,
+        torrent_id: Optional[int] = MISSING,
+        filter: Optional[List[str]] = MISSING,
+        remove: Optional[List[str]] = MISSING,
+        include: Optional[List[Include]] = MISSING,
+        description_type: Optional[DescriptionType] = MISSING,
+        playlist_type: Optional[PlayListType] = MISSING,
     ) -> Title:
         """
         Возвращает объект тайтла с заданными параметрами.
@@ -128,7 +130,7 @@ class AniLibriaClient:
         :return: Объект тайтла
         :rtype: Title
         """
-        if id is None and code is None:
+        if id is MISSING and code is MISSING:
             raise NoArgumentsError("id", "code")
 
         data = await self._http.v2.get_title(
@@ -141,17 +143,17 @@ class AniLibriaClient:
             description_type=description_type,
             playlist_type=playlist_type,
         )
-        return Title(**data)
+        return structure(data, Title)  # Title(**data)
 
     async def get_titles(
         self,
-        id_list: Optional[List[int]] = None,
-        code_list: Optional[List[str]] = None,
-        filter: Optional[List[str]] = None,
-        remove: Optional[List[str]] = None,
-        include: Optional[List[Include]] = None,
-        description_type: Optional[DescriptionType] = None,
-        playlist_type: Optional[PlayListType] = None,
+        id_list: Optional[List[int]] = MISSING,
+        code_list: Optional[List[str]] = MISSING,
+        filter: Optional[List[str]] = MISSING,
+        remove: Optional[List[str]] = MISSING,
+        include: Optional[List[Include]] = MISSING,
+        description_type: Optional[DescriptionType] = MISSING,
+        playlist_type: Optional[PlayListType] = MISSING,
     ) -> List[Title]:
         """
         Возвращает список тайтлов с заданными параметрами.
@@ -166,7 +168,7 @@ class AniLibriaClient:
         :return: Список тайтлов
         :rtype: List[Title]
         """
-        if id_list is None and code_list is None:
+        if id_list is MISSING and code_list is MISSING:
             raise NoArgumentsError("id_list", "code_list")
 
         data = await self._http.v2.get_titles(
@@ -182,14 +184,14 @@ class AniLibriaClient:
 
     async def get_updates(
         self,
-        filter: Optional[List[str]] = None,
-        remove: Optional[List[str]] = None,
-        include: Optional[List[Include]] = None,
-        since: Optional[int] = None,
-        description_type: Optional[DescriptionType] = None,
-        playlist_type: Optional[PlayListType] = None,
-        after: Optional[int] = None,
-        limit: Optional[int] = None,
+        filter: Optional[List[str]] = MISSING,
+        remove: Optional[List[str]] = MISSING,
+        include: Optional[List[Include]] = MISSING,
+        since: Optional[int] = MISSING,
+        description_type: Optional[DescriptionType] = MISSING,
+        playlist_type: Optional[PlayListType] = MISSING,
+        after: Optional[int] = MISSING,
+        limit: Optional[int] = MISSING,
     ) -> List[Title]:
         """
         Возвращает список последних обновлений тайтлов с заданными параметрами.
@@ -219,13 +221,13 @@ class AniLibriaClient:
 
     async def get_changes(
         self,
-        filter: Optional[List[str]] = None,
-        remove: Optional[List[str]] = None,
-        include: Optional[List[Include]] = None,
-        since: Optional[int] = None,
-        description_type: Optional[DescriptionType] = None,
-        after: Optional[int] = None,
-        limit: Optional[int] = None,
+        filter: Optional[List[str]] = MISSING,
+        remove: Optional[List[str]] = MISSING,
+        include: Optional[List[Include]] = MISSING,
+        since: Optional[int] = MISSING,
+        description_type: Optional[DescriptionType] = MISSING,
+        after: Optional[int] = MISSING,
+        limit: Optional[int] = MISSING,
     ) -> List[Title]:
         """
         Возвращает список последних обновлений тайтлов с заданными параметрами.
@@ -253,12 +255,12 @@ class AniLibriaClient:
 
     async def get_schedule(
         self,
-        filter: Optional[List[str]] = None,
-        remove: Optional[List[str]] = None,
-        include: Optional[List[Include]] = None,
-        days: List[int] = None,
-        description_type: Optional[DescriptionType] = None,
-        playlist_type: Optional[PlayListType] = None,
+        filter: Optional[List[str]] = MISSING,
+        remove: Optional[List[str]] = MISSING,
+        include: Optional[List[Include]] = MISSING,
+        days: List[int] = MISSING,
+        description_type: Optional[DescriptionType] = MISSING,
+        playlist_type: Optional[PlayListType] = MISSING,
     ) -> List[Schedule]:
         """
         Возвращает список последних обновлений тайтлов с заданными параметрами по дням.
@@ -284,11 +286,11 @@ class AniLibriaClient:
 
     async def get_random_title(
         self,
-        filter: Optional[List[str]] = None,
-        remove: Optional[List[str]] = None,
-        include: Optional[List[Include]] = None,
-        description_type: Optional[DescriptionType] = None,
-        playlist_type: Optional[PlayListType] = None,
+        filter: Optional[List[str]] = MISSING,
+        remove: Optional[List[str]] = MISSING,
+        include: Optional[List[Include]] = MISSING,
+        description_type: Optional[DescriptionType] = MISSING,
+        playlist_type: Optional[PlayListType] = MISSING,
     ) -> Title:
         """
         Возвращает рандомный тайтл с заданными параметрами.
@@ -312,12 +314,12 @@ class AniLibriaClient:
 
     async def get_youtube(
         self,
-        filter: Optional[List[str]] = None,
-        remove: Optional[List[str]] = None,
-        include: Optional[List[Include]] = None,
-        since: Optional[int] = None,
-        after: Optional[int] = None,
-        limit: Optional[int] = None,
+        filter: Optional[List[str]] = MISSING,
+        remove: Optional[List[str]] = MISSING,
+        include: Optional[List[Include]] = MISSING,
+        since: Optional[int] = MISSING,
+        after: Optional[int] = MISSING,
+        limit: Optional[int] = MISSING,
     ) -> List[YouTubeData]:
         """
         Возвращает список youtube видео в хронологическом порядке с заданными параметрами.
@@ -343,14 +345,14 @@ class AniLibriaClient:
 
     async def get_feed(
         self,
-        filter: Optional[List[str]] = None,
-        remove: Optional[List[str]] = None,
-        include: Optional[List[Include]] = None,
-        since: Optional[int] = None,
-        description_type: Optional[DescriptionType] = None,
-        playlist_type: Optional[PlayListType] = None,
-        after: Optional[int] = None,
-        limit: Optional[int] = None,
+        filter: Optional[List[str]] = MISSING,
+        remove: Optional[List[str]] = MISSING,
+        include: Optional[List[Include]] = MISSING,
+        since: Optional[int] = MISSING,
+        description_type: Optional[DescriptionType] = MISSING,
+        playlist_type: Optional[PlayListType] = MISSING,
+        after: Optional[int] = MISSING,
+        limit: Optional[int] = MISSING,
     ) -> List[Union[Title, YouTubeData]]:
         """
         Возвращает список тайтлов и youtube видео в хронологическом порядке с заданными параметрами.
@@ -418,15 +420,15 @@ class AniLibriaClient:
 
     async def get_seed_stats(
         self,
-        users: Optional[List[str]] = None,
-        remove: Optional[List[str]] = None,
-        include: Optional[List[Include]] = None,
-        description_type: Optional[DescriptionType] = None,
-        playlist_type: Optional[PlayListType] = None,
-        after: Optional[int] = None,
-        sort_by: Optional[str] = None,
-        order: Optional[int] = None,
-        limit: Optional[int] = None,
+        users: Optional[List[str]] = MISSING,
+        remove: Optional[List[str]] = MISSING,
+        include: Optional[List[Include]] = MISSING,
+        description_type: Optional[DescriptionType] = MISSING,
+        playlist_type: Optional[PlayListType] = MISSING,
+        after: Optional[int] = MISSING,
+        sort_by: Optional[str] = MISSING,
+        order: Optional[int] = MISSING,
+        limit: Optional[int] = MISSING,
     ) -> List[SeedStats]:
         """
         Возвращает топ пользователей по количеству загруженного и скачанно через торрент трекер anilibria.
@@ -458,11 +460,11 @@ class AniLibriaClient:
 
     async def get_rss(
         self,
-        rss_type: Optional[RSSType] = None,
-        session_id: Optional[str] = None,
-        since: Optional[int] = None,
-        after: Optional[int] = None,
-        limit: Optional[int] = None,
+        rss_type: Optional[RSSType] = MISSING,
+        session_id: Optional[str] = MISSING,
+        since: Optional[int] = MISSING,
+        after: Optional[int] = MISSING,
+        limit: Optional[int] = MISSING,
     ) -> str:
         """
         Возвращает список обновлений на сайте в одном из форматов RSS ленты.
@@ -486,22 +488,22 @@ class AniLibriaClient:
 
     async def search_titles(
         self,
-        search: Optional[List[str]] = None,
-        year: Optional[List[Union[str, int]]] = None,
-        season_code: Optional[List[str]] = None,
-        genres: Optional[List[str]] = None,
-        voice: Optional[List[str]] = None,
-        translator: Optional[List[str]] = None,
-        editing: Optional[List[str]] = None,
-        decor: Optional[List[str]] = None,
-        timing: Optional[List[str]] = None,
-        filter: Optional[List[str]] = None,
-        remove: Optional[List[str]] = None,
-        include: Optional[List[Include]] = None,
-        description_type: Optional[DescriptionType] = None,
-        playlist_type: Optional[PlayListType] = None,
-        after: Optional[int] = None,
-        limit: Optional[int] = None,
+        search: Optional[List[str]] = MISSING,
+        year: Optional[List[Union[str, int]]] = MISSING,
+        season_code: Optional[List[str]] = MISSING,
+        genres: Optional[List[str]] = MISSING,
+        voice: Optional[List[str]] = MISSING,
+        translator: Optional[List[str]] = MISSING,
+        editing: Optional[List[str]] = MISSING,
+        decor: Optional[List[str]] = MISSING,
+        timing: Optional[List[str]] = MISSING,
+        filter: Optional[List[str]] = MISSING,
+        remove: Optional[List[str]] = MISSING,
+        include: Optional[List[Include]] = MISSING,
+        description_type: Optional[DescriptionType] = MISSING,
+        playlist_type: Optional[PlayListType] = MISSING,
+        after: Optional[int] = MISSING,
+        limit: Optional[int] = MISSING,
     ) -> List[Title]:
         """
         Возвращает список тайтлов, найденных по фильтрам.
@@ -548,15 +550,15 @@ class AniLibriaClient:
     async def advanced_search(
         self,
         query: str,
-        filter: Optional[List[str]] = None,
-        remove: Optional[List[str]] = None,
-        include: Optional[List[Include]] = None,
-        description_type: Optional[DescriptionType] = None,
-        playlist_type: Optional[PlayListType] = None,
-        after: Optional[int] = None,
-        order_by: str = None,
-        limit: Optional[int] = None,
-        sort_direction: Optional[int] = None,
+        filter: Optional[List[str]] = MISSING,
+        remove: Optional[List[str]] = MISSING,
+        include: Optional[List[Include]] = MISSING,
+        description_type: Optional[DescriptionType] = MISSING,
+        playlist_type: Optional[PlayListType] = MISSING,
+        after: Optional[int] = MISSING,
+        order_by: str = MISSING,
+        limit: Optional[int] = MISSING,
+        sort_direction: Optional[int] = MISSING,
     ) -> List[Title]:
         """
         Возвращает список тайтлов, найденных по фильтрам.
@@ -591,11 +593,11 @@ class AniLibriaClient:
     async def get_favorites(
         self,
         session_id: str,
-        filter: Optional[List[str]] = None,
-        remove: Optional[List[str]] = None,
-        include: Optional[List[Include]] = None,
-        description_type: Optional[DescriptionType] = None,
-        playlist_type: Optional[PlayListType] = None,
+        filter: Optional[List[str]] = MISSING,
+        remove: Optional[List[str]] = MISSING,
+        include: Optional[List[Include]] = MISSING,
+        description_type: Optional[DescriptionType] = MISSING,
+        playlist_type: Optional[PlayListType] = MISSING,
     ) -> List[Title]:
         """
         Возвращает список избранных тайтлов пользователя
