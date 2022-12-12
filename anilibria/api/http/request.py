@@ -3,6 +3,7 @@ from logging import getLogger
 
 from aiohttp import ClientSession
 
+from .route import Route
 from ..error import HTTPException
 
 
@@ -19,21 +20,14 @@ class Request:
         self.proxy = proxy
         self.session = ClientSession()
 
-    async def request(self, method: str, url: str, data: dict = None, **kwargs):
-        """
-        :param method:
-        :param url:
-        :param data:
-        :param kwargs:
-        :return:
-        """
+    async def request(self, route: Route, data: dict = None, **kwargs):
         if self.proxy is not None:
             kwargs["proxy"] = self.proxy
 
         log.debug(
-            f"Send {method} request to {url} with data: {data} and additional kwargs: {kwargs}"
+            f"Send {route.method} request to {route.endpoint} endpoint with data: {data} and kwargs: {kwargs}"
         )
-        async with self.session.request(method, url, params=data, **kwargs) as response:
+        async with self.session.request(route.method, route.url, params=data, **kwargs) as response:
             raw = await response.text()
             try:
                 data = loads(raw)
