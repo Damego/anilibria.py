@@ -2,7 +2,6 @@ from typing import Coroutine
 from logging import getLogger
 
 from trio import run
-from cattrs import structure
 
 from ..api import HTTPClient, GatewayClient
 from ..api.models import (
@@ -19,6 +18,7 @@ from ..api.models import (
 from ..api.dispatch import Event
 from ..api.error import NoArgumentsError
 from ..utils.typings import MISSING, Absent
+from ..utils.serializer import dict_filter_missing
 from ..api.models.cattrs_utils import converter
 
 log = getLogger("anilibria.client")
@@ -91,7 +91,7 @@ class AniLibriaClient:
 
     async def login(self, mail: str, password: str) -> str:
         """
-        Входит в аккаунт и возвращает айди сессии.
+        Входит в аккаунт и возвращает ID сессии.
 
         .. warning::
            Если запрос идёт из РФ, то для использования необходим VPN или proxy!
@@ -132,7 +132,7 @@ class AniLibriaClient:
         if id is MISSING and code is MISSING:
             raise NoArgumentsError("id", "code")
 
-        data = await self._http.v2.get_title(
+        payload: dict = dict_filter_missing(
             id=id,
             code=code,
             torrent_id=torrent_id,
@@ -142,6 +142,8 @@ class AniLibriaClient:
             description_type=description_type,
             playlist_type=playlist_type,
         )
+
+        data = await self._http.v2.get_title(**payload)
         return converter.structure(data, Title)
 
     async def get_titles(
@@ -157,7 +159,7 @@ class AniLibriaClient:
         """
         Возвращает список тайтлов с заданными параметрами.
 
-        :param id_list: Список с айди тайтлами
+        :param id_list: Список с ID тайтлами
         :param code_list: Список с кодами тайтлов.
         :param filter: То, что должно быть в ответе.
         :param remove: То, чего не должно быть в ответе.
@@ -170,7 +172,7 @@ class AniLibriaClient:
         if id_list is MISSING and code_list is MISSING:
             raise NoArgumentsError("id_list", "code_list")
 
-        data = await self._http.v2.get_titles(
+        payload: dict = dict_filter_missing(
             id_list=id_list,
             code_list=code_list,
             filter=filter,
@@ -179,6 +181,9 @@ class AniLibriaClient:
             description_type=description_type,
             playlist_type=playlist_type,
         )
+
+        data = await self._http.v2.get_titles(**payload)
+
         return converter.structure(data, list[Title])
 
     async def get_updates(
@@ -206,7 +211,7 @@ class AniLibriaClient:
         :return: Список тайтлов
         :rtype: list[Title]
         """
-        data = await self._http.v2.get_updates(
+        payload = dict_filter_missing(
             filter=filter,
             remove=remove,
             include=include,
@@ -216,6 +221,7 @@ class AniLibriaClient:
             after=after,
             limit=limit,
         )
+        data = await self._http.v2.get_updates(**payload)
         return converter.structure(data, list[Title])
 
     async def get_changes(
@@ -241,7 +247,7 @@ class AniLibriaClient:
         :return: Список тайтлов
         :rtype: list[Title]
         """
-        data = await self._http.v2.get_changes(
+        payload = dict_filter_missing(
             filter=filter,
             remove=remove,
             include=include,
@@ -250,6 +256,7 @@ class AniLibriaClient:
             after=after,
             limit=limit,
         )
+        data = await self._http.v2.get_changes(**payload)
         return converter.structure(data, list[Title])
 
     async def get_schedule(
@@ -273,7 +280,7 @@ class AniLibriaClient:
         :return: Список расписаний
         :rtype: list[Schedule]
         """
-        data = await self._http.v2.get_schedule(
+        payload = dict_filter_missing(
             filter=filter,
             remove=remove,
             include=include,
@@ -281,6 +288,7 @@ class AniLibriaClient:
             description_type=description_type,
             playlist_type=playlist_type,
         )
+        data = await self._http.v2.get_schedule(**payload)
         return converter.structure(data, list[Schedule])
 
     async def get_random_title(
@@ -302,13 +310,14 @@ class AniLibriaClient:
         :return: Объект тайтла
         :rtype: Title
         """
-        data = await self._http.v2.get_random_title(
+        payload = dict_filter_missing(
             filter=filter,
             remove=remove,
             include=include,
             description_type=description_type,
             playlist_type=playlist_type,
         )
+        data = await self._http.v2.get_random_title(**payload)
         return converter.structure(data, Title)
 
     async def get_youtube(
@@ -332,7 +341,7 @@ class AniLibriaClient:
         :return: Список youtube видео
         :rtype: list[YouTubeData]
         """
-        data = await self._http.v2.get_youtube(
+        payload = dict_filter_missing(
             filter=filter,
             remove=remove,
             include=include,
@@ -340,6 +349,7 @@ class AniLibriaClient:
             after=after,
             limit=limit,
         )
+        data = await self._http.v2.get_youtube(**payload)
         return converter.structure(data, list[YouTubeData])
 
     async def get_feed(
@@ -367,7 +377,7 @@ class AniLibriaClient:
         :return: Список тайтлов и youtube видео.
         :rtype: list[Union[Title, YouTubeData]]
         """
-        data = await self._http.v2.get_feed(
+        payload = dict_filter_missing(
             filter=filter,
             remove=remove,
             include=include,
@@ -377,6 +387,7 @@ class AniLibriaClient:
             after=after,
             limit=limit,
         )
+        data = await self._http.v2.get_feed(**payload)
         return [  # TODO: I don't like it.
             converter.structure(_["title"], Title)
             if _.get("title")
@@ -441,7 +452,7 @@ class AniLibriaClient:
         :return: Список с пользователями
         :rtype: list[SeedStats]
         """
-        data = await self._http.v2.get_seed_stats(
+        payload = dict_filter_missing(
             users=users,
             remove=remove,
             include=include,
@@ -452,6 +463,7 @@ class AniLibriaClient:
             order=order,
             limit=limit,
         )
+        data = await self._http.v2.get_seed_stats(**payload)
         return converter.structure(data, list[SeedStats])
 
     async def get_rss(
@@ -520,7 +532,7 @@ class AniLibriaClient:
         :return: Список тайтлов
         :rtype: list[Title]
         """
-        data = await self._http.v2.search_titles(
+        payload = dict_filter_missing(
             search=search,
             year=year,
             season_code=season_code,
@@ -538,6 +550,7 @@ class AniLibriaClient:
             after=after,
             limit=limit,
         )
+        data = await self._http.v2.search_titles(**payload)
         return converter.structure(data, list[Title])
 
     async def advanced_search(
@@ -569,7 +582,7 @@ class AniLibriaClient:
         :return: Список тайтлов
         :rtype: list[Title]
         """
-        data = await self._http.v2.advanced_search(
+        payload = dict_filter_missing(
             query=query,
             filter=filter,
             remove=remove,
@@ -581,6 +594,7 @@ class AniLibriaClient:
             limit=limit,
             sort_direction=sort_direction,
         )
+        data = await self._http.v2.advanced_search(**payload)
         return converter.structure(data, list[Title])
 
     async def get_favorites_titles(
@@ -604,7 +618,7 @@ class AniLibriaClient:
         :return: Список тайтлов
         :rtype: list[Title]
         """
-        data = await self._http.v2.get_favorites(
+        payload = dict_filter_missing(
             session=session_id,
             filter=filter,
             remove=remove,
@@ -612,6 +626,7 @@ class AniLibriaClient:
             description_type=description_type,
             playlist_type=playlist_type,
         )
+        data = await self._http.v2.get_favorites(**payload)
         return converter.structure(data, list[Title])
 
     async def add_favorite_title(self, session_id: str, title_id: int):
@@ -619,7 +634,7 @@ class AniLibriaClient:
         Добавляет тайтл в список избранных
 
         :param session_id: ID сессии.
-        :param title_id: айди тайтла.
+        :param title_id: ID тайтла.
         """
         await self._http.v2.add_favorite(session=session_id, title_id=title_id)
 
@@ -628,7 +643,7 @@ class AniLibriaClient:
         Добавляет тайтл в список избранных
 
         :param session_id: ID сессии.
-        :param title_id: айди тайтла.
+        :param title_id: ID тайтла.
         """
         await self._http.v2.del_favorite(session=session_id, title_id=title_id)
 
