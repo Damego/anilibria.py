@@ -5,28 +5,16 @@ try:
 except ImportError:
     from json import loads, dumps
 
-from asyncio import get_event_loop, get_running_loop, new_event_loop, AbstractEventLoop
-from typing import List, Union, Optional
 from logging import getLogger
-from sys import version_info
 
 from cattrs import structure
-from aiohttp import WSMessage, ClientWebSocketResponse, WSMsgType
-from aiohttp.http import WS_CLOSED_MESSAGE
 from trio import open_nursery
 from trio_websocket import open_websocket_url, WebSocketConnection
 
 
-from .events import (
-    TitleUpdate,
-    PlayListUpdate,
-    EncodeEvent,
-    EventType,
-    TorrentUpdate,
-    TitleSerie,
-)
 from ..http import HTTPClient
-from ..dispatch import EventDispatcher
+from ..dispatch import Dispatch
+from ...const import __api_url__
 
 
 log = getLogger("anilibria.gateway")
