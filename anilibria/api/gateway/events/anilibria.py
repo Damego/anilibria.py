@@ -1,6 +1,5 @@
 from typing import Optional
 
-from enum import Enum
 from ...models import Player, Serie, Title, Torrents
 from ...models.attrs_utils import convert, define, field
 from ...models.enums import StrEnum
@@ -33,38 +32,38 @@ class EventType(StrEnum):
 
 
 @define()
-class EncodeEvent:
+class _BaseEncodeEvent:
     """
     Базовый объект для события кодирования
     """
 
-    id: str = field()
-    episode: str = field()
-    resolution: Optional[str] = field(default=None)
-    quality: Optional[str] = field(default=None)
-    encoded_percent: Optional[str] = field(default=None)
-    is_reupload: Optional[bool] = field(
-        default=None, anilibria_name="isReupload"
-    )  # idk this is optional or not
+    id: str
+    episode: str
 
 
 @define()
-class EncodeStart(EncodeEvent):
+class _EncodeEvent(_BaseEncodeEvent):
+    resolution: str
+    quality: str
+
+
+@define()
+class EncodeStart(_EncodeEvent):
+    is_reupload: bool
+
+
+@define()
+class EncodeProgress(_EncodeEvent):
+    encoded_percent: str
+
+
+@define()
+class EncodeEnd(_EncodeEvent):
     ...
 
 
 @define()
-class EncodeProgress(EncodeEvent):
-    ...
-
-
-@define()
-class EncodeEnd(EncodeEvent):
-    ...
-
-
-@define()
-class EncodeFinish(EncodeEvent):
+class EncodeFinish(_BaseEncodeEvent):
     ...
 
 
