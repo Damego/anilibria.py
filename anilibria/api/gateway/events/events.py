@@ -1,3 +1,5 @@
+from ...models import Title, Serie
+from ...models.attrs_utils import define
 
 
 @define()
@@ -12,5 +14,5 @@ class TitleSerie:
           ...
     """
 
-    title: Title = field(converter=convert(Title))
-    episode: Serie = field()  # Нет конвертера, так как передаётся из другой модели
+    title: Title
+    episode: Serie
