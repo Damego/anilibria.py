@@ -1,4 +1,4 @@
-from ... import __api_url__
+from ...const import __api_url__
 
 __all__ = ["Route"]
 
