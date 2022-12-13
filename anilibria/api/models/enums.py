@@ -30,15 +30,17 @@ class Enum(_Enum):
 
         return cls._value2member_map_.setdefault(value, new)
 
+    def __str__(self) -> str:
+        return str(self.value)
+
 
 class StrEnum(str, Enum):
-    def __str__(self) -> str:
-        return self.value
+    ...
 
 
 class IntEnum(int, Enum):
     def __int__(self) -> int:
-        return self.value
+        return int(self.value)
 
 
 class StatusCode(IntEnum):
