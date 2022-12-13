@@ -13,7 +13,7 @@ from ..api.models import (
     SeedStats,
     Include,
     DescriptionType,
-    PlayListType,
+    PlaylistType,
     RSSType,
 )
 from ..api.dispatch import Event
@@ -113,7 +113,7 @@ class AniLibriaClient:
         remove: Absent[list[str]] = MISSING,
         include: Absent[list[Include]] = MISSING,
         description_type: Absent[DescriptionType] = MISSING,
-        playlist_type: Absent[PlayListType] = MISSING,
+        playlist_type: Absent[PlaylistType] = MISSING,
     ) -> Title:
         """
         Возвращает объект тайтла с заданными параметрами.
@@ -152,7 +152,7 @@ class AniLibriaClient:
         remove: Absent[list[str]] = MISSING,
         include: Absent[list[Include]] = MISSING,
         description_type: Absent[DescriptionType] = MISSING,
-        playlist_type: Absent[PlayListType] = MISSING,
+        playlist_type: Absent[PlaylistType] = MISSING,
     ) -> list[Title]:
         """
         Возвращает список тайтлов с заданными параметрами.
@@ -188,7 +188,7 @@ class AniLibriaClient:
         include: Absent[list[Include]] = MISSING,
         since: Absent[int] = MISSING,
         description_type: Absent[DescriptionType] = MISSING,
-        playlist_type: Absent[PlayListType] = MISSING,
+        playlist_type: Absent[PlaylistType] = MISSING,
         after: Absent[int] = MISSING,
         limit: Absent[int] = MISSING,
     ) -> list[Title]:
@@ -259,7 +259,7 @@ class AniLibriaClient:
         include: Absent[list[Include]] = MISSING,
         days: list[int] = MISSING,
         description_type: Absent[DescriptionType] = MISSING,
-        playlist_type: Absent[PlayListType] = MISSING,
+        playlist_type: Absent[PlaylistType] = MISSING,
     ) -> list[Schedule]:
         """
         Возвращает список последних обновлений тайтлов с заданными параметрами по дням.
@@ -289,7 +289,7 @@ class AniLibriaClient:
         remove: Absent[list[str]] = MISSING,
         include: Absent[list[Include]] = MISSING,
         description_type: Absent[DescriptionType] = MISSING,
-        playlist_type: Absent[PlayListType] = MISSING,
+        playlist_type: Absent[PlaylistType] = MISSING,
     ) -> Title:
         """
         Возвращает рандомный тайтл с заданными параметрами.
@@ -349,7 +349,7 @@ class AniLibriaClient:
         include: Absent[list[Include]] = MISSING,
         since: Absent[int] = MISSING,
         description_type: Absent[DescriptionType] = MISSING,
-        playlist_type: Absent[PlayListType] = MISSING,
+        playlist_type: Absent[PlaylistType] = MISSING,
         after: Absent[int] = MISSING,
         limit: Absent[int] = MISSING,
     ) -> list[Title | YouTubeData]:
@@ -420,7 +420,7 @@ class AniLibriaClient:
         remove: Absent[list[str]] = MISSING,
         include: Absent[list[Include]] = MISSING,
         description_type: Absent[DescriptionType] = MISSING,
-        playlist_type: Absent[PlayListType] = MISSING,
+        playlist_type: Absent[PlaylistType] = MISSING,
         after: Absent[int] = MISSING,
         sort_by: Absent[str] = MISSING,
         order: Absent[int] = MISSING,
@@ -494,7 +494,7 @@ class AniLibriaClient:
         remove: Absent[list[str]] = MISSING,
         include: Absent[list[Include]] = MISSING,
         description_type: Absent[DescriptionType] = MISSING,
-        playlist_type: Absent[PlayListType] = MISSING,
+        playlist_type: Absent[PlaylistType] = MISSING,
         after: Absent[int] = MISSING,
         limit: Absent[int] = MISSING,
     ) -> list[Title]:
@@ -547,7 +547,7 @@ class AniLibriaClient:
         remove: Absent[list[str]] = MISSING,
         include: Absent[list[Include]] = MISSING,
         description_type: Absent[DescriptionType] = MISSING,
-        playlist_type: Absent[PlayListType] = MISSING,
+        playlist_type: Absent[PlaylistType] = MISSING,
         after: Absent[int] = MISSING,
         order_by: str = MISSING,
         limit: Absent[int] = MISSING,
@@ -590,7 +590,7 @@ class AniLibriaClient:
         remove: Absent[list[str]] = MISSING,
         include: Absent[list[Include]] = MISSING,
         description_type: Absent[DescriptionType] = MISSING,
-        playlist_type: Absent[PlayListType] = MISSING,
+        playlist_type: Absent[PlaylistType] = MISSING,
     ) -> list[Title]:
         """
         Возвращает список избранных тайтлов пользователя

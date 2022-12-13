@@ -13,7 +13,7 @@ __all__ = [
     "RSSType",
     "DescriptionType",
     "Include",
-    "PlayListType",
+    "PlaylistType",
 ]
 
 
@@ -108,7 +108,7 @@ class Include(StrEnum):
     TORRENT_META = "torrent_meta"
 
 
-class PlayListType(StrEnum):
+class PlaylistType(StrEnum):
     """
     Представляет тип плейлиста
     """
