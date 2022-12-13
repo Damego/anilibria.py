@@ -19,6 +19,7 @@ from ..api.models import (
 from ..api.dispatch import Event
 from ..api.error import NoArgumentsError
 from ..utils.typings import MISSING, Absent
+from ..api.models.cattrs_utils import converter
 
 log = getLogger("anilibria.client")
 __all__ = ["AniLibriaClient"]
@@ -141,7 +142,7 @@ class AniLibriaClient:
             description_type=description_type,
             playlist_type=playlist_type,
         )
-        return structure(data, Title)  # Title(**data)
+        return converter.structure(data, Title)
 
     async def get_titles(
         self,
@@ -178,7 +179,7 @@ class AniLibriaClient:
             description_type=description_type,
             playlist_type=playlist_type,
         )
-        return [Title(**_) for _ in data]
+        return converter.structure(data, list[Title])
 
     async def get_updates(
         self,
@@ -215,7 +216,7 @@ class AniLibriaClient:
             after=after,
             limit=limit,
         )
-        return [Title(**_) for _ in data]
+        return converter.structure(data, list[Title])
 
     async def get_changes(
         self,
@@ -249,7 +250,7 @@ class AniLibriaClient:
             after=after,
             limit=limit,
         )
-        return [Title(**_) for _ in data]
+        return converter.structure(data, list[Title])
 
     async def get_schedule(
         self,
@@ -280,7 +281,7 @@ class AniLibriaClient:
             description_type=description_type,
             playlist_type=playlist_type,
         )
-        return [Schedule(**_) for _ in data]
+        return converter.structure(data, list[Schedule])
 
     async def get_random_title(
         self,
@@ -308,7 +309,7 @@ class AniLibriaClient:
             description_type=description_type,
             playlist_type=playlist_type,
         )
-        return Title(**data)
+        return converter.structure(data, Title)
 
     async def get_youtube(
         self,
@@ -339,7 +340,7 @@ class AniLibriaClient:
             after=after,
             limit=limit,
         )
-        return [YouTubeData(**_) for _ in data]
+        return converter.structure(data, list[YouTubeData])
 
     async def get_feed(
         self,
@@ -376,15 +377,16 @@ class AniLibriaClient:
             after=after,
             limit=limit,
         )
-        return [
-            Title(**_["title"]) if _.get("title") else YouTubeData(**_["youtube"]) for _ in data
+        return [  # TODO: I don't like it.
+            converter.structure(_["title"], Title)
+            if _.get("title")
+            else converter.structure(_["youtube"], YouTubeData)
+            for _ in data
         ]
 
     async def get_years(self) -> list[int]:
         """
         Возвращает список годов выхода доступных тайтлов отсортированный по возрастанию.
-
-        :return: Список с годами.
         """
         return await self._http.v2.get_years()
 
@@ -393,16 +395,12 @@ class AniLibriaClient:
         Возвращает список жанров доступных тайтлов отсортированный по алфавиту.
 
         :param sorting_type: Тип сортировки элементов.
-        :return: Список с жанрами.
         """
         return await self._http.v2.get_genres(sorting_type=sorting_type)
 
     async def get_caching_nodes(self) -> list[str]:
         """
-        Список кеш серверов с которых можно брать данные отсортированные по нагрузке
-
-        :return: Список серверов.
-        :rtype: list[str]
+        Список кеш серверов с которых можно брать данные, отсортированные по нагрузке
         """
         return await self._http.v2.get_caching_nodes()
 
@@ -414,7 +412,7 @@ class AniLibriaClient:
         :rtype: Team
         """
         data = await self._http.v2.get_team()
-        return TitleTeam(**data)
+        return converter.structure(data, TitleTeam)
 
     async def get_seed_stats(
         self,
@@ -454,7 +452,7 @@ class AniLibriaClient:
             order=order,
             limit=limit,
         )
-        return [SeedStats(**_) for _ in data]
+        return converter.structure(data, list[SeedStats])
 
     async def get_rss(
         self,
@@ -472,17 +470,14 @@ class AniLibriaClient:
         :param since: Список тайтлов у которых время обновления больше указанного timestamp
         :param after: Удаляет первые n записей из выдачи
         :param limit: Количество объектов в ответе
-        :return: RSS
-        :rtype: str
         """
-        data = await self._http.v2.get_rss(
+        return await self._http.v2.get_rss(
             rss_type=rss_type,
             session=session_id,
             since=since,
             after=after,
             limit=limit,
         )
-        return data
 
     async def search_titles(
         self,
@@ -543,7 +538,7 @@ class AniLibriaClient:
             after=after,
             limit=limit,
         )
-        return [Title(**_) for _ in data]
+        return converter.structure(data, list[Title])
 
     async def advanced_search(
         self,
@@ -586,7 +581,7 @@ class AniLibriaClient:
             limit=limit,
             sort_direction=sort_direction,
         )
-        return [Title(**_) for _ in data]
+        return converter.structure(data, list[Title])
 
     async def get_favorites_titles(
         self,
@@ -617,7 +612,7 @@ class AniLibriaClient:
             description_type=description_type,
             playlist_type=playlist_type,
         )
-        return [Title(**_) for _ in data]
+        return converter.structure(data, list[Title])
 
     async def add_favorite_title(self, session_id: str, title_id: int):
         """
