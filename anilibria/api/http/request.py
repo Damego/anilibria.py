@@ -5,6 +5,7 @@ from aiohttp import ClientSession
 
 from .route import Route
 from ..error import HTTPException
+from ...utils.serializer import prepare_payload
 
 
 log = getLogger("anilibria.request")
@@ -18,16 +19,25 @@ class Request:
         :param proxy:
         """
         self.proxy = proxy
-        self.session = ClientSession()
+        self.session: ClientSession = None
 
-    async def request(self, route: Route, data: dict = None, **kwargs):
+    async def check_session(self):
+        if self.session is None or self.session.closed:
+            self.session = ClientSession()
+
+    async def request(self, route: Route, params: dict = None, **kwargs):
+        await self.check_session()
+
+        if params:
+            prepare_payload(params)
+
         if self.proxy is not None:
             kwargs["proxy"] = self.proxy
 
         log.debug(
-            f"Send {route.method} request to {route.endpoint} endpoint with data: {data} and kwargs: {kwargs}"
+            f"Send {route.method} request to {route.endpoint} endpoint with params: {params} and kwargs: {kwargs}"
         )
-        async with self.session.request(route.method, route.url, params=data, **kwargs) as response:
+        async with self.session.request(route.method, route.url, params=params, **kwargs) as response:
             raw = await response.text()
             try:
                 data = loads(raw)
