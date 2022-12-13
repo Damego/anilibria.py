@@ -27,4 +27,4 @@ class _Missing:
 
 
 MISSING = _Missing()
-Absent = T | MISSING
+Absent = T | _Missing
