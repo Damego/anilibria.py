@@ -1,8 +1,8 @@
-from typing import Final
+from ... import __api_url__
 
 __all__ = ["Route"]
 
-URL: Final = "http://api.anilibria.tv/v2"
+URL = f"https://{__api_url__}"
 
 
 class Route:

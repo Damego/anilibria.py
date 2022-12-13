@@ -30,7 +30,7 @@ from ..dispatch import EventDispatcher
 
 
 log = getLogger("anilibria.gateway")
-URL = "wss://api.anilibria.tv/v2.13/ws/"
+URL = f"wss://{__api_url__}/ws/"
 __all__ = ["GatewayClient"]
 
 
