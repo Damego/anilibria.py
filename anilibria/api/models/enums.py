@@ -1,10 +1,9 @@
-from enum import Enum as _Enum
+from enum import Enum
 from typing import TypeVar
 
 T = TypeVar("T")
 
 __all__ = [
-    "Enum",
     "StrEnum",
     "IntEnum",
     "StatusCode",
@@ -17,28 +16,28 @@ __all__ = [
 ]
 
 
-class Enum(_Enum):
+class StrEnum(str, Enum):
     @classmethod
-    def _missing_(cls, value: T):
-        if isinstance(value, int):
-            new = int.__new__(cls)
-        else:
-            new = str.__new__(cls)
-
-        new._name_ = f"UNKNOWN-VALUE-{value}"
+    def _missing_(cls, value: str):
+        new = str.__new__(cls)
+        new._name_ = f"UNKNOWN-ENUM-{value}"
         new._value_ = value
 
         return cls._value2member_map_.setdefault(value, new)
 
-    def __str__(self) -> str:
+    def __str__(self):
         return str(self.value)
 
 
-class StrEnum(str, Enum):
-    ...
-
-
 class IntEnum(int, Enum):
+    @classmethod
+    def _missing_(cls, value: int):
+        new = int.__new__(cls)
+        new._name_ = f"UNKNOWN-ENUM-{value}"
+        new._value_ = value
+
+        return cls._value2member_map_.setdefault(value, new)
+
     def __int__(self) -> int:
         return int(self.value)
 
