@@ -9,7 +9,8 @@ class Route:
     def __init__(self, method: str, endpoint: str):
         self.method = method
         self.endpoint = endpoint
+        self._url: str = f"{URL}{self.endpoint}"
 
     @property
     def url(self) -> str:
-        return f"{URL}{self.endpoint}"
+        return self._url

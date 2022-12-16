@@ -1,7 +1,8 @@
 from .request import Request
+from ...const import __api_url__
+from .route import Route
 
-
-URL = "https://www.anilibria.tv/public"
+URL = f"https://{__api_url__}/public"
 __all__ = ["PublicRequest"]
 
 
@@ -19,4 +20,8 @@ class PublicRequest:
 
     async def login(self, mail: str, password: str) -> dict:
         payload: dict = {"mail": mail, "passwd": password}
-        return await self.request.request("POST", f"{URL}/login.php", data=payload)
+
+        route = Route("POST", "")
+        route._url = f"{URL}/login.php"
+
+        return await self.request.request(route, data=payload)
