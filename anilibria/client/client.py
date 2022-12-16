@@ -34,12 +34,6 @@ class AniLibriaClient:
         self._http: HTTPClient = HTTPClient(proxy=proxy)
         self._websocket: GatewayClient = GatewayClient(http=self._http)
 
-    async def astart(self):
-        """
-        Запускает websocket.
-        """
-        await self._websocket.start()
-
     def event(self, coro: Coroutine = MISSING, *, name: str = MISSING, data: dict = MISSING):
         """
         Делает из функции ивент, который будет вызываться из вебсокета.
@@ -48,13 +42,13 @@ class AniLibriaClient:
         :param name: Название ивента. Например: on_title_update.
         :param data: Дополнительные данные.
         """
-        if coro is not None:
-            self._websocket.dispatcher.add_event(name or coro.__name__, Event(coro=coro, data=data))
-            return coro
 
         def decorator(coro: Coroutine):
-            self._websocket.dispatcher.add_event(name or coro.__name__, Event(coro=coro, data=data))
+            self._websocket._dispatch.add_event(name or coro.__name__)
             return coro
+
+        if coro is not MISSING:
+            return decorator(coro)
 
         return decorator
 
@@ -388,11 +382,9 @@ class AniLibriaClient:
             limit=limit,
         )
         data = await self._http.v2.get_feed(**payload)
-        return [  # TODO: I don't like it.
-            converter.structure(_["title"], Title)
-            if _.get("title")
-            else converter.structure(_["youtube"], YouTubeData)
-            for _ in data
+        return [
+            converter.structure(video.get("title") or video.get("youtube"), Title)
+            for video in data
         ]
 
     async def get_years(self) -> list[int]:
@@ -483,13 +475,15 @@ class AniLibriaClient:
         :param after: Удаляет первые n записей из выдачи
         :param limit: Количество объектов в ответе
         """
-        return await self._http.v2.get_rss(
+        payload: dict = dict_filter_missing(
             rss_type=rss_type,
-            session=session_id,
+            session_id=session_id,
             since=since,
             after=after,
-            limit=limit,
+            limit=limit
         )
+
+        return await self._http.v2.get_rss(**payload)
 
     async def search_titles(
         self,
@@ -647,6 +641,12 @@ class AniLibriaClient:
         """
         await self._http.v2.del_favorite(session=session_id, title_id=title_id)
 
+    async def astart(self):
+        """
+        Асинхронно запускает вебсокет
+        """
+        await self._websocket.start()
+
     def start(self):
         """
         Запускает клиент.
@@ -658,3 +658,4 @@ class AniLibriaClient:
         Закрывает HTTP клиент.
         """
         await self._http.request.session.close()
+        # TODO: Close websocket
