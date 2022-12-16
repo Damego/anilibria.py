@@ -8,7 +8,7 @@ except ImportError:
 from logging import getLogger
 
 from cattrs import structure
-from trio import open_nursery
+from trio import open_nursery, Nursery
 from trio_websocket import open_websocket_url, WebSocketConnection
 
 
@@ -27,15 +27,21 @@ class GatewayClient:
         self._connection: WebSocketConnection | None = None
         self._closed: bool = None  # noqa
         self._stopped: bool = None  # noqa
+        self.nursery: Nursery = None  # noqa
 
         self._http: HTTPClient = http
         self.dispatch: Dispatch = Dispatch()
 
+        self._started_up: bool = False
+
     async def start(self):
-        async with open_nursery() as nursery:
-            nursery.start_soon(self.reconnect)
+        async with open_nursery() as self.nursery:
+            self.nursery.start_soon(self.reconnect)
 
     async def reconnect(self):
+        if self.dispatch.nursery is None:
+            self.dispatch.nursery = self.nursery
+
         self._closed = True
 
         if self._closed:
@@ -52,8 +58,14 @@ class GatewayClient:
             if self._closed:
                 await self._match_error()
 
+            if not self._started_up:
+                await self.dispatch.call("on_startup")
+                self._started_up = True
+
             data = await self._receive_data()
-            print(data)
+            if data.get("connection") == "success":
+                # I don't think there are will be something other.
+                await self.dispatch.call("on_connect")
 
             while not self._closed:
                 data = await self._receive_data()
