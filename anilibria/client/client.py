@@ -1,4 +1,4 @@
-from typing import Coroutine
+from typing import Coroutine, Callable
 from logging import getLogger
 
 from trio import run
@@ -15,7 +15,6 @@ from ..api.models import (
     PlaylistType,
     RSSType,
 )
-from ..api.dispatch import Event
 from ..api.error import NoArgumentsError
 from ..utils.typings import MISSING, Absent
 from ..utils.serializer import dict_filter_missing
@@ -34,7 +33,7 @@ class AniLibriaClient:
         self._http: HTTPClient = HTTPClient(proxy=proxy)
         self._websocket: GatewayClient = GatewayClient(http=self._http)
 
-    def event(self, coro: Coroutine = MISSING, *, name: str = MISSING, data: dict = MISSING):
+    def event(self, coro: Callable[..., Coroutine] = MISSING, *, name: str = MISSING):
         """
         Делает из функции ивент, который будет вызываться из вебсокета.
 
@@ -43,8 +42,8 @@ class AniLibriaClient:
         :param data: Дополнительные данные.
         """
 
-        def decorator(coro: Coroutine):
-            self._websocket._dispatch.add_event(name or coro.__name__)
+        def decorator(coro: Callable[..., Coroutine]):
+            self._websocket.dispatch.register(name or coro.__name__, coro)
             return coro
 
         if coro is not MISSING:

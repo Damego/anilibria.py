@@ -1,36 +1,28 @@
 from asyncio import get_event_loop
-from typing import Callable, Dict, List, Coroutine, Optional
+from typing import Callable, Dict, List, Coroutine
 from logging import getLogger
+from collections import defaultdict
 
-from .models.attrs_utils import define, field, DictSerializer
+from trio import open_nursery
 
 
 log = getLogger("anilibria.dispatch")
-__all__ = ["Event", "Dispatch"]
-
-
-@define()
-class Event(DictSerializer):
-    coro: Callable = field()
-    data: Optional[dict] = field(factory=dict)  # Extra data
+__all__ = ["Dispatch"]
 
 
 class Dispatch:
     def __init__(self) -> None:
         self.loop = get_event_loop()
-        self._events: Dict[str, List[Event]] = {}
+        self._registered_events: Dict[str, List[Callable[..., Coroutine]]] = defaultdict(list)
 
-    def _call(self, coro: Coroutine):
-        self.loop.create_task(coro)
-
-    def dispatch(self, name: str, *args, **kwargs):
+    async def call(self, name: str, *args):
         log.debug(f"Dispatching event {name}")
-        for event_data in self._events.get(name, []):
-            self._call(event_data.coro(*args, **kwargs))
 
-    def add_event(self, name: str, event: Event):
-        events = self._events.get(name, [])
-        events.append(event)
+        async with open_nursery() as nursery:
+            for coro in self._registered_events.get(name, []):
+                nursery.start_soon(coro, *args)
 
-        self._events[name] = events
-        log.debug(f"Added coro to {name} event. Total coros for this event: {self._events[name]}")
+    def register(self, name: str, coro: Callable[..., Coroutine]):
+        self._registered_events[name].append(coro)
+
+        log.debug(f"Added coro to {name} event. Total coros for this event: {self._registered_events[name]}")
