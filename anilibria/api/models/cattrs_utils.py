@@ -1,22 +1,12 @@
 from typing import Type
 
 from cattrs import Converter
-from cattrs.gen import make_dict_structure_fn, make_dict_unstructure_fn, override
 
 from .title import Serie, RutubeSerie
-from ..gateway.events import EncodeStart
 
 __all__ = ["converter"]
 
 converter = Converter()
-
-# Custom hooks
-
-unstruct_hook = make_dict_unstructure_fn(EncodeStart, converter, is_reupload=override(rename="isReupload"))
-struct_hook = make_dict_structure_fn(EncodeStart, converter, is_reupload=override(rename="isReupload"))
-
-converter.register_unstructure_hook(EncodeStart, unstruct_hook)
-converter.register_structure_hook(EncodeStart, struct_hook)
 
 
 def _playlist_hook(data: dict | list, type_: Type[Serie | RutubeSerie]):

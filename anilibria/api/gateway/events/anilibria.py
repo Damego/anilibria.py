@@ -1,8 +1,9 @@
-from typing import Optional
+from cattrs.gen import make_dict_structure_fn, make_dict_unstructure_fn, override
 
 from ...models import Player, Serie, Title, Torrents
 from ...models.attrs_utils import convert, define, field
 from ...models.enums import StrEnum
+from ...models.cattrs_utils import converter
 
 
 __all__ = [
@@ -121,3 +122,12 @@ class TorrentUpdate:
     updated_torrent_id: int = field()
     diff: dict = field()
     hash: str = field()
+
+
+# Hooks
+# TODO: Find a better place
+unstruct_hook = make_dict_unstructure_fn(EncodeStart, converter, is_reupload=override(rename="isReupload"))
+struct_hook = make_dict_structure_fn(EncodeStart, converter, is_reupload=override(rename="isReupload"))
+
+converter.register_unstructure_hook(EncodeStart, unstruct_hook)
+converter.register_structure_hook(EncodeStart, struct_hook)
