@@ -1,7 +1,7 @@
-from json import loads, JSONDecodeError
 from logging import getLogger
 
 from aiohttp import ClientSession
+from orjson import loads, JSONDecodeError
 
 from .route import Route
 from ..error import HTTPException

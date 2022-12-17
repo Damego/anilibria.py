@@ -1,7 +1,4 @@
-try:
-    from orjson import loads, dumps
-except ImportError:
-    from json import loads, dumps
+from orjson import loads, dumps
 
 from logging import getLogger
 
