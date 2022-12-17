@@ -1,6 +1,8 @@
 from ...models import Title, Serie
 from ...models.attrs_utils import define
 
+__all__ = ("TitleSerie", )
+
 
 @define()
 class TitleSerie:

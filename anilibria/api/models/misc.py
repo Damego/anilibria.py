@@ -2,7 +2,7 @@ from .title import Title
 from .attrs_utils import define
 
 
-__all__ = ["Schedule", "YouTubeData", "SeedStats"]
+__all__ = ("Schedule", "YouTubeData", "SeedStats")
 
 
 @define()

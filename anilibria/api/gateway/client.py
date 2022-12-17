@@ -17,7 +17,7 @@ from ..models.cattrs_utils import converter
 
 log = getLogger("anilibria.gateway")
 URL = f"wss://{__api_url__}/ws/"
-__all__ = ["GatewayClient"]
+__all__ = ("GatewayClient", )
 
 
 class GatewayClient:

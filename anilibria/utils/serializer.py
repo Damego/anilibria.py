@@ -2,7 +2,7 @@ from enum import Enum
 
 from .typings import MISSING
 
-__all__ = ["dict_filter_none", "dict_filter_missing", "prepare_payload"]
+__all__ = ("dict_filter_none", "dict_filter_missing", "prepare_payload")
 
 
 def dict_filter_none(**kwargs) -> dict:

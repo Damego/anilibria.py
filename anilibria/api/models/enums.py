@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import Type, Any
 
-__all__ = [
+__all__ = (
     "StrEnum",
     "IntEnum",
     "StatusCode",
@@ -11,7 +11,7 @@ __all__ = [
     "DescriptionType",
     "Include",
     "PlaylistType",
-]
+)
 
 
 def _cursed_enum(cls: Type[Enum], obj: type, value: Any) -> Enum:

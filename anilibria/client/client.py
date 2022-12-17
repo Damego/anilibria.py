@@ -21,7 +21,7 @@ from ..utils.serializer import dict_filter_missing
 from ..api.models.cattrs_utils import converter
 
 log = getLogger("anilibria.client")
-__all__ = ["AniLibriaClient"]
+__all__ = ("AniLibriaClient", )
 
 
 class AniLibriaClient:
@@ -39,7 +39,6 @@ class AniLibriaClient:
 
         :param coro: Функция, которая будет вызываться.
         :param name: Название ивента. Например: on_title_update.
-        :param data: Дополнительные данные.
         """
 
         def decorator(coro: Callable[..., Coroutine]):

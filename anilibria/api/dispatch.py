@@ -6,7 +6,7 @@ from trio import Nursery
 
 
 log = getLogger("anilibria.dispatch")
-__all__ = ["Dispatch"]
+__all__ = ("Dispatch", )
 
 
 class Dispatch:

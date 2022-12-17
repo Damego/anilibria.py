@@ -2,7 +2,7 @@ from .enums import StatusCode, TitleCodeType, SeasonCode
 from .attrs_utils import define
 
 
-__all__ = [
+__all__ = (
     "TitleNames",
     "TitleStatus",
     "Poster",
@@ -23,7 +23,7 @@ __all__ = [
     "Torrent",
     "Torrents",
     "Title",
-]
+)
 
 
 @define()

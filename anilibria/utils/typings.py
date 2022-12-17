@@ -1,6 +1,6 @@
 from typing import ClassVar, TypeVar
 
-__all__ = ["MISSING", "Absent"]
+__all__ = ("T", "MISSING", "Absent")
 
 T = TypeVar("T")
 

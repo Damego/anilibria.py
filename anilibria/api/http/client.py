@@ -3,7 +3,7 @@ from .v2 import V2Request
 from .public import PublicRequest
 
 
-__all__ = ["HTTPClient"]
+__all__ = ("HTTPClient", )
 
 
 class HTTPClient:

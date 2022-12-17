@@ -5,7 +5,7 @@ from logging import getLogger
 import attrs
 
 
-__all__ = [
+__all__ = (
     "MISSING",
     "DictSerializer",
     "define",
@@ -13,7 +13,7 @@ __all__ = [
     "convert",
     "convert_list",
     "convert_playlist",
-]
+)
 log = getLogger("anilibria.attrs")
 
 

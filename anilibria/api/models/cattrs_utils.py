@@ -4,7 +4,7 @@ from cattrs import Converter
 
 from .title import Serie, RutubeSerie
 
-__all__ = ["converter"]
+__all__ = ("converter", )
 
 converter = Converter()
 

@@ -6,7 +6,7 @@ from ...models.enums import StrEnum
 from ...models.cattrs_utils import converter
 
 
-__all__ = [
+__all__ = (
     "EventType",
     "EncodeStart",
     "EncodeProgress",
@@ -15,7 +15,7 @@ __all__ = [
     "PlayListUpdate",
     "TitleUpdate",
     "TorrentUpdate",
-]
+)
 
 
 class EventType(StrEnum):

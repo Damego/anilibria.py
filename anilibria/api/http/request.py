@@ -9,7 +9,7 @@ from ...utils.serializer import prepare_payload
 
 
 log = getLogger("anilibria.request")
-__all__ = ["Request"]
+__all__ = ("Request", )
 
 
 class Request:

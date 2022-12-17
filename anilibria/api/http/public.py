@@ -3,7 +3,7 @@ from ...const import __api_url__
 from .route import Route
 
 URL = f"https://{__api_url__}/public"
-__all__ = ["PublicRequest"]
+__all__ = ("PublicRequest", )
 
 
 class PublicRequest:

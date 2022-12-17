@@ -3,7 +3,7 @@ from .route import Route
 from ...utils import dict_filter_none
 
 
-__all__ = ["V2Request"]
+__all__ = ("V2Request", )
 
 
 class V2Request:
