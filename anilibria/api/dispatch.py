@@ -21,7 +21,7 @@ class Dispatch:
         except Exception:  # noqa
             log.exception("")
 
-    async def call(self, name: str, *args):
+    def call(self, name: str, *args):
         log.debug(f"Dispatching event {name}")
 
         for coro in self._registered_events.get(name, []):

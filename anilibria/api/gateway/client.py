@@ -59,13 +59,13 @@ class GatewayClient:
                 await self._match_error()
 
             if not self._started_up:
-                await self.dispatch.call("on_startup")
+                self.dispatch.call("on_startup")
                 self._started_up = True
 
             data = await self._receive_data()
             if data.get("connection") == "success":
                 # I don't think there are will be something other.
-                await self.dispatch.call("on_connect")
+                self.dispatch.call("on_connect")
 
             while not self._closed:
                 data = await self._receive_data()
