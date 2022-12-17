@@ -1,7 +1,7 @@
 from cattrs.gen import make_dict_structure_fn, make_dict_unstructure_fn, override
 
 from ...models import Player, Serie, Title, Torrents
-from ...models.attrs_utils import convert, define, field
+from ...models.attrs_utils import define
 from ...models.enums import StrEnum
 from ...models.cattrs_utils import converter
 
@@ -80,12 +80,12 @@ class PlayListUpdate:
           ...
     """
 
-    id: int = field()
-    player: Player = field(converter=convert(Player))
-    updated_episode: Serie = field(converter=convert(Serie))
-    episode: str = field()
-    diff: dict = field()
-    reupload: bool = field()
+    id: int
+    player: Player
+    updated_episode: Serie
+    episode: str
+    diff: dict
+    reupload: bool
 
 
 @define()
@@ -117,11 +117,11 @@ class TorrentUpdate:
           ...
     """
 
-    id: str = field()
-    torrents: Torrents = field(converter=convert(Torrents))
-    updated_torrent_id: int = field()
-    diff: dict = field()
-    hash: str = field()
+    id: str
+    torrents: Torrents
+    updated_torrent_id: int
+    diff: dict
+    hash: str
 
 
 # Hooks
