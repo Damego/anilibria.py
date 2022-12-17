@@ -1,5 +1,3 @@
-import pprint
-
 try:
     from orjson import loads, dumps
 except ImportError:
@@ -7,7 +5,6 @@ except ImportError:
 
 from logging import getLogger
 
-from cattrs import structure
 from trio import open_nursery, Nursery
 from trio_websocket import open_websocket_url, WebSocketConnection
 
@@ -15,6 +12,7 @@ from . import events
 from ..http import HTTPClient
 from ..dispatch import Dispatch
 from ...const import __api_url__
+from ..models.cattrs_utils import converter
 
 
 log = getLogger("anilibria.gateway")
@@ -85,7 +83,7 @@ class GatewayClient:
         if event_model is None:
             log.warning(f"Received an not excepted event `{type}`!")
 
-        obj = structure(data, event_model)
+        obj = converter.structure(data, event_model)
         self.dispatch.call(f"on_{type}", obj)
 
         # TODO: Implement title_serie event
