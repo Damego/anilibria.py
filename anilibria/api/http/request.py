@@ -2,6 +2,7 @@ from logging import getLogger
 
 from aiohttp import ClientSession
 from orjson import loads, JSONDecodeError
+from httpx import AsyncClient
 
 from .route import Route
 from ..error import HTTPException
@@ -19,11 +20,11 @@ class Request:
         :param proxy:
         """
         self.proxy = proxy
-        self.session: ClientSession = None
+        self.session: AsyncClient = None
 
     async def check_session(self):
-        if self.session is None or self.session.closed:
-            self.session = ClientSession()
+        if self.session is None or self.session.is_closed:
+            self.session = AsyncClient()
 
     async def request(self, route: Route, params: dict = None, **kwargs):
         await self.check_session()
@@ -37,15 +38,15 @@ class Request:
         log.debug(
             f"Send {route.method} request to {route.endpoint} endpoint with params: {params} and kwargs: {kwargs}"
         )
-        async with self.session.request(route.method, route.url, params=params, **kwargs) as response:
-            raw = await response.text()
-            try:
-                data = loads(raw)
-            except JSONDecodeError:  # Can be RSS
-                data = raw
-            log.debug(f"Got response from request {data}")
-            self.__catch_error(data)
-            return data
+        response = await self.session.request(route.method, route.url, params=params, **kwargs)
+        raw = response.text
+        try:
+            data = loads(raw)
+        except JSONDecodeError:  # Can be RSS
+            data = raw
+        log.debug(f"Got response from request {data}")
+        self.__catch_error(data)
+        return data
 
     def __catch_error(self, data: dict):
         if not isinstance(data, dict):
