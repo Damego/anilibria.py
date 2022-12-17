@@ -11,7 +11,7 @@ from cattrs import structure
 from trio import open_nursery, Nursery
 from trio_websocket import open_websocket_url, WebSocketConnection
 
-
+from . import events
 from ..http import HTTPClient
 from ..dispatch import Dispatch
 from ...const import __api_url__
@@ -77,14 +77,35 @@ class GatewayClient:
         return loads(response)
 
     async def _track_data(self, data: dict):
-        payload = data  # TODO: structure cattrs
-        pprint.pprint(payload)
-
         if not (type := data.get("type")):
             return await self._track_unknown_event(data)
 
+        event_model = self._lookup_event(type)
+
+        if event_model is None:
+            log.warning(f"Received an not excepted event `{type}`!")
+
+        obj = structure(data, event_model)
+        self.dispatch.call(f"on_{type}", obj)
+
+        # TODO: Implement title_serie event
+
+    @staticmethod
+    def _lookup_event(type: str) -> type:
+        return {
+            "encode_start": events.EncodeStart,
+            "encode_progress": events.EncodeProgress,
+            "encode_end": events.EncodeEnd,
+            "encode_finish": events.EncodeFinish,
+            "title_update": events.TitleUpdate,
+            "playlist_update": events.PlayListUpdate,
+            "torrent_update": events.TorrentUpdate,
+        }.get(type)
+
+
     async def _track_unknown_event(self, data: dict):
         ...
+        # TODO: Subscription event
 
     async def _match_error(self):
         code: int = self._connection.closed.code
