@@ -619,7 +619,10 @@ class AniLibriaClient:
         """
         Асинхронно запускает вебсокет
         """
-        await self._websocket.start()
+        try:
+            await self._websocket.start()
+        except KeyboardInterrupt:
+            ...
 
     def start(self):
         """
