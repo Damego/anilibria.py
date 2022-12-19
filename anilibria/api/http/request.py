@@ -13,8 +13,8 @@ __all__ = ("Request", )
 
 
 class Request:
-    def __init__(self, proxy: str = None) -> None:
-        self.proxy: str = proxy
+    def __init__(self, proxy: str | None = None) -> None:
+        self.proxy: str | None = proxy
         self.session: AsyncClient = None  # noqa
 
     async def check_session(self):
