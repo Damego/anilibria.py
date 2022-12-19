@@ -37,8 +37,8 @@ class AniLibriaClient:
         """
         Делает из функции ивент, который будет вызываться из вебсокета.
 
-        :param coro: Функция, которая будет вызываться.
-        :param name: Название ивента. Например: on_title_update.
+        :param Callable[..., Coroutine] coro: Функция, которая будет вызываться.
+        :param str name: Название ивента. Например: on_title_update.
         """
 
         def decorator(coro: Callable[..., Coroutine]):
@@ -69,9 +69,9 @@ class AniLibriaClient:
                }
            )
 
-        :param subscribe: Данные о подписке. Здесь может быть всё то, что принимает веб сокет.
-        :param filter: То, что должно быть включено в подписку.
-        :param remove: То, что нужно удалить из подписки.
+        :param dict subscribe: Данные о подписке. Здесь может быть всё то, что принимает веб сокет.
+        :param str filter: То, что должно быть включено в подписку.
+        :param str remove: То, что нужно удалить из подписки.
         """
         data = {"subscribe": subscribe}
         if filter is not MISSING:
@@ -83,15 +83,14 @@ class AniLibriaClient:
 
     async def login(self, mail: str, password: str) -> str:
         """
-        Входит в аккаунт и возвращает ID сессии.
+        Входит в аккаунт.
 
         .. warning::
            Если запрос идёт из РФ, то для использования необходим VPN или proxy!
 
-        :param mail: Логин или эл.почта
-        :param password: Пароль
+        :param str mail: Логин или эл.почта
+        :param str password: Пароль
         :return: ID сессии
-        :rtype: str
         """
         data = await self._http.public.login(mail, password)
         return data.get("sessionId")
@@ -108,18 +107,16 @@ class AniLibriaClient:
         playlist_type: Absent[PlaylistType] = MISSING,
     ) -> Title:
         """
-        Возвращает объект тайтла с заданными параметрами.
+        Возвращает тайтл с заданными параметрами.
 
-        :param id: ID тайтла.
-        :param code: Код тайтла.
-        :param torrent_id: ID торрента
-        :param filter: То, что должно быть в ответе.
-        :param remove: То, чего не должно быть в ответе.
-        :param include: Список типов файлов которые будут возвращены в виде base64 строки
-        :param description_type: Тип получаемого описания.
-        :param playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
-        :return: Объект тайтла
-        :rtype: Title
+        :param Absent[int] id: ID тайтла.
+        :param Absent[str] code: Код тайтла.
+        :param Absent[int] torrent_id: ID торрента
+        :param Absent[list[str]] filter: То, что должно быть в ответе.
+        :param Absent[list[str]] remove: То, чего не должно быть в ответе.
+        :param Absent[list[Include]] include: Список типов файлов которые будут возвращены в виде base64 строки
+        :param Absent[DescriptionType] description_type: Тип получаемого описания.
+        :param Absent[PlaylistType] playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
         """
         if id is MISSING and code is MISSING:
             raise NoArgumentsError("id", "code")
@@ -151,15 +148,13 @@ class AniLibriaClient:
         """
         Возвращает список тайтлов с заданными параметрами.
 
-        :param id_list: Список с ID тайтлами
-        :param code_list: Список с кодами тайтлов.
-        :param filter: То, что должно быть в ответе.
-        :param remove: То, чего не должно быть в ответе.
-        :param include: Список типов файлов которые будут возвращены в виде base64 строки
-        :param description_type: Тип получаемого описания.
-        :param playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
-        :return: Список тайтлов
-        :rtype: list[Title]
+        :param Absent[list[int]] id_list: Список с ID тайтлами
+        :param Absent[list[str]] code_list: Список с кодами тайтлов.
+        :param Absent[list[str]] filter: То, что должно быть в ответе.
+        :param Absent[list[str]] remove: То, чего не должно быть в ответе.
+        :param Absent[list[Include]] include: Список типов файлов которые будут возвращены в виде base64 строки
+        :param Absent[DescriptionType] description_type: Тип получаемого описания.
+        :param Absent[PlaylistType] playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
         """
         if id_list is MISSING and code_list is MISSING:
             raise NoArgumentsError("id_list", "code_list")
@@ -192,16 +187,14 @@ class AniLibriaClient:
         """
         Возвращает список последних обновлений тайтлов с заданными параметрами.
 
-        :param filter: То, что должно быть в ответе.
-        :param remove: То, чего не должно быть в ответе.
-        :param include: Список типов файлов которые будут возвращены в виде base64 строки
-        :param since: Список тайтлов, у которых время обновления больше указанного timestamp
-        :param description_type: Тип получаемого описания.
-        :param playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
-        :param after: Удаляет первые n записей из выдачи
-        :param limit: Количество объектов в ответе. По умолчанию 5
-        :return: Список тайтлов
-        :rtype: list[Title]
+        :param Absent[list[str]] filter: То, что должно быть в ответе.
+        :param Absent[list[str]] remove: То, чего не должно быть в ответе.
+        :param Absent[list[Include]] include: Список типов файлов которые будут возвращены в виде base64 строки
+        :param Absent[int] since: Список тайтлов, у которых время обновления больше указанного timestamp
+        :param Absent[DescriptionType] description_type: Тип получаемого описания.
+        :param Absent[PlaylistType] playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
+        :param Absent[int] after: Удаляет первые n записей из выдачи
+        :param Absent[int] limit: Количество объектов в ответе. По умолчанию 5
         """
         payload = dict_filter_missing(
             filter=filter,
@@ -229,15 +222,13 @@ class AniLibriaClient:
         """
         Возвращает список последних обновлений тайтлов с заданными параметрами.
 
-        :param filter: То, что должно быть в ответе.
-        :param remove: То, чего не должно быть в ответе.
-        :param include: Список типов файлов которые будут возвращены в виде base64 строки
-        :param since: Список тайтлов, у которых время обновления больше указанного timestamp
-        :param description_type: Тип получаемого описания.
-        :param after: Удаляет первые n записей из выдачи
-        :param limit: Количество объектов в ответе. По умолчанию 5
-        :return: Список тайтлов
-        :rtype: list[Title]
+        :param Absent[list[str]] filter: То, что должно быть в ответе.
+        :param Absent[list[str]] remove: То, чего не должно быть в ответе.
+        :param Absent[list[Include]] include: Список типов файлов которые будут возвращены в виде base64 строки
+        :param Absent[int] since: Список тайтлов, у которых время обновления больше указанного timestamp
+        :param Absent[DescriptionType] description_type: Тип получаемого описания.
+        :param Absent[int] after: Удаляет первые n записей из выдачи
+        :param Absent[int] limit: Количество объектов в ответе. По умолчанию 5
         """
         payload = dict_filter_missing(
             filter=filter,
@@ -256,21 +247,19 @@ class AniLibriaClient:
         filter: Absent[list[str]] = MISSING,
         remove: Absent[list[str]] = MISSING,
         include: Absent[list[Include]] = MISSING,
-        days: list[int] = MISSING,
+        days: Absent[list[int]] = MISSING,
         description_type: Absent[DescriptionType] = MISSING,
         playlist_type: Absent[PlaylistType] = MISSING,
     ) -> list[Schedule]:
         """
         Возвращает список последних обновлений тайтлов с заданными параметрами по дням.
 
-        :param filter: То, что должно быть в ответе.
-        :param remove: То, чего не должно быть в ответе.
-        :param include: Список типов файлов которые будут возвращены в виде base64 строки
-        :param days: Список дней недели, на которые нужно расписание
-        :param description_type: Тип получаемого описания.
-        :param playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
-        :return: Список расписаний
-        :rtype: list[Schedule]
+        :param Absent[list[str]] filter: То, что должно быть в ответе.
+        :param Absent[list[str]] remove: То, чего не должно быть в ответе.
+        :param Absent[list[Include]] include: Список типов файлов которые будут возвращены в виде base64 строки
+        :param Absent[list[int]] days: Список дней недели, на которые нужно расписание
+        :param Absent[DescriptionType] description_type: Тип получаемого описания.
+        :param Absent[PlaylistType] playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
         """
         payload = dict_filter_missing(
             filter=filter,
@@ -294,13 +283,11 @@ class AniLibriaClient:
         """
         Возвращает рандомный тайтл с заданными параметрами.
 
-        :param filter: То, что должно быть в ответе.
-        :param remove: То, чего не должно быть в ответе.
-        :param include: Список типов файлов которые будут возвращены в виде base64 строки
-        :param description_type: Тип получаемого описания.
-        :param playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
-        :return: Объект тайтла
-        :rtype: Title
+        :param Absent[list[str]] filter: То, что должно быть в ответе.
+        :param Absent[list[str]] remove: То, чего не должно быть в ответе.
+        :param Absent[list[Include]] include: Список типов файлов которые будут возвращены в виде base64 строки
+        :param Absent[DescriptionType] description_type: Тип получаемого описания.
+        :param Absent[PlaylistType] playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
         """
         payload = dict_filter_missing(
             filter=filter,
@@ -324,12 +311,12 @@ class AniLibriaClient:
         """
         Возвращает список youtube видео в хронологическом порядке с заданными параметрами.
 
-        :param filter: То, что должно быть в ответе.
-        :param remove: То, чего не должно быть в ответе.
-        :param include: Список типов файлов которые будут возвращены в виде base64 строки
-        :param since: Список тайтлов, у которых время обновления больше указанного timestamp
-        :param after: Удаляет первые n записей из выдачи
-        :param limit: Количество объектов в ответе. По умолчанию 5
+        :param Absent[list[str]] filter: То, что должно быть в ответе.
+        :param Absent[list[str]] remove: То, чего не должно быть в ответе.
+        :param Absent[list[Include]] include: Список типов файлов которые будут возвращены в виде base64 строки
+        :param Absent[int] since: Список тайтлов, у которых время обновления больше указанного timestamp
+        :param Absent[int] after: Удаляет первые n записей из выдачи
+        :param Absent[int] limit: Количество объектов в ответе. По умолчанию 5
         :return: Список youtube видео
         :rtype: list[YouTubeData]
         """
@@ -358,14 +345,14 @@ class AniLibriaClient:
         """
         Возвращает список тайтлов и youtube видео в хронологическом порядке с заданными параметрами.
 
-        :param filter: То, что должно быть в ответе.
-        :param remove: То, чего не должно быть в ответе.
-        :param include: Список типов файлов которые будут возвращены в виде base64 строки
-        :param since: Список тайтлов, у которых время обновления больше указанного timestamp
-        :param description_type: Тип получаемого описания.
-        :param playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
-        :param after: Удаляет первые n записей из выдачи
-        :param limit: Количество объектов в ответе. По умолчанию 5
+        :param Absent[list[str]] filter: То, что должно быть в ответе.
+        :param Absent[list[str]] remove: То, чего не должно быть в ответе.
+        :param Absent[list[Include]] include: Список типов файлов которые будут возвращены в виде base64 строки
+        :param Absent[int] since: Список тайтлов, у которых время обновления больше указанного timestamp
+        :param Absent[DescriptionType] description_type: Тип получаемого описания.
+        :param Absent[PlaylistType] playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
+        :param Absent[int] after: Удаляет первые n записей из выдачи
+        :param Absent[int] limit: Количество объектов в ответе. По умолчанию 5
         :return: Список тайтлов и youtube видео.
         :rtype: list[Union[Title, YouTubeData]]
         """
@@ -395,7 +382,7 @@ class AniLibriaClient:
         """
         Возвращает список жанров доступных тайтлов отсортированный по алфавиту.
 
-        :param sorting_type: Тип сортировки элементов.
+        :param int sorting_type: Тип сортировки элементов.
         """
         return await self._http.v2.get_genres(sorting_type=sorting_type)
 
@@ -407,10 +394,7 @@ class AniLibriaClient:
 
     async def get_team(self) -> TitleTeam:
         """
-        Возвращает список участников команды когда-либо существовавших на проекте.
-
-        :return: Объект команды
-        :rtype: Team
+        Возвращает участников команды когда-либо существовавших на проекте.
         """
         data = await self._http.v2.get_team()
         return converter.structure(data, TitleTeam)
@@ -430,17 +414,15 @@ class AniLibriaClient:
         """
         Возвращает топ пользователей по количеству загруженного и скачанно через торрент трекер anilibria.
 
-        :param users: Статистика по имени пользователя
-        :param remove: То, чего не должно быть в ответе.
-        :param include: Список типов файлов которые будут возвращены в виде base64 строки
-        :param description_type: Тип получаемого описания.
-        :param playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
-        :param after: Удаляет первые n записей из выдачи.
-        :param sort_by: По какому полю производить сортировку, допустимые значения: downloaded, uploaded, user
-        :param order: Направление сортировки 0 - DESC, 1 - ASC.
-        :param limit: Количество объектов в ответе. По умолчанию 5
-        :return: Список с пользователями
-        :rtype: list[SeedStats]
+        :param Absent[list[str]] users: Статистика по имени пользователя
+        :param Absent[list[str]] remove: То, чего не должно быть в ответе.
+        :param Absent[list[Include]] include: Список типов файлов которые будут возвращены в виде base64 строки
+        :param Absent[DescriptionType] description_type: Тип получаемого описания.
+        :param Absent[PlaylistType] playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
+        :param Absent[int] after: Удаляет первые n записей из выдачи.
+        :param Absent[str] sort_by: По какому полю производить сортировку, допустимые значения: downloaded, uploaded, user
+        :param Absent[int] order: Направление сортировки 0 - DESC, 1 - ASC.
+        :param Absent[int] limit: Количество объектов в ответе. По умолчанию 5
         """
         payload = dict_filter_missing(
             users=users,
@@ -467,11 +449,11 @@ class AniLibriaClient:
         """
         Возвращает список обновлений на сайте в одном из форматов RSS ленты.
 
-        :param rss_type: Предпочитаемый формат вывода
-        :param session_id: Уникальный идентификатор сессии пользователя
-        :param since: Список тайтлов у которых время обновления больше указанного timestamp
-        :param after: Удаляет первые n записей из выдачи
-        :param limit: Количество объектов в ответе
+        :param Absent[RSSType] rss_type: Предпочитаемый формат вывода
+        :param Absent[str] session_id: Уникальный идентификатор сессии пользователя
+        :param Absent[int] since: Список тайтлов у которых время обновления больше указанного timestamp
+        :param Absent[int] after: Удаляет первые n записей из выдачи
+        :param Absent[int] limit: Количество объектов в ответе
         """
         payload: dict = dict_filter_missing(
             rss_type=rss_type,
@@ -505,24 +487,22 @@ class AniLibriaClient:
         """
         Возвращает список тайтлов, найденных по фильтрам.
 
-        :param search: Поиск по именам и описанию.
-        :param year: Список годов выхода.
-        :param season_code: Список сезонов.
-        :param genres: Список жанров.
-        :param voice: Список войсеров.
-        :param translator: Список переводчиков.
-        :param editing: Список сабберов.
-        :param decor: Список оформителей.
-        :param timing: Список таймеров.
-        :param filter: Список значений, которые будут в ответе.
-        :param remove: Список значений, которые будут удалены из ответа.
-        :param include: Список типов файлов, которые будут возвращены в виде base64 строки
-        :param description_type: Тип получаемого описания.
-        :param playlist_type: Формат получаемого списка серий. Словарь(object) или список(list).
-        :param after: Удаляет первые n записей из выдачи.
-        :param limit: Количество объектов в ответе.
-        :return: Список тайтлов
-        :rtype: list[Title]
+        :param Absent[list[str]] search: Поиск по именам и описанию.
+        :param Absent[list[str | int]] year: Список годов выхода.
+        :param Absent[list[str]] season_code: Список сезонов.
+        :param Absent[list[str]] genres: Список жанров.
+        :param Absent[list[str]] voice: Список войсеров.
+        :param Absent[list[str]] translator: Список переводчиков.
+        :param Absent[list[str]] editing: Список сабберов.
+        :param Absent[list[str]] decor: Список оформителей.
+        :param Absent[list[str]] timing: Список таймеров.
+        :param Absent[list[str]] filter: Список значений, которые будут в ответе.
+        :param Absent[list[str]] remove: Список значений, которые будут удалены из ответа.
+        :param Absent[list[Include]] include: Список типов файлов, которые будут возвращены в виде base64 строки
+        :param Absent[DescriptionType] description_type: Тип получаемого описания.
+        :param Absent[PlaylistType] playlist_type: Формат получаемого списка серий. Словарь(object) или список(list).
+        :param Absent[int] after: Удаляет первые n записей из выдачи.
+        :param Absent[int] limit: Количество объектов в ответе.
         """
         payload = dict_filter_missing(
             search=search,
@@ -554,25 +534,23 @@ class AniLibriaClient:
         description_type: Absent[DescriptionType] = MISSING,
         playlist_type: Absent[PlaylistType] = MISSING,
         after: Absent[int] = MISSING,
-        order_by: str = MISSING,
+        order_by: Absent[str] = MISSING,
         limit: Absent[int] = MISSING,
         sort_direction: Absent[int] = MISSING,
     ) -> list[Title]:
         """
         Возвращает список тайтлов, найденных по фильтрам.
 
-        :param query:
-        :param filter: Список значений, которые будут в ответе.
-        :param remove: Список значений, которые будут удалены из ответа.
-        :param include: Список типов файлов, которые будут возвращены в виде base64 строки
-        :param description_type: Тип получаемого описания.
-        :param playlist_type: Формат получаемого списка серий. Словарь(object) или список(list).
-        :param after: Удаляет первые n записей из выдачи.
-        :param order_by: Ключ по которому будет происходить сортировка результатов
-        :param limit: Количество объектов в ответе.
+        :param str query: Запрос для поиска. Может быть название тайтла.
+        :param Absent[list[str]] filter: Список значений, которые будут в ответе.
+        :param Absent[list[str]] remove: Список значений, которые будут удалены из ответа.
+        :param Absent[list[Include]] include: Список типов файлов, которые будут возвращены в виде base64 строки
+        :param Absent[DescriptionType] description_type: Тип получаемого описания.
+        :param Absent[PlaylistType] playlist_type: Формат получаемого списка серий.
+        :param Absent[int] after: Удаляет первые n записей из выдачи.
+        :param Absent[str] order_by: Ключ по которому будет происходить сортировка результатов
+        :param Absent[int] limit: Количество объектов в ответе.
         :param sort_direction: Направление сортировки. 0 - По возрастанию, 1 - По убыванию
-        :return: Список тайтлов
-        :rtype: list[Title]
         """
         payload = dict_filter_missing(
             query=query,
@@ -601,14 +579,12 @@ class AniLibriaClient:
         """
         Возвращает список избранных тайтлов пользователя
 
-        :param session_id: ID сессии.
-        :param filter: Список значений, которые будут в ответе.
-        :param remove: Список значений, которые будут удалены из ответа.
-        :param include: Список типов файлов, которые будут возвращены в виде base64 строки
-        :param description_type: Тип получаемого описания.
-        :param playlist_type: Формат получаемого списка серий. Словарь(object) или список(list).
-        :return: Список тайтлов
-        :rtype: list[Title]
+        :param str session_id: ID сессии.
+        :param Absent[list[str]] filter: Список значений, которые будут в ответе.
+        :param Absent[list[str]] remove: Список значений, которые будут удалены из ответа.
+        :param Absent[list[Include]] include: Список типов файлов, которые будут возвращены в виде base64 строки
+        :param Absent[DescriptionType] description_type: Тип получаемого описания.
+        :param Absent[PlaylistType] playlist_type: Формат получаемого списка серий. Словарь(object) или список(list).
         """
         payload = dict_filter_missing(
             session=session_id,
