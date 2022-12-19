@@ -1,8 +1,7 @@
 from logging import getLogger
 
-from aiohttp import ClientSession
 from orjson import loads, JSONDecodeError
-from httpx import AsyncClient
+from httpx import AsyncClient, Response
 
 from .route import Route
 from ..error import HTTPException
@@ -15,16 +14,12 @@ __all__ = ("Request", )
 
 class Request:
     def __init__(self, proxy: str = None) -> None:
-        """
-
-        :param proxy:
-        """
-        self.proxy = proxy
-        self.session: AsyncClient = None
+        self.proxy: str = proxy
+        self.session: AsyncClient = None  # noqa
 
     async def check_session(self):
         if self.session is None or self.session.is_closed:
-            self.session = AsyncClient()
+            self.session = AsyncClient(proxies=self.proxy)
 
     async def request(self, route: Route, params: dict = None, **kwargs):
         await self.check_session()
@@ -32,23 +27,31 @@ class Request:
         if params:
             prepare_payload(params)
 
-        if self.proxy is not None:
-            kwargs["proxy"] = self.proxy
-
         log.debug(
             f"Send {route.method} request to {route.endpoint} endpoint with params: {params} and kwargs: {kwargs}"
         )
         response = await self.session.request(route.method, route.url, params=params, **kwargs)
-        raw = response.text
-        try:
-            data = loads(raw)
-        except JSONDecodeError:  # Can be RSS
-            data = raw
+        data = self._get_data(response)
+
         log.debug(f"Got response from request {data}")
-        self.__catch_error(data)
+
+        self._catch_error(data)
+
         return data
 
-    def __catch_error(self, data: dict):
+    @staticmethod
+    def _get_data(response: Response) -> dict | str:
+        text = response.text
+
+        try:
+            data = loads(text)
+        except JSONDecodeError:  # Could be RSS
+            data = text
+
+        return data
+
+    @staticmethod
+    def _catch_error(data: dict):
         if not isinstance(data, dict):
             return
         if error := data.get("error"):
