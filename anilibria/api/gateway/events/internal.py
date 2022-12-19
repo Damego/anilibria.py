@@ -7,7 +7,7 @@ __all__ = ("TitleSerie", )
 @define()
 class TitleSerie:
     """
-    Модель для ивента `on_title_serie` и подписок.
+    Модель для ивента `on_title_serie`.
 
     .. code-block:: python
 
