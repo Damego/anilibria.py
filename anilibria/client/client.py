@@ -601,8 +601,8 @@ class AniLibriaClient:
         """
         Добавляет тайтл в список избранных
 
-        :param session_id: ID сессии.
-        :param title_id: ID тайтла.
+        :param str session_id: ID сессии.
+        :param int title_id: ID тайтла.
         """
         await self._http.v2.add_favorite(session=session_id, title_id=title_id)
 
@@ -610,8 +610,8 @@ class AniLibriaClient:
         """
         Добавляет тайтл в список избранных
 
-        :param session_id: ID сессии.
-        :param title_id: ID тайтла.
+        :param str session_id: ID сессии.
+        :param int title_id: ID тайтла.
         """
         await self._http.v2.del_favorite(session=session_id, title_id=title_id)
 
@@ -635,4 +635,3 @@ class AniLibriaClient:
         Закрывает HTTP клиент.
         """
         await self._http.request.session.close()
-        # TODO: Close websocket
