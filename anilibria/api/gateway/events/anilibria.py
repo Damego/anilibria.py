@@ -12,7 +12,7 @@ __all__ = (
     "EncodeProgress",
     "EncodeEnd",
     "EncodeFinish",
-    "PlayListUpdate",
+    "PlaylistUpdate",
     "TitleUpdate",
     "TorrentUpdate",
 )
@@ -69,7 +69,7 @@ class EncodeFinish(_BaseEncodeEvent):
 
 
 @define()
-class PlayListUpdate:
+class PlaylistUpdate:
     """
     Модель для ивента ``on_playlist_update``
 
