@@ -30,8 +30,8 @@ class AniLibriaClient:
     """
 
     def __init__(self, *, proxy: str = None) -> None:
-        self._http: HTTPClient = HTTPClient(proxy=proxy)
-        self._websocket: GatewayClient = GatewayClient(http=self._http)
+        self.http: HTTPClient = HTTPClient(proxy=proxy)
+        self._websocket: GatewayClient = GatewayClient(http=self.http)
 
     def event(self, coro: Callable[..., Coroutine] = MISSING, *, name: str = MISSING):
         """
@@ -92,7 +92,7 @@ class AniLibriaClient:
         :param str password: Пароль
         :return: ID сессии
         """
-        data = await self._http.public.login(mail, password)
+        data = await self.http.login(mail, password)
         return data.get("sessionId")
 
     async def get_title(
@@ -132,7 +132,7 @@ class AniLibriaClient:
             playlist_type=playlist_type,
         )
 
-        data = await self._http.v2.get_title(**payload)
+        data = await self.http.get_title(**payload)
         return converter.structure(data, Title)
 
     async def get_titles(
@@ -169,7 +169,7 @@ class AniLibriaClient:
             playlist_type=playlist_type,
         )
 
-        data = await self._http.v2.get_titles(**payload)
+        data = await self.http.get_titles(**payload)
 
         return converter.structure(data, list[Title])
 
@@ -206,7 +206,7 @@ class AniLibriaClient:
             after=after,
             limit=limit,
         )
-        data = await self._http.v2.get_updates(**payload)
+        data = await self.http.get_updates(**payload)
         return converter.structure(data, list[Title])
 
     async def get_changes(
@@ -239,7 +239,7 @@ class AniLibriaClient:
             after=after,
             limit=limit,
         )
-        data = await self._http.v2.get_changes(**payload)
+        data = await self.http.get_changes(**payload)
         return converter.structure(data, list[Title])
 
     async def get_schedule(
@@ -269,7 +269,7 @@ class AniLibriaClient:
             description_type=description_type,
             playlist_type=playlist_type,
         )
-        data = await self._http.v2.get_schedule(**payload)
+        data = await self.http.get_schedule(**payload)
         return converter.structure(data, list[Schedule])
 
     async def get_random_title(
@@ -296,7 +296,7 @@ class AniLibriaClient:
             description_type=description_type,
             playlist_type=playlist_type,
         )
-        data = await self._http.v2.get_random_title(**payload)
+        data = await self.http.get_random_title(**payload)
         return converter.structure(data, Title)
 
     async def get_youtube(
@@ -328,7 +328,7 @@ class AniLibriaClient:
             after=after,
             limit=limit,
         )
-        data = await self._http.v2.get_youtube(**payload)
+        data = await self.http.get_youtube(**payload)
         return converter.structure(data, list[YouTubeData])
 
     async def get_feed(
@@ -366,7 +366,7 @@ class AniLibriaClient:
             after=after,
             limit=limit,
         )
-        data = await self._http.v2.get_feed(**payload)
+        data = await self.http.get_feed(**payload)
         return [
             converter.structure(video.get("title") or video.get("youtube"), Title)
             for video in data
@@ -376,7 +376,7 @@ class AniLibriaClient:
         """
         Возвращает список годов выхода доступных тайтлов отсортированный по возрастанию.
         """
-        return await self._http.v2.get_years()
+        return await self.http.get_years()
 
     async def get_genres(self, sorting_type: int = 0) -> list[str]:
         """
@@ -384,19 +384,19 @@ class AniLibriaClient:
 
         :param int sorting_type: Тип сортировки элементов.
         """
-        return await self._http.v2.get_genres(sorting_type=sorting_type)
+        return await self.http.get_genres(sorting_type=sorting_type)
 
     async def get_caching_nodes(self) -> list[str]:
         """
         Список кеш серверов с которых можно брать данные, отсортированные по нагрузке
         """
-        return await self._http.v2.get_caching_nodes()
+        return await self.http.get_caching_nodes()
 
     async def get_team(self) -> TitleTeam:
         """
         Возвращает участников команды когда-либо существовавших на проекте.
         """
-        data = await self._http.v2.get_team()
+        data = await self.http.get_team()
         return converter.structure(data, TitleTeam)
 
     async def get_seed_stats(
@@ -435,7 +435,7 @@ class AniLibriaClient:
             order=order,
             limit=limit,
         )
-        data = await self._http.v2.get_seed_stats(**payload)
+        data = await self.http.get_seed_stats(**payload)
         return converter.structure(data, list[SeedStats])
 
     async def get_rss(
@@ -463,7 +463,7 @@ class AniLibriaClient:
             limit=limit
         )
 
-        return await self._http.v2.get_rss(**payload)
+        return await self.http.get_rss(**payload)
 
     async def search_titles(
         self,
@@ -522,7 +522,7 @@ class AniLibriaClient:
             after=after,
             limit=limit,
         )
-        data = await self._http.v2.search_titles(**payload)
+        data = await self.http.search_titles(**payload)
         return converter.structure(data, list[Title])
 
     async def advanced_search(
@@ -564,7 +564,7 @@ class AniLibriaClient:
             limit=limit,
             sort_direction=sort_direction,
         )
-        data = await self._http.v2.advanced_search(**payload)
+        data = await self.http.advanced_search(**payload)
         return converter.structure(data, list[Title])
 
     async def get_favorites_titles(
@@ -594,7 +594,7 @@ class AniLibriaClient:
             description_type=description_type,
             playlist_type=playlist_type,
         )
-        data = await self._http.v2.get_favorites(**payload)
+        data = await self.http.get_favorites(**payload)
         return converter.structure(data, list[Title])
 
     async def add_favorite_title(self, session_id: str, title_id: int):
@@ -604,7 +604,7 @@ class AniLibriaClient:
         :param str session_id: ID сессии.
         :param int title_id: ID тайтла.
         """
-        await self._http.v2.add_favorite(session=session_id, title_id=title_id)
+        await self.http.add_favorite(session=session_id, title_id=title_id)
 
     async def delete_favorite_title(self, session_id: str, title_id: int):
         """
@@ -613,7 +613,7 @@ class AniLibriaClient:
         :param str session_id: ID сессии.
         :param int title_id: ID тайтла.
         """
-        await self._http.v2.del_favorite(session=session_id, title_id=title_id)
+        await self.http.del_favorite(session=session_id, title_id=title_id)
 
     async def astart(self):
         """

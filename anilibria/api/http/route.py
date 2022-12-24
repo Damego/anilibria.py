@@ -2,15 +2,17 @@ from ...const import __api_url__
 
 __all__ = ("Route", )
 
-URL = f"https://{__api_url__}"
+V1_URL = "https://www.anilibria.tv/public"
+V2_URL = f"https://{__api_url__}"
 
 
 class Route:
-    def __init__(self, method: str, endpoint: str):
-        self.method = method
-        self.endpoint = endpoint
-        self._url: str = f"{URL}{self.endpoint}"
+    def __init__(self, method: str, endpoint: str, *, is_v1: bool = False):
+        self.method: str = method
+        self.endpoint: str = endpoint
+        self._is_v1: bool = is_v1
 
     @property
     def url(self) -> str:
-        return self._url
+        url = V1_URL if self._is_v1 else V2_URL
+        return f"{url}{self.endpoint}"
