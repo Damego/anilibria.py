@@ -1,5 +1,6 @@
 from typing import Coroutine, Callable
 from logging import getLogger
+from contextlib import suppress
 
 from trio import run
 
@@ -619,10 +620,8 @@ class AniLibriaClient:
         """
         Асинхронно запускает вебсокет
         """
-        try:
+        with suppress(KeyboardInterrupt):
             await self._websocket.start()
-        except KeyboardInterrupt:
-            ...
 
     def start(self):
         """
@@ -632,8 +631,9 @@ class AniLibriaClient:
 
     async def close(self):
         """
-        Закрывает HTTP клиент.
+        Закрывает клиент.
         """
         await self._http.session.aclose()
+        await self._websocket.close()
 
 

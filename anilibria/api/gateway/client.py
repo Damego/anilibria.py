@@ -33,6 +33,10 @@ class GatewayClient:
         async with open_nursery() as self.nursery:
             self.nursery.start_soon(self.reconnect)
 
+    def close(self):
+        # This looks like a dumb hack, but I don't found in the docs how to cancel task.
+        raise KeyboardInterrupt
+
     async def reconnect(self):
         if self.dispatch.nursery is None:
             self.dispatch.nursery = self.nursery
