@@ -6,4 +6,4 @@ __all__ = ("HTTPClient", )
 
 class HTTPClient(PublicRequest):
     def __init__(self, proxy: str | None = None) -> None:
-        PublicRequest.__init__(self, proxy)
+        super().__init__(proxy)
