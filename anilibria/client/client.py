@@ -3,6 +3,7 @@ from logging import getLogger
 from contextlib import suppress
 
 from trio import run
+from trio_websocket import ConnectionClosed
 
 from ..api import HTTPClient, GatewayClient
 from ..api.models import (
@@ -616,18 +617,31 @@ class AniLibriaClient:
         """
         await self._http.del_favorite(session=session_id, title_id=title_id)
 
-    async def astart(self):
+    async def astart(self, *, force_reconnect: bool = True):
         """
         Асинхронно запускает вебсокет
         """
-        with suppress(KeyboardInterrupt):
-            await self._websocket.start()
+        # force_reconnect = True - Спасибо за стабильное апи
 
-    def start(self):
+        while True:
+            try:
+                await self._websocket.start()
+            except ConnectionClosed as error:
+                if force_reconnect:
+                    # TODO: Add logging
+                    continue
+                raise error from error
+            except KeyboardInterrupt:
+                break
+
+    def start(self, *, force_reconnect: bool = True):
         """
         Запускает клиент.
         """
-        run(self.astart)
+        async def wrapper():
+            await self.astart(force_reconnect=force_reconnect)
+
+        run(wrapper)
 
     async def close(self):
         """
