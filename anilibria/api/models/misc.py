@@ -1,10 +1,11 @@
-from typing import List
+from typing import List, Generic, TypeVar
 
 from .title import Title
 from .attrs_utils import define
 
+T = TypeVar("T")
 
-__all__ = ("Schedule", "YouTubeData", "SeedStats", "Pagination", "TitleResponse")
+__all__ = ("Schedule", "YouTubeVideo", "SeedStats", "Pagination", "ListPagination", "User")
 
 
 @define()
@@ -14,7 +15,7 @@ class Schedule:
 
 
 @define()
-class YouTubeData:
+class YouTubeVideo:
     id: int
     title: str
     image: str
@@ -26,9 +27,9 @@ class YouTubeData:
 
 @define()
 class SeedStats:
+    user: str
     downloaded: int
     uploaded: int
-    user: str
 
 
 @define()
@@ -40,6 +41,17 @@ class Pagination:
 
 
 @define()
-class TitleResponse:
-    list: List[Title]
+class ListPagination(Generic[T]):
     pagination: Pagination
+    list: List[T]
+
+
+@define()
+class User:
+    login: str = None
+    nickname: str = None
+    email: str = None
+    avatar_original: str | None = None
+    avatar_thumbnail: str | None = None
+    vk_id: str | None = None
+    patreon_id: str | None = None

@@ -8,14 +8,15 @@ from ..api import HTTPClient, GatewayClient
 from ..api.models import (
     Title,
     Schedule,
-    YouTubeData,
+    YouTubeVideo,
     TitleTeam,
     SeedStats,
     Include,
     DescriptionType,
     PlaylistType,
     RSSType,
-    TitleResponse
+    ListPagination,
+    User
 )
 from ..api.error import NoArgumentsError
 from ..utils.typings import MISSING, Absent
@@ -148,7 +149,7 @@ class AniLibriaClient:
         playlist_type: Absent[PlaylistType] = MISSING,
         page: Absent[int] = MISSING,
         items_per_page: Absent[int] = MISSING,
-    ) -> TitleResponse:
+    ) -> ListPagination[Title]:
         """
         Возвращает список тайтлов с заданными параметрами.
 
@@ -159,6 +160,8 @@ class AniLibriaClient:
         :param Absent[list[Include]] include: Список типов файлов которые будут возвращены в виде base64 строки
         :param Absent[DescriptionType] description_type: Тип получаемого описания.
         :param Absent[PlaylistType] playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
+        :param Absent[int] page: Номер страницы. По умолчанию 1
+        :param Absent[int] items_per_page: Количество элементов на одной странице.
         """
         if id_list is MISSING and code_list is MISSING:
             raise NoArgumentsError("id_list", "code_list")
@@ -177,7 +180,7 @@ class AniLibriaClient:
 
         data = await self._http.get_titles(**payload)
 
-        return converter.structure(data, TitleResponse)
+        return converter.structure(data, ListPagination(**data))
 
     async def get_updates(
         self,
@@ -191,7 +194,7 @@ class AniLibriaClient:
         limit: Absent[int] = MISSING,
         page: Absent[int] = MISSING,
         items_per_page: Absent[int] = MISSING,
-    ) -> TitleResponse:
+    ) -> ListPagination[Title]:
         """
         Возвращает список последних обновлений тайтлов с заданными параметрами.
 
@@ -203,6 +206,8 @@ class AniLibriaClient:
         :param Absent[PlaylistType] playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
         :param Absent[int] after: Удаляет первые n записей из выдачи
         :param Absent[int] limit: Количество объектов в ответе. По умолчанию 5
+        :param Absent[int] page: Номер страницы. По умолчанию 1
+        :param Absent[int] items_per_page: Количество элементов на одной странице.
         """
         payload = dict_filter_missing(
             filter=filter,
@@ -217,7 +222,7 @@ class AniLibriaClient:
             items_per_page=items_per_page
         )
         data = await self._http.get_updates(**payload)
-        return converter.structure(data, TitleResponse)
+        return converter.structure(data, ListPagination[Title])
 
     async def get_changes(
         self,
@@ -230,7 +235,7 @@ class AniLibriaClient:
         limit: Absent[int] = MISSING,
         page: Absent[int] = MISSING,
         items_per_page: Absent[int] = MISSING,
-    ) -> list[Title]:
+    ) -> ListPagination[Title]:
         """
         Возвращает список последних обновлений тайтлов с заданными параметрами.
 
@@ -241,6 +246,8 @@ class AniLibriaClient:
         :param Absent[DescriptionType] description_type: Тип получаемого описания.
         :param Absent[int] after: Удаляет первые n записей из выдачи
         :param Absent[int] limit: Количество объектов в ответе. По умолчанию 5
+        :param Absent[int] page: Номер страницы. По умолчанию 1
+        :param Absent[int] items_per_page: Количество элементов на одной странице.
         """
         payload = dict_filter_missing(
             filter=filter,
@@ -323,7 +330,7 @@ class AniLibriaClient:
         limit: Absent[int] = MISSING,
         page: Absent[int] = MISSING,
         items_per_page: Absent[int] = MISSING,
-    ) -> list[YouTubeData]:
+    ) -> ListPagination[YouTubeVideo]:
         """
         Возвращает список youtube видео в хронологическом порядке с заданными параметрами.
 
@@ -333,8 +340,8 @@ class AniLibriaClient:
         :param Absent[int] since: Список тайтлов, у которых время обновления больше указанного timestamp
         :param Absent[int] after: Удаляет первые n записей из выдачи
         :param Absent[int] limit: Количество объектов в ответе. По умолчанию 5
-        :return: Список youtube видео
-        :rtype: list[YouTubeData]
+        :param Absent[int] page: Номер страницы. По умолчанию 1
+        :param Absent[int] items_per_page: Количество элементов на одной странице.
         """
         payload = dict_filter_missing(
             filter=filter,
@@ -347,8 +354,7 @@ class AniLibriaClient:
             items_per_page=items_per_page
         )
         data = await self._http.get_youtube(**payload)
-        print(data.keys())
-        return converter.structure(data, TitleResponse)
+        return converter.structure(data, ListPagination[Title])
 
     async def get_feed(
         self,
@@ -362,7 +368,7 @@ class AniLibriaClient:
         limit: Absent[int] = MISSING,
         page: Absent[int] = MISSING,
         items_per_page: Absent[int] = MISSING,
-    ) -> list[Title | YouTubeData]:
+    ) -> ListPagination[Title | YouTubeVideo]:
         """
         Возвращает список тайтлов и youtube видео в хронологическом порядке с заданными параметрами.
 
@@ -374,8 +380,8 @@ class AniLibriaClient:
         :param Absent[PlaylistType] playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
         :param Absent[int] after: Удаляет первые n записей из выдачи
         :param Absent[int] limit: Количество объектов в ответе. По умолчанию 5
-        :return: Список тайтлов и youtube видео.
-        :rtype: list[Union[Title, YouTubeData]]
+        :param Absent[int] page: Номер страницы. По умолчанию 1
+        :param Absent[int] items_per_page: Количество элементов на одной странице.
         """
         payload = dict_filter_missing(
             filter=filter,
@@ -442,6 +448,8 @@ class AniLibriaClient:
         :param Absent[str] sort_by: По какому полю производить сортировку, допустимые значения: downloaded, uploaded, user
         :param Absent[int] order: Направление сортировки 0 - DESC, 1 - ASC.
         :param Absent[int] limit: Количество объектов в ответе. По умолчанию 5
+        :param Absent[int] page: Номер страницы. По умолчанию 1
+        :param Absent[int] items_per_page: Количество элементов на одной странице.
         """
         payload = dict_filter_missing(
             users=users,
@@ -503,7 +511,7 @@ class AniLibriaClient:
         limit: Absent[int] = MISSING,
         page: Absent[int] = MISSING,
         items_per_page: Absent[int] = MISSING,
-    ) -> list[Title]:
+    ) -> ListPagination[Title]:
         """
         Возвращает список тайтлов, найденных по фильтрам.
 
@@ -517,6 +525,8 @@ class AniLibriaClient:
         :param Absent[PlaylistType] playlist_type: Формат получаемого списка серий. Словарь(object) или список(list).
         :param Absent[int] after: Удаляет первые n записей из выдачи.
         :param Absent[int] limit: Количество объектов в ответе.
+        :param Absent[int] page: Номер страницы. По умолчанию 1
+        :param Absent[int] items_per_page: Количество элементов на одной странице.
         """
         payload = dict_filter_missing(
             search=search,
@@ -551,7 +561,7 @@ class AniLibriaClient:
         sort_direction: Absent[int] = MISSING,
         page: Absent[int] = MISSING,
         items_per_page: Absent[int] = MISSING,
-    ) -> list[Title]:
+    ) -> ListPagination[Title]:
         """
         Возвращает список тайтлов, найденных по фильтрам.
 
@@ -583,6 +593,20 @@ class AniLibriaClient:
         data = await self._http.advanced_search(**payload)
         return converter.structure(data, list[Title])
 
+    async def get_user(
+        self,
+        session_id: int,
+        filter: Absent[list[str]] = MISSING,
+        remove: Absent[list[str]] = MISSING,
+    ):
+        payload = dict_filter_missing(
+            session_id=session_id,
+            filter=filter,
+            remove=remove
+        )
+        data = await self._http.get_user(**payload)
+        return converter.structure(data, User)
+
     async def get_user_favorites_titles(
         self,
         session_id: str,
@@ -593,7 +617,7 @@ class AniLibriaClient:
         playlist_type: Absent[PlaylistType] = MISSING,
         page: Absent[int] = MISSING,
         items_per_page: Absent[int] = MISSING,
-    ) -> list[Title]:
+    ) -> ListPagination[Title]:
         """
         Возвращает список избранных тайтлов пользователя
 
@@ -603,6 +627,8 @@ class AniLibriaClient:
         :param Absent[list[Include]] include: Список типов файлов, которые будут возвращены в виде base64 строки
         :param Absent[DescriptionType] description_type: Тип получаемого описания.
         :param Absent[PlaylistType] playlist_type: Формат получаемого списка серий. Словарь(object) или список(list).
+        :param Absent[int] page: Номер страницы. По умолчанию 1
+        :param Absent[int] items_per_page: Количество элементов на одной странице.
         """
         payload = dict_filter_missing(
             session=session_id,
@@ -635,29 +661,28 @@ class AniLibriaClient:
         """
         await self._http.remove_user_favorite(session=session_id, title_id=title_id)
 
-    async def astart(self, *, force_reconnect: bool = True):
+    async def astart(self, *, auto_reconnect: bool = True):
         """
         Асинхронно запускает вебсокет
         """
-        # force_reconnect = True - Спасибо за стабильное апи
 
         while True:
             try:
                 await self._websocket.start()
             except ConnectionClosed as error:
-                if force_reconnect:
-                    # TODO: Add logging
+                if auto_reconnect:
+                    log.debug("Websocket disconnected. Reconnecting...")
                     continue
                 raise error from error
             except KeyboardInterrupt:
                 break
 
-    def start(self, *, force_reconnect: bool = True):
+    def start(self, *, auto_reconnect: bool = True):
         """
         Запускает клиент.
         """
         async def wrapper():
-            await self.astart(force_reconnect=force_reconnect)
+            await self.astart(auto_reconnect=auto_reconnect)
 
         run(wrapper)
 
