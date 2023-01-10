@@ -1,6 +1,5 @@
 from typing import Coroutine, Callable
 from logging import getLogger
-from contextlib import suppress
 
 from trio import run
 from trio_websocket import ConnectionClosed
@@ -16,6 +15,7 @@ from ..api.models import (
     DescriptionType,
     PlaylistType,
     RSSType,
+    TitleResponse
 )
 from ..api.error import NoArgumentsError
 from ..utils.typings import MISSING, Absent
@@ -146,7 +146,9 @@ class AniLibriaClient:
         include: Absent[list[Include]] = MISSING,
         description_type: Absent[DescriptionType] = MISSING,
         playlist_type: Absent[PlaylistType] = MISSING,
-    ) -> list[Title]:
+        page: Absent[int] = MISSING,
+        items_per_page: Absent[int] = MISSING,
+    ) -> TitleResponse:
         """
         Возвращает список тайтлов с заданными параметрами.
 
@@ -169,11 +171,13 @@ class AniLibriaClient:
             include=include,
             description_type=description_type,
             playlist_type=playlist_type,
+            page=page,
+            items_per_page=items_per_page,
         )
 
         data = await self._http.get_titles(**payload)
 
-        return converter.structure(data, list[Title])
+        return converter.structure(data, TitleResponse)
 
     async def get_updates(
         self,
@@ -185,7 +189,9 @@ class AniLibriaClient:
         playlist_type: Absent[PlaylistType] = MISSING,
         after: Absent[int] = MISSING,
         limit: Absent[int] = MISSING,
-    ) -> list[Title]:
+        page: Absent[int] = MISSING,
+        items_per_page: Absent[int] = MISSING,
+    ) -> TitleResponse:
         """
         Возвращает список последних обновлений тайтлов с заданными параметрами.
 
@@ -207,9 +213,11 @@ class AniLibriaClient:
             playlist_type=playlist_type,
             after=after,
             limit=limit,
+            page=page,
+            items_per_page=items_per_page
         )
         data = await self._http.get_updates(**payload)
-        return converter.structure(data, list[Title])
+        return converter.structure(data, TitleResponse)
 
     async def get_changes(
         self,
@@ -220,6 +228,8 @@ class AniLibriaClient:
         description_type: Absent[DescriptionType] = MISSING,
         after: Absent[int] = MISSING,
         limit: Absent[int] = MISSING,
+        page: Absent[int] = MISSING,
+        items_per_page: Absent[int] = MISSING,
     ) -> list[Title]:
         """
         Возвращает список последних обновлений тайтлов с заданными параметрами.
@@ -240,6 +250,8 @@ class AniLibriaClient:
             description_type=description_type,
             after=after,
             limit=limit,
+            page=page,
+            items_per_page=items_per_page
         )
         data = await self._http.get_changes(**payload)
         return converter.structure(data, list[Title])
@@ -309,6 +321,8 @@ class AniLibriaClient:
         since: Absent[int] = MISSING,
         after: Absent[int] = MISSING,
         limit: Absent[int] = MISSING,
+        page: Absent[int] = MISSING,
+        items_per_page: Absent[int] = MISSING,
     ) -> list[YouTubeData]:
         """
         Возвращает список youtube видео в хронологическом порядке с заданными параметрами.
@@ -329,9 +343,12 @@ class AniLibriaClient:
             since=since,
             after=after,
             limit=limit,
+            page=page,
+            items_per_page=items_per_page
         )
         data = await self._http.get_youtube(**payload)
-        return converter.structure(data, list[YouTubeData])
+        print(data.keys())
+        return converter.structure(data, TitleResponse)
 
     async def get_feed(
         self,
@@ -343,6 +360,8 @@ class AniLibriaClient:
         playlist_type: Absent[PlaylistType] = MISSING,
         after: Absent[int] = MISSING,
         limit: Absent[int] = MISSING,
+        page: Absent[int] = MISSING,
+        items_per_page: Absent[int] = MISSING,
     ) -> list[Title | YouTubeData]:
         """
         Возвращает список тайтлов и youtube видео в хронологическом порядке с заданными параметрами.
@@ -367,6 +386,8 @@ class AniLibriaClient:
             playlist_type=playlist_type,
             after=after,
             limit=limit,
+            page=page,
+            items_per_page=items_per_page
         )
         data = await self._http.get_feed(**payload)
         return [
@@ -388,12 +409,6 @@ class AniLibriaClient:
         """
         return await self._http.get_genres(sorting_type=sorting_type)
 
-    async def get_caching_nodes(self) -> list[str]:
-        """
-        Список кеш серверов с которых можно брать данные, отсортированные по нагрузке
-        """
-        return await self._http.get_caching_nodes()
-
     async def get_team(self) -> TitleTeam:
         """
         Возвращает участников команды когда-либо существовавших на проекте.
@@ -412,6 +427,8 @@ class AniLibriaClient:
         sort_by: Absent[str] = MISSING,
         order: Absent[int] = MISSING,
         limit: Absent[int] = MISSING,
+        page: Absent[int] = MISSING,
+        items_per_page: Absent[int] = MISSING,
     ) -> list[SeedStats]:
         """
         Возвращает топ пользователей по количеству загруженного и скачанно через торрент трекер anilibria.
@@ -436,8 +453,11 @@ class AniLibriaClient:
             sort_by=sort_by,
             order=order,
             limit=limit,
+            page=page,
+            items_per_page=items_per_page,
         )
         data = await self._http.get_seed_stats(**payload)
+        print(data)
         return converter.structure(data, list[SeedStats])
 
     async def get_rss(
@@ -473,11 +493,7 @@ class AniLibriaClient:
         year: Absent[list[str | int]] = MISSING,
         season_code: Absent[list[str]] = MISSING,
         genres: Absent[list[str]] = MISSING,
-        voice: Absent[list[str]] = MISSING,
-        translator: Absent[list[str]] = MISSING,
-        editing: Absent[list[str]] = MISSING,
-        decor: Absent[list[str]] = MISSING,
-        timing: Absent[list[str]] = MISSING,
+        team: Absent[list[str]] = MISSING,
         filter: Absent[list[str]] = MISSING,
         remove: Absent[list[str]] = MISSING,
         include: Absent[list[Include]] = MISSING,
@@ -485,6 +501,8 @@ class AniLibriaClient:
         playlist_type: Absent[PlaylistType] = MISSING,
         after: Absent[int] = MISSING,
         limit: Absent[int] = MISSING,
+        page: Absent[int] = MISSING,
+        items_per_page: Absent[int] = MISSING,
     ) -> list[Title]:
         """
         Возвращает список тайтлов, найденных по фильтрам.
@@ -492,12 +510,6 @@ class AniLibriaClient:
         :param Absent[list[str]] search: Поиск по именам и описанию.
         :param Absent[list[str | int]] year: Список годов выхода.
         :param Absent[list[str]] season_code: Список сезонов.
-        :param Absent[list[str]] genres: Список жанров.
-        :param Absent[list[str]] voice: Список войсеров.
-        :param Absent[list[str]] translator: Список переводчиков.
-        :param Absent[list[str]] editing: Список сабберов.
-        :param Absent[list[str]] decor: Список оформителей.
-        :param Absent[list[str]] timing: Список таймеров.
         :param Absent[list[str]] filter: Список значений, которые будут в ответе.
         :param Absent[list[str]] remove: Список значений, которые будут удалены из ответа.
         :param Absent[list[Include]] include: Список типов файлов, которые будут возвращены в виде base64 строки
@@ -511,11 +523,7 @@ class AniLibriaClient:
             year=year,
             season_code=season_code,
             genres=genres,
-            voice=voice,
-            translator=translator,
-            editing=editing,
-            decor=decor,
-            timing=timing,
+            team=team,
             filter=filter,
             remove=remove,
             include=include,
@@ -523,6 +531,8 @@ class AniLibriaClient:
             playlist_type=playlist_type,
             after=after,
             limit=limit,
+            page=page,
+            items_per_page=items_per_page,
         )
         data = await self._http.search_titles(**payload)
         return converter.structure(data, list[Title])
@@ -539,6 +549,8 @@ class AniLibriaClient:
         order_by: Absent[str] = MISSING,
         limit: Absent[int] = MISSING,
         sort_direction: Absent[int] = MISSING,
+        page: Absent[int] = MISSING,
+        items_per_page: Absent[int] = MISSING,
     ) -> list[Title]:
         """
         Возвращает список тайтлов, найденных по фильтрам.
@@ -565,11 +577,13 @@ class AniLibriaClient:
             order_by=order_by,
             limit=limit,
             sort_direction=sort_direction,
+            page=page,
+            items_per_page=items_per_page
         )
         data = await self._http.advanced_search(**payload)
         return converter.structure(data, list[Title])
 
-    async def get_favorites_titles(
+    async def get_user_favorites_titles(
         self,
         session_id: str,
         filter: Absent[list[str]] = MISSING,
@@ -577,6 +591,8 @@ class AniLibriaClient:
         include: Absent[list[Include]] = MISSING,
         description_type: Absent[DescriptionType] = MISSING,
         playlist_type: Absent[PlaylistType] = MISSING,
+        page: Absent[int] = MISSING,
+        items_per_page: Absent[int] = MISSING,
     ) -> list[Title]:
         """
         Возвращает список избранных тайтлов пользователя
@@ -595,27 +611,29 @@ class AniLibriaClient:
             include=include,
             description_type=description_type,
             playlist_type=playlist_type,
+            page=page,
+            items_per_page=items_per_page
         )
-        data = await self._http.get_favorites(**payload)
+        data = await self._http.get_user_favorites(**payload)
         return converter.structure(data, list[Title])
 
-    async def add_favorite_title(self, session_id: str, title_id: int):
+    async def add_user_favorite_title(self, session_id: str, title_id: int):
         """
         Добавляет тайтл в список избранных
 
         :param str session_id: ID сессии.
         :param int title_id: ID тайтла.
         """
-        await self._http.add_favorite(session=session_id, title_id=title_id)
+        await self._http.add_user_favorite(session=session_id, title_id=title_id)
 
-    async def delete_favorite_title(self, session_id: str, title_id: int):
+    async def remove_user_favorite_title(self, session_id: str, title_id: int):
         """
         Добавляет тайтл в список избранных
 
         :param str session_id: ID сессии.
         :param int title_id: ID тайтла.
         """
-        await self._http.del_favorite(session=session_id, title_id=title_id)
+        await self._http.remove_user_favorite(session=session_id, title_id=title_id)
 
     async def astart(self, *, force_reconnect: bool = True):
         """

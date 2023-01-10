@@ -1,8 +1,10 @@
+from typing import List
+
 from .title import Title
 from .attrs_utils import define
 
 
-__all__ = ("Schedule", "YouTubeData", "SeedStats")
+__all__ = ("Schedule", "YouTubeData", "SeedStats", "Pagination", "TitleResponse")
 
 
 @define()
@@ -27,3 +29,17 @@ class SeedStats:
     downloaded: int
     uploaded: int
     user: str
+
+
+@define()
+class Pagination:
+    current_page: int
+    pages: int
+    items_per_page: int
+    total_items: int
+
+
+@define()
+class TitleResponse:
+    list: List[Title]
+    pagination: Pagination

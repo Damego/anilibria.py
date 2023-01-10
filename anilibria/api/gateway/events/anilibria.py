@@ -1,6 +1,8 @@
+from typing import Optional
+
 from cattrs.gen import make_dict_structure_fn, make_dict_unstructure_fn, override
 
-from ...models import Player, Serie, Title, Torrents
+from ...models import Player, Episode, Title, Torrents
 from ...models.attrs_utils import define
 from ...models.enums import StrEnum
 from ...models.cattrs_utils import converter
@@ -16,20 +18,6 @@ __all__ = (
     "TitleUpdate",
     "TorrentUpdate",
 )
-
-
-class EventType(StrEnum):
-    """
-    Обозначает ивенты, которые принимает Websocket
-    """
-
-    TITLE_UPDATE = "title_update"
-    PLAYLIST_UPDATE = "playlist_update"
-    ENCODE_START = "encode_start"
-    ENCODE_PROGRESS = "encode_progress"
-    ENCODE_END = "encode_end"
-    ENCODE_FINISH = "encode_finish"
-    TORRENT_UPDATE = "torrent_update"
 
 
 @define()
@@ -80,12 +68,12 @@ class PlaylistUpdate:
           ...
     """
 
-    id: int
-    player: Player
-    updated_episode: Serie
-    episode: str
-    diff: dict
-    reupload: bool
+    id: Optional[int] = None
+    player: Player | None = None
+    updated_episode: Episode | None = None
+    episode: str | None = None
+    diff: dict | None = None
+    reupload: bool | None = None
 
 
 @define()
@@ -100,9 +88,8 @@ class TitleUpdate:
           ...
     """
 
-    hash: str
-    title: Title
-    diff: dict
+    title: Title = None
+    diff: dict = None
 
 
 @define()
@@ -117,11 +104,25 @@ class TorrentUpdate:
           ...
     """
 
-    id: str
-    torrents: Torrents
-    updated_torrent_id: int
-    diff: dict
-    hash: str
+    id: str = None
+    torrents: Torrents = None
+    updated_torrent_id: int = None
+    diff: dict = None
+
+
+class EventType:
+    """
+    Обозначает ивенты, которые принимает Websocket
+    """
+
+    TITLE_UPDATE = TitleUpdate
+    PLAYLIST_UPDATE = PlaylistUpdate
+    ENCODE_START = EncodeStart
+    ENCODE_PROGRESS = EncodeProgress
+    ENCODE_END = EncodeEnd
+    ENCODE_FINISH = EncodeFinish
+    TORRENT_UPDATE = TorrentUpdate
+
 
 
 # Hooks

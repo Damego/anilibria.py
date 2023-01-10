@@ -1,3 +1,5 @@
+from typing import Any
+
 from .request import Request
 from .route import Route
 from ...utils import dict_filter_none
@@ -22,7 +24,7 @@ class PublicRequest(Request):
 
         return await self.request(route, data=payload)
 
-    # v2
+    # v3
 
     async def get_title(
         self,
@@ -45,7 +47,7 @@ class PublicRequest(Request):
             description_type=description_type,
             playlist_type=playlist_type,
         )
-        return await self.request(Route("GET", "/getTitle"), payload)
+        return await self.request(Route("GET", "/title"), payload)
 
     async def get_titles(
         self,
@@ -56,6 +58,8 @@ class PublicRequest(Request):
         include: list[str] | None = None,
         description_type: str | None = None,
         playlist_type: str | None = None,
+        page: int | None = None,
+        items_per_page: int | None = None,
     ) -> list[dict]:
         payload: dict = dict_filter_none(
             id_list=id_list,
@@ -65,8 +69,10 @@ class PublicRequest(Request):
             include=include,
             description_type=description_type,
             playlist_type=playlist_type,
+            page=page,
+            items_per_page=items_per_page,
         )
-        return await self.request(Route("GET", "/getTitles"), payload)
+        return await self.request(Route("GET", "/title/list"), payload)
 
     async def get_updates(
         self,
@@ -78,6 +84,8 @@ class PublicRequest(Request):
         playlist_type: str | None = None,
         after: int | None = None,
         limit: int | None = None,
+        page: int | None = None,
+        items_per_page: int | None = None,
     ) -> list[dict]:
         payload: dict = dict_filter_none(
             filter=filter,
@@ -88,8 +96,10 @@ class PublicRequest(Request):
             playlist_type=playlist_type,
             after=after,
             limit=limit,
+            page=page,
+            items_per_page=items_per_page
         )
-        return await self.request(Route("GET", "/getUpdates"), payload)
+        return await self.request(Route("GET", "/title/updates"), payload)
 
     async def get_changes(
         self,
@@ -100,6 +110,8 @@ class PublicRequest(Request):
         description_type: str | None = None,
         after: int | None = None,
         limit: int | None = None,
+        page: int | None = None,
+        items_per_page: int | None = None,
     ) -> list[dict]:
         payload: dict = dict_filter_none(
             filter=filter,
@@ -109,8 +121,10 @@ class PublicRequest(Request):
             description_type=description_type,
             after=after,
             limit=limit,
+            page=page,
+            items_per_page=items_per_page,
         )
-        return await self.request(Route("GET", "/getChanges"), payload)
+        return await self.request(Route("GET", "/title/changes"), payload)
 
     async def get_schedule(
         self,
@@ -129,7 +143,7 @@ class PublicRequest(Request):
             description_type=description_type,
             playlist_type=playlist_type,
         )
-        return await self.request(Route("GET", "/getSchedule"), payload)
+        return await self.request(Route("GET", "/title/schedule"), payload)
 
     async def get_random_title(
         self,
@@ -146,7 +160,7 @@ class PublicRequest(Request):
             description_type=description_type,
             playlist_type=playlist_type,
         )
-        return await self.request(Route("GET", "/getRandomTitle"), payload)
+        return await self.request(Route("GET", "/title/random"), payload)
 
     async def get_youtube(
         self,
@@ -156,6 +170,8 @@ class PublicRequest(Request):
         since: int | None = None,
         after: int | None = None,
         limit: int | None = None,
+        page: int | None = None,
+        items_per_page: int | None = None,
     ) -> list[dict]:
         payload: dict = dict_filter_none(
             filter=filter,
@@ -164,8 +180,10 @@ class PublicRequest(Request):
             since=since,
             after=after,
             limit=limit,
+            page=page,
+            items_per_page=items_per_page
         )
-        return await self.request(Route("GET", "/getYouTube"), payload)
+        return await self.request(Route("GET", "/youtube"), payload)
 
     async def get_feed(
         self,
@@ -177,6 +195,8 @@ class PublicRequest(Request):
         playlist_type: str | None = None,
         after: int | None = None,
         limit: int | None = None,
+        page: int | None = None,
+        items_per_page: int | None = None,
     ) -> list[dict]:
         payload: dict = dict_filter_none(
             filter=filter,
@@ -187,27 +207,26 @@ class PublicRequest(Request):
             playlist_type=playlist_type,
             after=after,
             limit=limit,
+            page=page,
+            items_per_page=items_per_page
         )
-        return await self.request(Route("GET", "/getFeed"), payload)
+        return await self.request(Route("GET", "/feed"), payload)
 
     async def get_years(self) -> list[int]:
-        return await self.request(Route("GET", "/getYears"))
+        return await self.request(Route("GET", "/years"))
 
     async def get_genres(self, sorting_type: int = 0) -> list[str]:
         payload: dict = dict_filter_none(
             sorting_type=sorting_type,
         )
-        return await self.request(Route("GET", "/getGenres"), payload)
-
-    async def get_caching_nodes(self) -> list[str]:
-        return await self.request(Route("GET", "/getCachingNodes"))
+        return await self.request(Route("GET", "/genres"), payload)
 
     async def get_team(self) -> dict:
-        return await self.request(Route("GET", "/getTeam"))
+        return await self.request(Route("GET", "/team"))
 
     async def get_seed_stats(
         self,
-        users: list[str],
+        users: list[str] | None = None,
         remove: list[str] | None = None,
         include: list[str] | None = None,
         description_type: str | None = None,
@@ -216,6 +235,8 @@ class PublicRequest(Request):
         sort_by: str | None = None,
         order: int | None = None,
         limit: int | None = None,
+        page: int | None = None,
+        items_per_page: int | None = None,
     ) -> list[dict]:
         payload: dict = dict_filter_none(
             users=users,
@@ -227,8 +248,10 @@ class PublicRequest(Request):
             sort_by=sort_by,
             order=order,
             limit=limit,
+            page=page,
+            items_per_page=items_per_page
         )
-        return await self.request(Route("GET", "/getSeedStats"), payload)
+        return await self.request(Route("GET", "/torrent/seed_stats"), payload)
 
     async def get_rss(
         self,
@@ -241,7 +264,7 @@ class PublicRequest(Request):
         payload: dict = dict_filter_none(
             rss_type=rss_type, session=session, since=since, after=after, limit=limit
         )
-        return await self.request(Route("GET", "/getRSS"), payload)
+        return await self.request(Route("GET", "/torrent/rss"), payload)
 
     async def search_titles(
         self,
@@ -249,11 +272,7 @@ class PublicRequest(Request):
         year: list[str] | None = None,
         season_code: list[str] | None = None,
         genres: list[str] | None = None,
-        voice: list[str] | None = None,
-        translator: list[str] | None = None,
-        editing: list[str] | None = None,
-        decor: list[str] | None = None,
-        timing: list[str] | None = None,
+        team: list[str] | None = None,
         filter: list[str] | None = None,
         remove: list[str] | None = None,
         include: list[str] | None = None,
@@ -261,17 +280,15 @@ class PublicRequest(Request):
         playlist_type: str | None = None,
         after: int | None = None,
         limit: int | None = None,
-    ) -> list[dict]:
+        page: int | None = None,
+        items_per_page: int | None = None,
+    ) -> dict[str, list | dict]:
         payload: dict = dict_filter_none(
             search=search,
             year=year,
             season_code=season_code,
             genres=genres,
-            voice=voice,
-            translator=translator,
-            editing=editing,
-            decor=decor,
-            timing=timing,
+            team=team,
             filter=filter,
             remove=remove,
             include=include,
@@ -279,8 +296,10 @@ class PublicRequest(Request):
             playlist_type=playlist_type,
             after=after,
             limit=limit,
+            page=page,
+            items_per_page=items_per_page
         )
-        return await self.request(Route("GET", "/searchTitles"), payload)
+        return await self.request(Route("GET", "/title/search"), payload)
 
     async def advanced_search(
         self,
@@ -294,6 +313,8 @@ class PublicRequest(Request):
         order_by: str | None = None,
         limit: int | None = None,
         sort_direction: int | None = None,
+        page: int | None = None,
+        items_per_page: int | None = None,
     ) -> list[dict]:
         payload: dict = dict_filter_none(
             query=query,
@@ -306,10 +327,26 @@ class PublicRequest(Request):
             order_by=order_by,
             limit=limit,
             sort_direction=sort_direction,
+            page=page,
+            items_per_page=items_per_page
         )
-        return await self.request(Route("GET", "/advancedSearch"), payload)
+        return await self.request(Route("GET", "/title/search/advanced"), payload)
 
-    async def get_favorites(
+    async def get_user(
+        self,
+        session: str,
+        filter: list[str] | None = None,
+        remove: list[str] | None = None,
+    ) -> dict:
+        payload = dict_filter_none(
+            session=session,
+            filter=filter,
+            remove=remove,
+        )
+
+        return await self.request(Route("GET", "/user"), payload)
+
+    async def get_user_favorites(
         self,
         session: str,
         filter: list[str] | None = None,
@@ -326,12 +363,12 @@ class PublicRequest(Request):
             description_type=description_type,
             playlist_type=playlist_type,
         )
-        return await self.request(Route("GET", "/getFavorites"), payload)
+        return await self.request(Route("GET", "/user/favourites"), payload)
 
-    async def add_favorite(self, session: str, title_id: int) -> dict:
+    async def add_user_favorite(self, session: str, title_id: int) -> dict:
         payload: dict = dict_filter_none(session=session, title_id=title_id)
-        return await self.request(Route("PUT", "/addFavorite"), payload)
+        return await self.request(Route("PUT", "/user/favourites/add"), payload)
 
-    async def del_favorite(self, session: str, title_id: int) -> dict:
+    async def remove_user_favorite(self, session: str, title_id: int) -> dict:
         payload: dict = dict_filter_none(session=session, title_id=title_id)
-        return await self.request(Route("DELETE", "/delFavorite"), payload)
+        return await self.request(Route("DELETE", "/user/favourites/remove"), payload)

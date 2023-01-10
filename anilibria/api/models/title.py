@@ -1,3 +1,5 @@
+from typing import List
+
 from .enums import StatusCode, TitleCodeType, SeasonCode
 from .attrs_utils import define
 
@@ -11,10 +13,10 @@ __all__ = (
     "TitleTeam",
     "Season",
     "Blocked",
-    "Series",
+    "Episodes",
     "HLS",
     "SerieSkips",
-    "Serie",
+    "Episode",
     "RutubeSerie",
     "Player",
     "Quality",
@@ -32,11 +34,11 @@ class TitleNames:
     Объект, содержащий названия тайтла на различных языках.
     """
 
-    ru: str
+    ru: str = None
     "Название тайтла на русском языке"
-    en: str
+    en: str = None
     "Название тайтла на английском языке"
-    alternative: str | None
+    alternative: str = None
     "Название тайтла на альтернативном языке"
 
 
@@ -46,9 +48,9 @@ class TitleStatus:
     Объект статуса тайтла
     """
 
-    string: str | None
+    string: str = None
     "Представление статуса в виде строки"
-    code: StatusCode | None
+    code: StatusCode = None
     "Код статуса"
 
 
@@ -58,9 +60,9 @@ class Poster:
     Объект с моделью постера
     """
 
-    url: str | None
+    url: str = None
     "Относительная ссылка на постер"
-    raw_base64_file: str | None
+    raw_base64_file: str = None
     "Закодированный в base64 постер"
 
     @property
@@ -78,11 +80,11 @@ class Posters:
     Объект с разными размерами постера
     """
 
-    small: Poster
+    small: Poster = None
     "Постер маленького размера"
-    medium: Poster
+    medium: Poster = None
     "Постер среднего размера"
-    original: Poster
+    original: Poster = None
     "Постер оригинального размера"
 
 
@@ -92,15 +94,15 @@ class TitleType:
     Объект с информацией о типе тайтла.
     """
 
-    full_string: str
+    full_string: str = None
     "Полная информация о типе в виде строки"
-    code: TitleCodeType
+    code: TitleCodeType = None
     "Код типа"
-    string: str
+    string: str = None
     "Тип тайтла в виде строки"
-    series: int
+    episodes: int = None
     "Количество серий"
-    length: str
+    length: str = None
     "Длина серии"
 
 
@@ -110,15 +112,15 @@ class TitleTeam:
     Объект с участниками, которые принимали участие в переводе тайтла.
     """
 
-    voice: list[str]
+    voice: List[str] = None
     "Участники, работавшие над озвучкой"
-    translator: list[str]
+    translator: List[str] = None
     "Участники, работавшие над переводом"
-    editing: list[str]
+    editing: List[str] = None
     "Участники, работавшие над субтитрами"
-    decor: list[str]
+    decor: List[str] = None
     "Участники, работавшие над оформлением"
-    timing: list[str]
+    timing: List[str] = None
     "Участники, работавшие над таймингом"
 
 
@@ -128,13 +130,13 @@ class Season:
     Объект с информацией о сезоне тайтла.
     """
 
-    string: str
+    string: str = None
     "Название сезона"
-    code: SeasonCode
+    code: SeasonCode = None
     "Код сезона"
-    year: int
+    year: int = None
     "Год выпуска"
-    week_day: int
+    week_day: int = None
     "День недели"
 
 
@@ -144,23 +146,23 @@ class Blocked:
     Объект с информацией о статусе блокировки тайтла.
     """
 
-    blocked: bool
+    blocked: bool = False
     "Тайтл заблокирован на территории РФ"
-    bakanim: bool
+    bakanim: bool = False
     "Тайлтл заблокирован из-за жалобы Wakanim"
 
 
 @define()
-class Series:
+class Episodes:
     """
     Объект с информацией о количестве серий
     """
 
-    first: int
+    first: int | None = None
     "Номер первой серии"
-    last: int
+    last: int | None = None
     "Номер последней серии"
-    string: str
+    string: str | None = None
     "Представление количества серий в виде строки"
 
 
@@ -173,11 +175,11 @@ class HLS:
         Ссылки являются относительными и не содержат домена!
     """
 
-    fhd: str
+    fhd: str = None
     "Ссылка на видео в Full HD качестве"
-    hd: str
+    hd: str = None
     "Ссылка на видео в HD качестве"
-    sd: str
+    sd: str = None
     "Ссылка на видео в SD качестве"
 
 
@@ -187,27 +189,27 @@ class SerieSkips:
     Объект с таймкодами для пропуска опенинга и эндинга.
     """
 
-    opening: list[str]
+    opening: List[str] = None
     "Таймкоды для опенинга"
-    ending: list[str]
+    ending: List[str] = None
     "Таймкоды для эндинга"
 
 
 @define()
-class Serie:
+class Episode:
     """
     Объект, содержащий информацию о серии.
     """
 
-    serie: int
+    episode: int = None
     "Номер серии"
-    created_timestamp: int
+    created_timestamp: int = None
     "Время создания/изменения в формате UNIX timestamp"
-    hls: HLS
+    hls: HLS = None
     "Ссылки на серию"
-    preview: str
+    preview: str = None
     "Ссылка на превью серии"
-    skips: SerieSkips
+    skips: SerieSkips = None
     "Таймкоды на пропуски"
 
     # TODO: Добавить свойство 'created_at' с datetime
@@ -219,11 +221,11 @@ class RutubeSerie:
     Объект с информацией о серии в rutube
     """
 
-    created_timestamp: int
+    created_timestamp: int = None
     "Время создания/изменения в формате UNIX timestamp"
-    rutube_id: str  # TODO: Возможно ли из айди собрать ссылку?
+    rutube_id: str = None  # TODO: Возможно ли из айди собрать ссылку?
     "ID серии"
-    serie: int
+    episode: int = None
     "Номер серии"
 
 
@@ -233,15 +235,15 @@ class Player:
     Объект с информацией о плеере и сериях.
     """
 
-    alternative_player: str
+    alternative_player: str = None
     "Ссылка на альтернативный плеер"
-    host: str
+    host: str = None
     "Имена предпочитаемых серверов для построения ссылок на поток и скачивание"
-    series: Series
+    episodes: Episodes = None
     "Количество вышедших серий"
-    playlist: dict[str, Serie] | list[Serie]
+    list: dict[str, Episode] | List[Episode] = None
     "Список релизов"
-    rutube_playlist: dict[str, RutubeSerie] | list[RutubeSerie]
+    rutube_playlist: dict[str, RutubeSerie] | List[RutubeSerie] = None
     "Список релизов на rutube"
 
 
@@ -251,15 +253,15 @@ class Quality:
     Объект, содержащий информацию о разрешении, кодировщике и типе релиза
     """
 
-    string: str | None
+    string: str = None
     "Полная информация о качестве"
-    type: str | None  # TODO: Enum!
+    type: str = None  # TODO: Enum!
     "Тип релиза"
-    resolution: str | None
+    resolution: str = None
     "Разрешение серии"
-    encoder: str | None
+    encoder: str = None
     "Название кодировщика"
-    lq_audio: bool | None
+    lq_audio: bool = None
     "Используется ли аудио дорожка с пониженным битрейтом"
 
 
@@ -269,11 +271,11 @@ class TorrentFile:
     Объект с информацией о торрент файле
     """
 
-    file: str
+    file: str = None
     "Имя файла"
-    size: int
+    size: int = None
     "Размер файла в байтах"
-    offset: int
+    offset: int = None
     "Смещение в байтах относительно предыдущего файла"
 
 
@@ -283,15 +285,15 @@ class TorrentMetaData:
     Объект с метадатой о торренте
     """
 
-    hash: str | None
+    hash: str = None
     "Хеш торрент файла"
-    name: str | None
+    name: str = None
     "Имя тайтла в торрент файле"
-    announce: list[str] | None
+    announce: List[str] = None
     "Список трекеров"
-    created_timestamp: int | None
+    created_timestamp: int = None
     "Время создания торрента в UNIX timestamp"
-    files_list: list[TorrentFile] | None
+    files_list: List[TorrentFile] = None
     "Список файлов в торренте"
 
 
@@ -301,29 +303,29 @@ class Torrent:
     Объект с информацией о торренте
     """
 
-    torrent_id: int
+    torrent_id: int = None
     "ID торрент файла"
-    series: Series
+    episodes: Episodes = None
     "Серии, содержащиеся в файле"
-    quality: Quality
+    quality: Quality = None
     "Информация о разрешении, кодировщике и типе релиза"
-    leechers: int
+    leechers: int = None
     "Количество личей"
-    seeders: int
+    seeders: int = None
     "Количество сидов"
-    downloads: int
+    downloads: int = None
     "Количество загрузок"
-    total_size: int
+    total_size: int = None
     "Размер файлов в торренте в байтах"
-    url: str
+    url: str = None
     "Ссылка на торрент без домена"
-    uploaded_timestamp: int
+    uploaded_timestamp: int = None
     "Время загрузки домена в формате UNIX timestamp"
-    metadata: TorrentMetaData | None
+    metadata: TorrentMetaData | None = None
     "Метаданные торрент файла"
-    raw_base64_file: str | None
+    raw_base64_file: str = None
     "Торрент файл в формате base64"
-    hash: str
+    hash: str = None
     "Хэш торрент файла"
 
 
@@ -333,9 +335,9 @@ class Torrents:
     Модель со списком торрентов и информации о сериях.
     """
 
-    series: Series
+    episodes: Episodes = None
     "Серии, содержащиеся в файле"
-    list: list[Torrent]
+    list: List[Torrent] = None
     "Список с информацией о торрент файлах"
 
 
@@ -344,11 +346,11 @@ class TitleDescription:
     """
     Объект с описанием тайтла
     """
-    html: str | None
+    html: str = None
     "Описание тайтла в виде html"
-    no_view_order: str | None
+    no_view_order: str = None
     "Описание тайтла в виде текста без дополнительного форматирования и порядка просмотра"
-    plain: str | None
+    plain: str = None
     "Описание тайтла без дополнительного форматирования"
 
 
@@ -358,39 +360,39 @@ class Title:
     Объект тайтла
     """
 
-    id: int
+    id: int = None
     "ID тайтла"
-    code: str
+    code: str = None
     "Код тайтла"
-    names: TitleNames
+    names: TitleNames = None
     "Названия тайтла"
-    announce: str
+    announce: str = None
     "Объявление для тайтла"
-    status: TitleStatus
+    status: TitleStatus = None
     "Статус тайтла"
-    posters: Posters
+    posters: Posters = None
     "Информация о постерах"
-    updated: int
+    updated: int = None
     "Время последнего обновления тайтла в формате UNIX timestamp"
-    last_change: int
+    last_change: int = None
     "Время последнего изменения тайтла в формате UNIX timestamp"
-    type: TitleType
+    type: TitleType = None
     "Информация о типе тайтла"
-    genres: list[str]
+    genres: List[str] = None
     "Список жанров тайтла"
-    team: TitleTeam
+    team: TitleTeam = None
     "Члены команды, работавшие над тайтлом"
-    season: Season
+    season: Season = None
     "Информация о сезоне"
-    description: str
+    description: str = None
     "Описание тайтла"
-    in_favorites: int
+    in_favorites: int = None
     "Сколько раз тайтл добавили в избранное"
-    blocked: Blocked
+    blocked: Blocked = None
     "Информация о блокировке тайтла"
-    player: Player
+    player: Player = None
     "Информация о плеере"
-    torrents: Torrents
+    torrents: Torrents = None
     "Информация о торрентах"
 
     @property

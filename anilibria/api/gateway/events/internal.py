@@ -1,4 +1,4 @@
-from ...models import Title, Serie
+from ...models import Title, Episode
 from ...models.attrs_utils import define
 
 __all__ = ("TitleSerie", )
@@ -17,4 +17,4 @@ class TitleSerie:
     """
 
     title: Title
-    episode: Serie
+    episode: Episode

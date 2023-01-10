@@ -5,7 +5,7 @@ from logging import getLogger
 from trio import open_nursery, Nursery
 from trio_websocket import open_websocket_url, WebSocketConnection
 
-from . import events
+from .events import EventType
 from ..http import HTTPClient
 from ..dispatch import Dispatch
 from ...const import __api_url__
@@ -76,31 +76,24 @@ class GatewayClient:
         return loads(response)
 
     async def _track_data(self, data: dict):
+        type: str
         if not (type := data.get("type")):
             return await self._track_unknown_event(data)
 
-        event_model = self._lookup_event(type)
+        event_model = EventType.__dict__.get(type.upper())
 
         if event_model is None:
-            log.warning(f"Received an not excepted event `{type}`!")
+            return log.warning(f"Received a not excepted event `{type}`!")
 
-        obj = converter.structure(data, event_model)
+        log.debug(f"Received {type} event {data}")
+
+        obj = converter.structure(data["data"], event_model)
         self.dispatch.call(f"on_{type}", obj)
 
         # TODO: Implement title_serie event
 
-    @staticmethod
-    def _lookup_event(type: str) -> type:
-        return {
-            "encode_start": events.EncodeStart,
-            "encode_progress": events.EncodeProgress,
-            "encode_end": events.EncodeEnd,
-            "encode_finish": events.EncodeFinish,
-            "title_update": events.TitleUpdate,
-            "playlist_update": events.PlayListUpdate,
-            "torrent_update": events.TorrentUpdate,
-        }.get(type)
-
+        # {'host': 'cache.libria.fun',
+        # 'playlist': {'10': {'created_timestamp': 1672061904, 'hls': {'hd': None}}}}
 
     async def _track_unknown_event(self, data: dict):
         ...

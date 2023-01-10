@@ -3,7 +3,7 @@ from ...const import __api_url__
 __all__ = ("Route", )
 
 V1_URL = "https://www.anilibria.tv/public"
-V2_URL = f"https://{__api_url__}"
+V3_URL = f"https://{__api_url__}"
 
 
 class Route:
@@ -14,5 +14,5 @@ class Route:
 
     @property
     def url(self) -> str:
-        url = V1_URL if self._is_v1 else V2_URL
+        url = V1_URL if self._is_v1 else V3_URL
         return f"{url}{self.endpoint}"
