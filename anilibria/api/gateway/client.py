@@ -20,8 +20,8 @@ __all__ = ("GatewayClient", )
 class GatewayClient:
     def __init__(self, http: HTTPClient):
         self._connection: WebSocketConnection | None = None
-        self._closed: bool = None  # noqa
-        self._stopped: bool = None  # noqa
+        self._closed: bool = False
+        self._stopped: bool = False
         self.nursery: Nursery = None  # noqa
 
         self._http: HTTPClient = http
