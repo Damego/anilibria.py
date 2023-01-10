@@ -17,7 +17,7 @@ __all__ = (
     "HLS",
     "SerieSkips",
     "Episode",
-    "RutubeSerie",
+    "RutubeEpisode",
     "Player",
     "Quality",
     "TorrentFile",
@@ -216,7 +216,7 @@ class Episode:
 
 
 @define()
-class RutubeSerie:
+class RutubeEpisode:
     """
     Объект с информацией о серии в rutube
     """
@@ -243,7 +243,7 @@ class Player:
     "Количество вышедших серий"
     list: dict[str, Episode] | List[Episode] = None
     "Список релизов"
-    rutube_playlist: dict[str, RutubeSerie] | List[RutubeSerie] = None
+    rutube: dict[str, RutubeEpisode] | List[RutubeEpisode] = None
     "Список релизов на rutube"
 
 
@@ -327,6 +327,8 @@ class Torrent:
     "Торрент файл в формате base64"
     hash: str = None
     "Хэш торрент файла"
+    magnet: str = None
+    "Магнитная ссылка для скачивания торрента"
 
 
 @define()
