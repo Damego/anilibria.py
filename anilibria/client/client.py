@@ -222,7 +222,7 @@ class AniLibriaClient:
             items_per_page=items_per_page
         )
         data = await self._http.get_updates(**payload)
-        return converter.structure(data, ListPagination[Title])
+        return converter.structure(data, ListPagination(**data))
 
     async def get_changes(
         self,
@@ -261,7 +261,7 @@ class AniLibriaClient:
             items_per_page=items_per_page
         )
         data = await self._http.get_changes(**payload)
-        return converter.structure(data, list[Title])
+        return converter.structure(data, ListPagination(**data))
 
     async def get_schedule(
         self,
@@ -354,7 +354,7 @@ class AniLibriaClient:
             items_per_page=items_per_page
         )
         data = await self._http.get_youtube(**payload)
-        return converter.structure(data, ListPagination[Title])
+        return converter.structure(data, ListPagination(**data))
 
     async def get_feed(
         self,
@@ -396,10 +396,17 @@ class AniLibriaClient:
             items_per_page=items_per_page
         )
         data = await self._http.get_feed(**payload)
-        return [
-            converter.structure(video.get("title") or video.get("youtube"), Title)
-            for video in data
-        ]
+
+        data["list"]: list
+        video: dict
+
+        for index, video in enumerate(data["list"]):
+            if title := video.get("title"):
+                data["list"][index] = converter.structure(title, Title)
+            else:
+                data["list"][index] = converter.structure(data["youtube"], YouTubeVideo)
+
+        return ListPagination(**data)
 
     async def get_years(self) -> list[int]:
         """
@@ -435,7 +442,7 @@ class AniLibriaClient:
         limit: Absent[int] = MISSING,
         page: Absent[int] = MISSING,
         items_per_page: Absent[int] = MISSING,
-    ) -> list[SeedStats]:
+    ) -> ListPagination[SeedStats]:
         """
         Возвращает топ пользователей по количеству загруженного и скачанно через торрент трекер anilibria.
 
@@ -465,8 +472,7 @@ class AniLibriaClient:
             items_per_page=items_per_page,
         )
         data = await self._http.get_seed_stats(**payload)
-        print(data)
-        return converter.structure(data, list[SeedStats])
+        return converter.structure(data, ListPagination(**data))
 
     async def get_rss(
         self,
@@ -518,6 +524,8 @@ class AniLibriaClient:
         :param Absent[list[str]] search: Поиск по именам и описанию.
         :param Absent[list[str | int]] year: Список годов выхода.
         :param Absent[list[str]] season_code: Список сезонов.
+        :param Absent[list[str]] genres: Список жанров.
+        :param Absent[list[str]] team: Ники участников, работавшие над тайтлом.
         :param Absent[list[str]] filter: Список значений, которые будут в ответе.
         :param Absent[list[str]] remove: Список значений, которые будут удалены из ответа.
         :param Absent[list[Include]] include: Список типов файлов, которые будут возвращены в виде base64 строки
@@ -575,6 +583,8 @@ class AniLibriaClient:
         :param Absent[str] order_by: Ключ по которому будет происходить сортировка результатов
         :param Absent[int] limit: Количество объектов в ответе.
         :param sort_direction: Направление сортировки. 0 - По возрастанию, 1 - По убыванию
+        :param Absent[int] page: Номер страницы. По умолчанию 1
+        :param Absent[int] items_per_page: Количество элементов на одной странице.
         """
         payload = dict_filter_missing(
             query=query,
@@ -591,7 +601,7 @@ class AniLibriaClient:
             items_per_page=items_per_page
         )
         data = await self._http.advanced_search(**payload)
-        return converter.structure(data, list[Title])
+        return converter.structure(data, ListPagination(**data))
 
     async def get_user(
         self,
@@ -641,7 +651,7 @@ class AniLibriaClient:
             items_per_page=items_per_page
         )
         data = await self._http.get_user_favorites(**payload)
-        return converter.structure(data, list[Title])
+        return converter.structure(data, ListPagination(**data))
 
     async def add_user_favorite_title(self, session_id: str, title_id: int):
         """
