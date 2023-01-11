@@ -60,7 +60,7 @@ class PublicRequest(Request):
         playlist_type: str | None = None,
         page: int | None = None,
         items_per_page: int | None = None,
-    ) -> list[dict]:
+    ) -> dict:
         payload: dict = dict_filter_none(
             id_list=id_list,
             code_list=code_list,
@@ -86,7 +86,7 @@ class PublicRequest(Request):
         limit: int | None = None,
         page: int | None = None,
         items_per_page: int | None = None,
-    ) -> list[dict]:
+    ) -> dict:
         payload: dict = dict_filter_none(
             filter=filter,
             remove=remove,
@@ -112,7 +112,7 @@ class PublicRequest(Request):
         limit: int | None = None,
         page: int | None = None,
         items_per_page: int | None = None,
-    ) -> list[dict]:
+    ) -> dict:
         payload: dict = dict_filter_none(
             filter=filter,
             remove=remove,
@@ -172,7 +172,7 @@ class PublicRequest(Request):
         limit: int | None = None,
         page: int | None = None,
         items_per_page: int | None = None,
-    ) -> list[dict]:
+    ) -> dict:
         payload: dict = dict_filter_none(
             filter=filter,
             remove=remove,
@@ -197,7 +197,7 @@ class PublicRequest(Request):
         limit: int | None = None,
         page: int | None = None,
         items_per_page: int | None = None,
-    ) -> list[dict]:
+    ) -> dict:
         payload: dict = dict_filter_none(
             filter=filter,
             remove=remove,
@@ -237,7 +237,7 @@ class PublicRequest(Request):
         limit: int | None = None,
         page: int | None = None,
         items_per_page: int | None = None,
-    ) -> list[dict]:
+    ) -> dict:
         payload: dict = dict_filter_none(
             users=users,
             remove=remove,
@@ -282,7 +282,7 @@ class PublicRequest(Request):
         limit: int | None = None,
         page: int | None = None,
         items_per_page: int | None = None,
-    ) -> dict[str, list | dict]:
+    ) -> dict:
         payload: dict = dict_filter_none(
             search=search,
             year=year,
@@ -315,7 +315,7 @@ class PublicRequest(Request):
         sort_direction: int | None = None,
         page: int | None = None,
         items_per_page: int | None = None,
-    ) -> list[dict]:
+    ) -> dict:
         payload: dict = dict_filter_none(
             query=query,
             filter=filter,
