@@ -78,7 +78,7 @@ class GatewayClient:
     def _track_data(self, data: dict):
         type: str
         if not (type := data.get("type")):
-            return await self._track_unknown_event(data)
+            return self._track_unknown_event(data)
 
         event_model = EventType.__dict__.get(type.upper())
 
@@ -90,14 +90,9 @@ class GatewayClient:
         obj = converter.structure(data["data"], event_model)
         self.dispatch.call(f"on_{type}", obj)
 
-        # TODO: Implement title_serie event
-
-        # {'host': 'cache.libria.fun',
-        # 'playlist': {'10': {'created_timestamp': 1672061904, 'hls': {'hd': None}}}}
-
-    async def _track_unknown_event(self, data: dict):
-        ...
-        # TODO: Subscription event
+    def _track_unknown_event(self, data: dict):
+        if "subscribe" in data:
+            self.dispatch.call("on_subscription", data)
 
     async def _match_error(self):
         code: int = self._connection.closed.code
