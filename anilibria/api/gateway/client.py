@@ -69,13 +69,13 @@ class GatewayClient:
             while not self._closed:
                 data = await self._receive_data()
 
-                await self._track_data(data)
+                self._track_data(data)
 
     async def _receive_data(self) -> dict:
         response = await self._connection.get_message()
         return loads(response)
 
-    async def _track_data(self, data: dict):
+    def _track_data(self, data: dict):
         type: str
         if not (type := data.get("type")):
             return await self._track_unknown_event(data)
