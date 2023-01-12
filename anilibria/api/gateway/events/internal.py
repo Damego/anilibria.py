@@ -1,18 +1,18 @@
 from ...models import Title, Episode
 from ...models.attrs_utils import define
 
-__all__ = ("TitleSerie", )
+__all__ = ("TitleEpisode", )
 
 
 @define()
-class TitleSerie:
+class TitleEpisode:
     """
-    Модель для ивента `on_title_serie`.
+    Модель для ивента `on_title_episode`.
 
     .. code-block:: python
 
       @client.event
-      async def on_title_serie(event: TitleSerie):
+      async def on_title_episode(event: TitleEpisode):
           ...
     """
 
