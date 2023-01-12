@@ -22,6 +22,7 @@ from ..api.error import NoArgumentsError
 from ..utils.typings import MISSING, Absent
 from ..utils.serializer import dict_filter_missing
 from ..api.models.cattrs_utils import converter
+from ..api.gateway.events import PlaylistUpdate, TitleEpisode
 
 log = getLogger("anilibria.client")
 __all__ = ("AniLibriaClient", )
@@ -35,6 +36,32 @@ class AniLibriaClient:
     def __init__(self, *, proxy: str = None) -> None:
         self._http: HTTPClient = HTTPClient(proxy=proxy)
         self._websocket: GatewayClient = GatewayClient(http=self._http)
+
+        self._websocket.dispatch.register("on_playlist_update", )
+
+    def _on_playlist_update(self, event: PlaylistUpdate):
+        # These checks came from version 0.3.3
+        
+        if not event.updated_episode or not event.updated_episode.hls:
+            return
+        if (playlist := event.diff.get("playlist")) is None:
+            return
+        if (episode := playlist.get(str(event.updated_episode.episode))) is None:
+            return
+        if not episode or (previous_hls := episode.get("hls")) is None:
+            return
+        if all(v is not None for v in previous_hls.values()):
+            return
+
+        title = await self.get_title(id=event.id)
+
+        self._websocket.dispatch.call(
+            "on_title_episode",
+            TitleEpisode(
+                title=title,
+                episode=event.updated_episode
+            )
+        )
 
     def event(self, coro: Callable[..., Coroutine] = MISSING, *, name: str = MISSING):
         """
