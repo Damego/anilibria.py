@@ -4,7 +4,6 @@ from cattrs.gen import make_dict_structure_fn, make_dict_unstructure_fn, overrid
 
 from ...models import Player, Episode, Title, Torrents
 from ...models.attrs_utils import define
-from ...models.enums import StrEnum
 from ...models.cattrs_utils import converter
 
 
@@ -64,7 +63,7 @@ class PlaylistUpdate:
     .. code-block:: python
 
       @client.event
-      async def on_playlist_update(event: PlayListUpdate):
+      async def on_playlist_update(event: PlaylistUpdate):
           ...
     """
 
