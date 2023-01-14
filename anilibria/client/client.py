@@ -37,11 +37,11 @@ class AniLibriaClient:
         self._http: HTTPClient = HTTPClient(proxy=proxy)
         self._websocket: GatewayClient = GatewayClient(http=self._http)
 
-        self._websocket.dispatch.register("on_playlist_update", )
+        self.event(self._on_playlist_update, name="on_playlist_update")
 
-    def _on_playlist_update(self, event: PlaylistUpdate):
+    async def _on_playlist_update(self, event: PlaylistUpdate):
         # These checks came from version 0.3.3
-        
+
         if not event.updated_episode or not event.updated_episode.hls:
             return
         if (playlist := event.diff.get("playlist")) is None:
