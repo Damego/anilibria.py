@@ -40,16 +40,24 @@ class AniLibriaClient:
         self.event(self._on_playlist_update, name="on_playlist_update")
 
     async def _on_playlist_update(self, event: PlaylistUpdate):
-        # These checks came from version 0.3.3
-
+        # Убеждаемся, что ивент затрагивает обновление эпизода, а не другие данные
         if not event.updated_episode or not event.updated_episode.hls:
             return
-        if (playlist := event.diff.get("playlist")) is None:
+        # Проверяем, что все три качества видео присутствуют
+        hls = event.updated_episode.hls
+        if not hls.sd or not hls.hd or not hls.fhd:
             return
+        # Смотрим предыдущие значения:
+        # - списка эпизодов
+        if (playlist := event.diff.get("list")) is None:
+            return
+        # - Конкретный эпизод
         if (episode := playlist.get(str(event.updated_episode.episode))) is None:
             return
-        if not episode or (previous_hls := episode.get("hls")) is None:
+        # - значения hls эпизода
+        if (previous_hls := episode.get("hls")) is None:
             return
+        # Проверяем, не перезалив ли это
         if all(v is not None for v in previous_hls.values()):
             return
 
