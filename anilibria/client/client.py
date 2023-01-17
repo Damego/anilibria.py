@@ -1,26 +1,31 @@
-from asyncio import get_event_loop, gather, AbstractEventLoop
-from typing import Coroutine, Union, Optional, List
+from typing import Coroutine, Callable
 from logging import getLogger
 
-from aiohttp.client_exceptions import WSServerHandshakeError
+from trio import run
+from trio_websocket import ConnectionClosed
 
-from ..api import WebSocketClient, HTTPClient
-from ..api.models.v2 import (
+from ..api import HTTPClient, GatewayClient
+from ..api.models import (
     Title,
     Schedule,
-    YouTubeData,
-    Team,
+    YouTubeVideo,
+    TitleTeam,
     SeedStats,
     Include,
     DescriptionType,
-    PlayListType,
+    PlaylistType,
     RSSType,
+    ListPagination,
+    User
 )
-from ..api.dispatch import Event
 from ..api.error import NoArgumentsError
+from ..utils.typings import MISSING, Absent
+from ..utils.serializer import dict_filter_missing
+from ..api.models.cattrs_utils import converter
+from ..api.gateway.events import PlaylistUpdate, TitleEpisode
 
 log = getLogger("anilibria.client")
-__all__ = ["AniLibriaClient"]
+__all__ = ("AniLibriaClient", )
 
 
 class AniLibriaClient:
@@ -29,50 +34,61 @@ class AniLibriaClient:
     """
 
     def __init__(self, *, proxy: str = None) -> None:
-        self.proxy: str = proxy
-        self._loop: AbstractEventLoop = get_event_loop()
-        self._websocket: WebSocketClient = WebSocketClient(proxy=self.proxy)
-        self._http: HTTPClient = self._websocket._http
+        self._http: HTTPClient = HTTPClient(proxy=proxy)
+        self._websocket: GatewayClient = GatewayClient(http=self._http)
 
-    async def _start(self):
-        """
-        Запускает websocket.
-        """
-        try:
-            while not self._websocket._closed:
-                await self._websocket.run()
-        except WSServerHandshakeError as exc:
-            if (
-                exc.status == 500 and exc.message == "Invalid response status"
-            ):  # Появляется в рандомное время
-                log.debug(
-                    f"Websocket lost connection. Code: {exc.status} message: {exc.message}. Reconnecting..."
-                )
-                await self._start()
-            else:
-                raise exc from exc
-        except KeyboardInterrupt:
-            pass
+        self.event(self._on_playlist_update, name="on_playlist_update")
 
-    def event(self, coro: Coroutine = None, *, name: str = None, data: dict = None):
+    async def _on_playlist_update(self, event: PlaylistUpdate):
+        # Убеждаемся, что ивент затрагивает обновление эпизода, а не другие данные
+        if not event.updated_episode or not event.updated_episode.hls:
+            return
+        # Проверяем, что все три качества видео присутствуют
+        hls = event.updated_episode.hls
+        if not hls.sd or not hls.hd or not hls.fhd:
+            return
+        # Смотрим предыдущие значения:
+        # - списка эпизодов
+        if (playlist := event.diff.get("list")) is None:
+            return
+        # - Конкретный эпизод
+        if (episode := playlist.get(str(event.updated_episode.episode))) is None:
+            return
+        # - значения hls эпизода
+        if (previous_hls := episode.get("hls")) is None:
+            return
+        # Проверяем, не перезалив ли это
+        if all(v is not None for v in previous_hls.values()):
+            return
+
+        title = await self.get_title(id=event.id)
+
+        self._websocket.dispatch.call(
+            "on_title_episode",
+            TitleEpisode(
+                title=title,
+                episode=event.updated_episode
+            )
+        )
+
+    def event(self, coro: Callable[..., Coroutine] = MISSING, *, name: str = MISSING):
         """
         Делает из функции ивент, который будет вызываться из вебсокета.
 
-        :param coro: Функция, которая будет вызываться.
-        :param name: Название ивента. Например: on_title_update.
-        :param data: Дополнительные данные.
+        :param Callable[..., Coroutine] coro: Функция, которая будет вызываться.
+        :param str name: Название ивента. Например: on_title_update.
         """
-        if coro is not None:
-            self._websocket.dispatcher.add_event(name or coro.__name__, Event(coro=coro, data=data))
+
+        def decorator(coro: Callable[..., Coroutine]):
+            self._websocket.dispatch.register(name or coro.__name__, coro)
             return coro
 
-        def decorator(coro: Coroutine):
-            self._websocket.dispatcher.add_event(name or coro.__name__, Event(coro=coro, data=data))
-            return coro
+        if coro is not MISSING:
+            return decorator(coro)
 
         return decorator
 
-    async def subscribe(self, subscribe: dict, filter: str = None, remove: str = None):
+    async def subscribe(self, subscribe: dict, filter: str = MISSING, remove: str = MISSING):
         """
         По умолчанию клиент получает все возможные уведомления от API.
         Но можно подписаться на определённые ивенты, или ивенты с каким-то фильтром
@@ -91,62 +107,59 @@ class AniLibriaClient:
                }
            )
 
-        :param subscribe: Данные о подписке. Здесь может быть всё то, что принимает веб сокет.
-        :param filter: То, что должно быть включено в подписку.
-        :param remove: То, что нужно удалить из подписки.
+        :param dict subscribe: Данные о подписке. Здесь может быть всё то, что принимает веб сокет.
+        :param str filter: То, что должно быть включено в подписку.
+        :param str remove: То, что нужно удалить из подписки.
         """
         data = {"subscribe": subscribe}
-        if filter is not None:
+        if filter is not MISSING:
             data["filter"] = filter
-        if remove is not None:
+        if remove is not MISSING:
             data["remove"] = remove
 
         await self._websocket.subscribe(data)
 
     async def login(self, mail: str, password: str) -> str:
         """
-        Входит в аккаунт и возвращает айди сессии.
+        Входит в аккаунт.
 
         .. warning::
            Если запрос идёт из РФ, то для использования необходим VPN или proxy!
 
-        :param mail: Логин или эл.почта
-        :param password: Пароль
+        :param str mail: Логин или эл.почта
+        :param str password: Пароль
         :return: ID сессии
-        :rtype: str
         """
-        data = await self._http.public.login(mail, password)
+        data = await self._http.login(mail, password)
         return data.get("sessionId")
 
     async def get_title(
         self,
-        id: Optional[int] = None,
-        code: Optional[str] = None,
-        torrent_id: Optional[int] = None,
-        filter: Optional[List[str]] = None,
-        remove: Optional[List[str]] = None,
-        include: Optional[List[Include]] = None,
-        description_type: Optional[DescriptionType] = None,
-        playlist_type: Optional[PlayListType] = None,
+        id: Absent[int] = MISSING,
+        code: Absent[str] = MISSING,
+        torrent_id: Absent[int] = MISSING,
+        filter: Absent[list[str]] = MISSING,
+        remove: Absent[list[str]] = MISSING,
+        include: Absent[list[Include]] = MISSING,
+        description_type: Absent[DescriptionType] = MISSING,
+        playlist_type: Absent[PlaylistType] = MISSING,
     ) -> Title:
         """
-        Возвращает объект тайтла с заданными параметрами.
+        Возвращает тайтл с заданными параметрами.
 
-        :param id: Уникальный ID тайтла.
-        :param code: Унильный код тайтла.
-        :param torrent_id: ID торрента
-        :param filter: То, что должно быть в ответе.
-        :param remove: То, чего не должно быть в ответе.
-        :param include: Список типов файлов которые будут возвращены в виде base64 строки
-        :param description_type: Тип получаемого описания.
-        :param playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
-        :return: Объект тайтла
-        :rtype: Title
+        :param Absent[int] id: ID тайтла.
+        :param Absent[str] code: Код тайтла.
+        :param Absent[int] torrent_id: ID торрента
+        :param Absent[list[str]] filter: То, что должно быть в ответе.
+        :param Absent[list[str]] remove: То, чего не должно быть в ответе.
+        :param Absent[list[Include]] include: Список типов файлов которые будут возвращены в виде base64 строки
+        :param Absent[DescriptionType] description_type: Тип получаемого описания.
+        :param Absent[PlaylistType] playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
         """
-        if id is None and code is None:
+        if id is MISSING and code is MISSING:
             raise NoArgumentsError("id", "code")
 
-        data = await self._http.v2.get_title(
+        payload: dict = dict_filter_missing(
             id=id,
             code=code,
             torrent_id=torrent_id,
@@ -156,35 +169,39 @@ class AniLibriaClient:
             description_type=description_type,
             playlist_type=playlist_type,
         )
-        return Title(**data)
+
+        data = await self._http.get_title(**payload)
+        return converter.structure(data, Title)
 
     async def get_titles(
         self,
-        id_list: Optional[List[int]] = None,
-        code_list: Optional[List[str]] = None,
-        filter: Optional[List[str]] = None,
-        remove: Optional[List[str]] = None,
-        include: Optional[List[Include]] = None,
-        description_type: Optional[DescriptionType] = None,
-        playlist_type: Optional[PlayListType] = None,
-    ) -> List[Title]:
+        id_list: Absent[list[int]] = MISSING,
+        code_list: Absent[list[str]] = MISSING,
+        filter: Absent[list[str]] = MISSING,
+        remove: Absent[list[str]] = MISSING,
+        include: Absent[list[Include]] = MISSING,
+        description_type: Absent[DescriptionType] = MISSING,
+        playlist_type: Absent[PlaylistType] = MISSING,
+        page: Absent[int] = MISSING,
+        items_per_page: Absent[int] = MISSING,
+    ) -> ListPagination[Title]:
         """
         Возвращает список тайтлов с заданными параметрами.
 
-        :param id_list: Список с айди тайтлами
-        :param code_list: Список с кодами тайтлов.
-        :param filter: То, что должно быть в ответе.
-        :param remove: То, чего не должно быть в ответе.
-        :param include: Список типов файлов которые будут возвращены в виде base64 строки
-        :param description_type: Тип получаемого описания.
-        :param playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
-        :return: Список тайтлов
-        :rtype: List[Title]
+        :param Absent[list[int]] id_list: Список с ID тайтлами
+        :param Absent[list[str]] code_list: Список с кодами тайтлов.
+        :param Absent[list[str]] filter: То, что должно быть в ответе.
+        :param Absent[list[str]] remove: То, чего не должно быть в ответе.
+        :param Absent[list[Include]] include: Список типов файлов которые будут возвращены в виде base64 строки
+        :param Absent[DescriptionType] description_type: Тип получаемого описания.
+        :param Absent[PlaylistType] playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
+        :param Absent[int] page: Номер страницы. По умолчанию 1
+        :param Absent[int] items_per_page: Количество элементов на одной странице.
         """
-        if id_list is None and code_list is None:
+        if id_list is MISSING and code_list is MISSING:
             raise NoArgumentsError("id_list", "code_list")
 
-        data = await self._http.v2.get_titles(
+        payload: dict = dict_filter_missing(
             id_list=id_list,
             code_list=code_list,
             filter=filter,
@@ -192,35 +209,42 @@ class AniLibriaClient:
             include=include,
             description_type=description_type,
             playlist_type=playlist_type,
+            page=page,
+            items_per_page=items_per_page,
         )
-        return [Title(**_) for _ in data]
+
+        data = await self._http.get_titles(**payload)
+
+        return converter.structure(data, ListPagination(**data))
 
     async def get_updates(
         self,
-        filter: Optional[List[str]] = None,
-        remove: Optional[List[str]] = None,
-        include: Optional[List[Include]] = None,
-        since: Optional[int] = None,
-        description_type: Optional[DescriptionType] = None,
-        playlist_type: Optional[PlayListType] = None,
-        after: Optional[int] = None,
-        limit: Optional[int] = None,
-    ) -> List[Title]:
+        filter: Absent[list[str]] = MISSING,
+        remove: Absent[list[str]] = MISSING,
+        include: Absent[list[Include]] = MISSING,
+        since: Absent[int] = MISSING,
+        description_type: Absent[DescriptionType] = MISSING,
+        playlist_type: Absent[PlaylistType] = MISSING,
+        after: Absent[int] = MISSING,
+        limit: Absent[int] = MISSING,
+        page: Absent[int] = MISSING,
+        items_per_page: Absent[int] = MISSING,
+    ) -> ListPagination[Title]:
         """
         Возвращает список последних обновлений тайтлов с заданными параметрами.
 
-        :param filter: То, что должно быть в ответе.
-        :param remove: То, чего не должно быть в ответе.
-        :param include: Список типов файлов которые будут возвращены в виде base64 строки
-        :param since: Список тайтлов, у которых время обновления больше указанного timestamp
-        :param description_type: Тип получаемого описания.
-        :param playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
-        :param after: Удаляет первые n записей из выдачи
-        :param limit: Количество объектов в ответе. По умолчанию 5
-        :return: Список тайтлов
-        :rtype: List[Title]
+        :param Absent[list[str]] filter: То, что должно быть в ответе.
+        :param Absent[list[str]] remove: То, чего не должно быть в ответе.
+        :param Absent[list[Include]] include: Список типов файлов которые будут возвращены в виде base64 строки
+        :param Absent[int] since: Список тайтлов, у которых время обновления больше указанного timestamp
+        :param Absent[DescriptionType] description_type: Тип получаемого описания.
+        :param Absent[PlaylistType] playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
+        :param Absent[int] after: Удаляет первые n записей из выдачи
+        :param Absent[int] limit: Количество объектов в ответе. По умолчанию 5
+        :param Absent[int] page: Номер страницы. По умолчанию 1
+        :param Absent[int] items_per_page: Количество элементов на одной странице.
         """
-        data = await self._http.v2.get_updates(
+        payload = dict_filter_missing(
             filter=filter,
             remove=remove,
             include=include,
@@ -229,33 +253,38 @@ class AniLibriaClient:
             playlist_type=playlist_type,
             after=after,
             limit=limit,
+            page=page,
+            items_per_page=items_per_page
         )
-        return [Title(**_) for _ in data]
+        data = await self._http.get_updates(**payload)
+        return converter.structure(data, ListPagination(**data))
 
     async def get_changes(
         self,
-        filter: Optional[List[str]] = None,
-        remove: Optional[List[str]] = None,
-        include: Optional[List[Include]] = None,
-        since: Optional[int] = None,
-        description_type: Optional[DescriptionType] = None,
-        after: Optional[int] = None,
-        limit: Optional[int] = None,
-    ) -> List[Title]:
+        filter: Absent[list[str]] = MISSING,
+        remove: Absent[list[str]] = MISSING,
+        include: Absent[list[Include]] = MISSING,
+        since: Absent[int] = MISSING,
+        description_type: Absent[DescriptionType] = MISSING,
+        after: Absent[int] = MISSING,
+        limit: Absent[int] = MISSING,
+        page: Absent[int] = MISSING,
+        items_per_page: Absent[int] = MISSING,
+    ) -> ListPagination[Title]:
         """
         Возвращает список последних обновлений тайтлов с заданными параметрами.
 
-        :param filter: То, что должно быть в ответе.
-        :param remove: То, чего не должно быть в ответе.
-        :param include: Список типов файлов которые будут возвращены в виде base64 строки
-        :param since: Список тайтлов, у которых время обновления больше указанного timestamp
-        :param description_type: Тип получаемого описания.
-        :param after: Удаляет первые n записей из выдачи
-        :param limit: Количество объектов в ответе. По умолчанию 5
-        :return: Список тайтлов
-        :rtype: List[Title]
+        :param Absent[list[str]] filter: То, что должно быть в ответе.
+        :param Absent[list[str]] remove: То, чего не должно быть в ответе.
+        :param Absent[list[Include]] include: Список типов файлов которые будут возвращены в виде base64 строки
+        :param Absent[int] since: Список тайтлов, у которых время обновления больше указанного timestamp
+        :param Absent[DescriptionType] description_type: Тип получаемого описания.
+        :param Absent[int] after: Удаляет первые n записей из выдачи
+        :param Absent[int] limit: Количество объектов в ответе. По умолчанию 5
+        :param Absent[int] page: Номер страницы. По умолчанию 1
+        :param Absent[int] items_per_page: Количество элементов на одной странице.
         """
-        data = await self._http.v2.get_changes(
+        payload = dict_filter_missing(
             filter=filter,
             remove=remove,
             include=include,
@@ -263,31 +292,32 @@ class AniLibriaClient:
             description_type=description_type,
             after=after,
             limit=limit,
+            page=page,
+            items_per_page=items_per_page
         )
-        return [Title(**_) for _ in data]
+        data = await self._http.get_changes(**payload)
+        return converter.structure(data, ListPagination(**data))
 
     async def get_schedule(
         self,
-        filter: Optional[List[str]] = None,
-        remove: Optional[List[str]] = None,
-        include: Optional[List[Include]] = None,
-        days: List[int] = None,
-        description_type: Optional[DescriptionType] = None,
-        playlist_type: Optional[PlayListType] = None,
-    ) -> List[Schedule]:
+        filter: Absent[list[str]] = MISSING,
+        remove: Absent[list[str]] = MISSING,
+        include: Absent[list[Include]] = MISSING,
+        days: Absent[list[int]] = MISSING,
+        description_type: Absent[DescriptionType] = MISSING,
+        playlist_type: Absent[PlaylistType] = MISSING,
+    ) -> list[Schedule]:
         """
         Возвращает список последних обновлений тайтлов с заданными параметрами по дням.
 
-        :param filter: То, что должно быть в ответе.
-        :param remove: То, чего не должно быть в ответе.
-        :param include: Список типов файлов которые будут возвращены в виде base64 строки
-        :param days: Список дней недели, на которые нужно расписание
-        :param description_type: Тип получаемого описания.
-        :param playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
-        :return: Список расписаний
-        :rtype: List[Schedule]
+        :param Absent[list[str]] filter: То, что должно быть в ответе.
+        :param Absent[list[str]] remove: То, чего не должно быть в ответе.
+        :param Absent[list[Include]] include: Список типов файлов которые будут возвращены в виде base64 строки
+        :param Absent[list[int]] days: Список дней недели, на которые нужно расписание
+        :param Absent[DescriptionType] description_type: Тип получаемого описания.
+        :param Absent[PlaylistType] playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
         """
-        data = await self._http.v2.get_schedule(
+        payload = dict_filter_missing(
             filter=filter,
             remove=remove,
             include=include,
@@ -295,93 +325,100 @@ class AniLibriaClient:
             description_type=description_type,
             playlist_type=playlist_type,
         )
-        return [Schedule(**_) for _ in data]
+        data = await self._http.get_schedule(**payload)
+        return converter.structure(data, list[Schedule])
 
     async def get_random_title(
         self,
-        filter: Optional[List[str]] = None,
-        remove: Optional[List[str]] = None,
-        include: Optional[List[Include]] = None,
-        description_type: Optional[DescriptionType] = None,
-        playlist_type: Optional[PlayListType] = None,
+        filter: Absent[list[str]] = MISSING,
+        remove: Absent[list[str]] = MISSING,
+        include: Absent[list[Include]] = MISSING,
+        description_type: Absent[DescriptionType] = MISSING,
+        playlist_type: Absent[PlaylistType] = MISSING,
     ) -> Title:
         """
         Возвращает рандомный тайтл с заданными параметрами.
 
-        :param filter: То, что должно быть в ответе.
-        :param remove: То, чего не должно быть в ответе.
-        :param include: Список типов файлов которые будут возвращены в виде base64 строки
-        :param description_type: Тип получаемого описания.
-        :param playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
-        :return: Объект тайтла
-        :rtype: Title
+        :param Absent[list[str]] filter: То, что должно быть в ответе.
+        :param Absent[list[str]] remove: То, чего не должно быть в ответе.
+        :param Absent[list[Include]] include: Список типов файлов которые будут возвращены в виде base64 строки
+        :param Absent[DescriptionType] description_type: Тип получаемого описания.
+        :param Absent[PlaylistType] playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
         """
-        data = await self._http.v2.get_random_title(
+        payload = dict_filter_missing(
             filter=filter,
             remove=remove,
             include=include,
             description_type=description_type,
             playlist_type=playlist_type,
         )
-        return Title(**data)
+        data = await self._http.get_random_title(**payload)
+        return converter.structure(data, Title)
 
     async def get_youtube(
         self,
-        filter: Optional[List[str]] = None,
-        remove: Optional[List[str]] = None,
-        include: Optional[List[Include]] = None,
-        since: Optional[int] = None,
-        after: Optional[int] = None,
-        limit: Optional[int] = None,
-    ) -> List[YouTubeData]:
+        filter: Absent[list[str]] = MISSING,
+        remove: Absent[list[str]] = MISSING,
+        include: Absent[list[Include]] = MISSING,
+        since: Absent[int] = MISSING,
+        after: Absent[int] = MISSING,
+        limit: Absent[int] = MISSING,
+        page: Absent[int] = MISSING,
+        items_per_page: Absent[int] = MISSING,
+    ) -> ListPagination[YouTubeVideo]:
         """
         Возвращает список youtube видео в хронологическом порядке с заданными параметрами.
 
-        :param filter: То, что должно быть в ответе.
-        :param remove: То, чего не должно быть в ответе.
-        :param include: Список типов файлов которые будут возвращены в виде base64 строки
-        :param since: Список тайтлов, у которых время обновления больше указанного timestamp
-        :param after: Удаляет первые n записей из выдачи
-        :param limit: Количество объектов в ответе. По умолчанию 5
-        :return: Список youtube видео
-        :rtype: List[YouTubeData]
+        :param Absent[list[str]] filter: То, что должно быть в ответе.
+        :param Absent[list[str]] remove: То, чего не должно быть в ответе.
+        :param Absent[list[Include]] include: Список типов файлов которые будут возвращены в виде base64 строки
+        :param Absent[int] since: Список тайтлов, у которых время обновления больше указанного timestamp
+        :param Absent[int] after: Удаляет первые n записей из выдачи
+        :param Absent[int] limit: Количество объектов в ответе. По умолчанию 5
+        :param Absent[int] page: Номер страницы. По умолчанию 1
+        :param Absent[int] items_per_page: Количество элементов на одной странице.
         """
-        data = await self._http.v2.get_youtube(
+        payload = dict_filter_missing(
             filter=filter,
             remove=remove,
             include=include,
             since=since,
             after=after,
             limit=limit,
+            page=page,
+            items_per_page=items_per_page
         )
-        return [YouTubeData(**_) for _ in data]
+        data = await self._http.get_youtube(**payload)
+        return converter.structure(data, ListPagination(**data))
 
     async def get_feed(
         self,
-        filter: Optional[List[str]] = None,
-        remove: Optional[List[str]] = None,
-        include: Optional[List[Include]] = None,
-        since: Optional[int] = None,
-        description_type: Optional[DescriptionType] = None,
-        playlist_type: Optional[PlayListType] = None,
-        after: Optional[int] = None,
-        limit: Optional[int] = None,
-    ) -> List[Union[Title, YouTubeData]]:
+        filter: Absent[list[str]] = MISSING,
+        remove: Absent[list[str]] = MISSING,
+        include: Absent[list[Include]] = MISSING,
+        since: Absent[int] = MISSING,
+        description_type: Absent[DescriptionType] = MISSING,
+        playlist_type: Absent[PlaylistType] = MISSING,
+        after: Absent[int] = MISSING,
+        limit: Absent[int] = MISSING,
+        page: Absent[int] = MISSING,
+        items_per_page: Absent[int] = MISSING,
+    ) -> ListPagination[Title | YouTubeVideo]:
         """
         Возвращает список тайтлов и youtube видео в хронологическом порядке с заданными параметрами.
 
-        :param filter: То, что должно быть в ответе.
-        :param remove: То, чего не должно быть в ответе.
-        :param include: Список типов файлов которые будут возвращены в виде base64 строки
-        :param since: Список тайтлов, у которых время обновления больше указанного timestamp
-        :param description_type: Тип получаемого описания.
-        :param playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
-        :param after: Удаляет первые n записей из выдачи
-        :param limit: Количество объектов в ответе. По умолчанию 5
-        :return: Список тайтлов и youtube видео.
-        :rtype: List[Union[Title, YouTubeData]]
+        :param Absent[list[str]] filter: То, что должно быть в ответе.
+        :param Absent[list[str]] remove: То, чего не должно быть в ответе.
+        :param Absent[list[Include]] include: Список типов файлов которые будут возвращены в виде base64 строки
+        :param Absent[int] since: Список тайтлов, у которых время обновления больше указанного timestamp
+        :param Absent[DescriptionType] description_type: Тип получаемого описания.
+        :param Absent[PlaylistType] playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
+        :param Absent[int] after: Удаляет первые n записей из выдачи
+        :param Absent[int] limit: Количество объектов в ответе. По умолчанию 5
+        :param Absent[int] page: Номер страницы. По умолчанию 1
+        :param Absent[int] items_per_page: Количество элементов на одной странице.
         """
-        data = await self._http.v2.get_feed(
+        payload = dict_filter_missing(
             filter=filter,
             remove=remove,
             include=include,
@@ -390,75 +427,73 @@ class AniLibriaClient:
             playlist_type=playlist_type,
             after=after,
             limit=limit,
+            page=page,
+            items_per_page=items_per_page
         )
-        return [
-            Title(**_["title"]) if _.get("title") else YouTubeData(**_["youtube"]) for _ in data
-        ]
+        data = await self._http.get_feed(**payload)
 
-    async def get_years(self) -> List[int]:
+        data["list"]: list
+        video: dict
+
+        for index, video in enumerate(data["list"]):
+            if title := video.get("title"):
+                data["list"][index] = converter.structure(title, Title)
+            else:
+                data["list"][index] = converter.structure(data["youtube"], YouTubeVideo)
+
+        return ListPagination(**data)
+
+    async def get_years(self) -> list[int]:
         """
         Возвращает список годов выхода доступных тайтлов отсортированный по возрастанию.
-
-        :return: Список с годами.
         """
-        return await self._http.v2.get_years()
+        return await self._http.get_years()
 
-    async def get_genres(self, sorting_type: int = 0) -> List[str]:
+    async def get_genres(self, sorting_type: int = 0) -> list[str]:
         """
         Возвращает список жанров доступных тайтлов отсортированный по алфавиту.
 
-        :param sorting_type: Тип сортировки элементов.
-        :return: Список с жанрами.
+        :param int sorting_type: Тип сортировки элементов.
         """
-        return await self._http.v2.get_genres(sorting_type=sorting_type)
+        return await self._http.get_genres(sorting_type=sorting_type)
 
-    async def get_caching_nodes(self) -> List[str]:
+    async def get_team(self) -> TitleTeam:
         """
-        Список кеш серверов с которых можно брать данные отсортированные по нагрузке
-
-        :return: Список серверов.
-        :rtype: List[str]
+        Возвращает участников команды когда-либо существовавших на проекте.
         """
-        return await self._http.v2.get_caching_nodes()
-
-    async def get_team(self) -> Team:
-        """
-        Возвращает список участников команды когда-либо существовавших на проекте.
-
-        :return: Объект команды
-        :rtype: Team
-        """
-        data = await self._http.v2.get_team()
-        return Team(**data)
+        data = await self._http.get_team()
+        return converter.structure(data, TitleTeam)
 
     async def get_seed_stats(
         self,
-        users: Optional[List[str]] = None,
-        remove: Optional[List[str]] = None,
-        include: Optional[List[Include]] = None,
-        description_type: Optional[DescriptionType] = None,
-        playlist_type: Optional[PlayListType] = None,
-        after: Optional[int] = None,
-        sort_by: Optional[str] = None,
-        order: Optional[int] = None,
-        limit: Optional[int] = None,
-    ) -> List[SeedStats]:
+        users: Absent[list[str]] = MISSING,
+        remove: Absent[list[str]] = MISSING,
+        include: Absent[list[Include]] = MISSING,
+        description_type: Absent[DescriptionType] = MISSING,
+        playlist_type: Absent[PlaylistType] = MISSING,
+        after: Absent[int] = MISSING,
+        sort_by: Absent[str] = MISSING,
+        order: Absent[int] = MISSING,
+        limit: Absent[int] = MISSING,
+        page: Absent[int] = MISSING,
+        items_per_page: Absent[int] = MISSING,
+    ) -> ListPagination[SeedStats]:
         """
         Возвращает топ пользователей по количеству загруженного и скачанно через торрент трекер anilibria.
 
-        :param users: Статистика по имени пользователя
-        :param remove: То, чего не должно быть в ответе.
-        :param include: Список типов файлов которые будут возвращены в виде base64 строки
-        :param description_type: Тип получаемого описания.
-        :param playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
-        :param after: Удаляет первые n записей из выдачи.
-        :param sort_by: По какому полю производить сортировку, допустимые значения: downloaded, uploaded, user
-        :param order: Направление сортировки 0 - DESC, 1 - ASC.
-        :param limit: Количество объектов в ответе. По умолчанию 5
-        :return: Список с пользователями
-        :rtype: List[SeedStats]
+        :param Absent[list[str]] users: Статистика по имени пользователя
+        :param Absent[list[str]] remove: То, чего не должно быть в ответе.
+        :param Absent[list[Include]] include: Список типов файлов которые будут возвращены в виде base64 строки
+        :param Absent[DescriptionType] description_type: Тип получаемого описания.
+        :param Absent[PlaylistType] playlist_type: Формат получаемого списка серий. Словарь(object) или список(list)
+        :param Absent[int] after: Удаляет первые n записей из выдачи.
+        :param Absent[str] sort_by: По какому полю производить сортировку, допустимые значения: downloaded, uploaded, user
+        :param Absent[int] order: Направление сортировки 0 - DESC, 1 - ASC.
+        :param Absent[int] limit: Количество объектов в ответе. По умолчанию 5
+        :param Absent[int] page: Номер страницы. По умолчанию 1
+        :param Absent[int] items_per_page: Количество элементов на одной странице.
         """
-        data = await self._http.v2.get_seed_stats(
+        payload = dict_filter_missing(
             users=users,
             remove=remove,
             include=include,
@@ -468,88 +503,80 @@ class AniLibriaClient:
             sort_by=sort_by,
             order=order,
             limit=limit,
+            page=page,
+            items_per_page=items_per_page,
         )
-        return [SeedStats(**_) for _ in data]
+        data = await self._http.get_seed_stats(**payload)
+        return converter.structure(data, ListPagination(**data))
 
     async def get_rss(
         self,
-        rss_type: Optional[RSSType] = None,
-        session_id: Optional[str] = None,
-        since: Optional[int] = None,
-        after: Optional[int] = None,
-        limit: Optional[int] = None,
+        rss_type: Absent[RSSType] = MISSING,
+        session_id: Absent[str] = MISSING,
+        since: Absent[int] = MISSING,
+        after: Absent[int] = MISSING,
+        limit: Absent[int] = MISSING,
     ) -> str:
         """
         Возвращает список обновлений на сайте в одном из форматов RSS ленты.
 
-        :param rss_type: Предпочитаемый формат вывода
-        :param session_id: Уникальный идентификатор сессии пользователя
-        :param since: Список тайтлов у которых время обновления больше указанного timestamp
-        :param after: Удаляет первые n записей из выдачи
-        :param limit: Количество объектов в ответе
-        :return: RSS
-        :rtype: str
+        :param Absent[RSSType] rss_type: Предпочитаемый формат вывода
+        :param Absent[str] session_id: Уникальный идентификатор сессии пользователя
+        :param Absent[int] since: Список тайтлов у которых время обновления больше указанного timestamp
+        :param Absent[int] after: Удаляет первые n записей из выдачи
+        :param Absent[int] limit: Количество объектов в ответе
         """
-        data = await self._http.v2.get_rss(
+        payload: dict = dict_filter_missing(
             rss_type=rss_type,
-            session=session_id,
+            session_id=session_id,
             since=since,
             after=after,
-            limit=limit,
+            limit=limit
         )
-        return data
+
+        return await self._http.get_rss(**payload)
 
     async def search_titles(
         self,
-        search: Optional[List[str]] = None,
-        year: Optional[List[Union[str, int]]] = None,
-        season_code: Optional[List[str]] = None,
-        genres: Optional[List[str]] = None,
-        voice: Optional[List[str]] = None,
-        translator: Optional[List[str]] = None,
-        editing: Optional[List[str]] = None,
-        decor: Optional[List[str]] = None,
-        timing: Optional[List[str]] = None,
-        filter: Optional[List[str]] = None,
-        remove: Optional[List[str]] = None,
-        include: Optional[List[Include]] = None,
-        description_type: Optional[DescriptionType] = None,
-        playlist_type: Optional[PlayListType] = None,
-        after: Optional[int] = None,
-        limit: Optional[int] = None,
-    ) -> List[Title]:
+        search: Absent[list[str]] = MISSING,
+        year: Absent[list[str | int]] = MISSING,
+        season_code: Absent[list[str]] = MISSING,
+        genres: Absent[list[str]] = MISSING,
+        team: Absent[list[str]] = MISSING,
+        filter: Absent[list[str]] = MISSING,
+        remove: Absent[list[str]] = MISSING,
+        include: Absent[list[Include]] = MISSING,
+        description_type: Absent[DescriptionType] = MISSING,
+        playlist_type: Absent[PlaylistType] = MISSING,
+        after: Absent[int] = MISSING,
+        limit: Absent[int] = MISSING,
+        page: Absent[int] = MISSING,
+        items_per_page: Absent[int] = MISSING,
+    ) -> ListPagination[Title]:
         """
         Возвращает список тайтлов, найденных по фильтрам.
 
-        :param search: Поиск по именам и описанию.
-        :param year: Список годов выхода.
-        :param season_code: Список сезонов.
-        :param genres: Список жанров.
-        :param voice: Список войсеров.
-        :param translator: Список переводчиков.
-        :param editing: Список сабберов.
-        :param decor: Список оформителей.
-        :param timing: Список таймеров.
-        :param filter: Список значений, которые будут в ответе.
-        :param remove: Список значений, которые будут удалены из ответа.
-        :param include: Список типов файлов, которые будут возвращены в виде base64 строки
-        :param description_type: Тип получаемого описания.
-        :param playlist_type: Формат получаемого списка серий. Словарь(object) или список(list).
-        :param after: Удаляет первые n записей из выдачи.
-        :param limit: Количество объектов в ответе.
-        :return: Список тайтлов
-        :rtype: List[Title]
+        :param Absent[list[str]] search: Поиск по именам и описанию.
+        :param Absent[list[str | int]] year: Список годов выхода.
+        :param Absent[list[str]] season_code: Список сезонов.
+        :param Absent[list[str]] genres: Список жанров.
+        :param Absent[list[str]] team: Ники участников, работавшие над тайтлом.
+        :param Absent[list[str]] filter: Список значений, которые будут в ответе.
+        :param Absent[list[str]] remove: Список значений, которые будут удалены из ответа.
+        :param Absent[list[Include]] include: Список типов файлов, которые будут возвращены в виде base64 строки
+        :param Absent[DescriptionType] description_type: Тип получаемого описания.
+        :param Absent[PlaylistType] playlist_type: Формат получаемого списка серий. Словарь(object) или список(list).
+        :param Absent[int] after: Удаляет первые n записей из выдачи.
+        :param Absent[int] limit: Количество объектов в ответе.
+        :param Absent[int] page: Номер страницы. По умолчанию 1
+        :param Absent[int] items_per_page: Количество элементов на одной странице.
         """
-        data = await self._http.v2.search_titles(
+        payload = dict_filter_missing(
             search=search,
             year=year,
             season_code=season_code,
             genres=genres,
-            voice=voice,
-            translator=translator,
-            editing=editing,
-            decor=decor,
-            timing=timing,
+            team=team,
             filter=filter,
             remove=remove,
             include=include,
@@ -557,39 +584,44 @@ class AniLibriaClient:
             playlist_type=playlist_type,
             after=after,
             limit=limit,
+            page=page,
+            items_per_page=items_per_page,
         )
-        return [Title(**_) for _ in data]
+        data = await self._http.search_titles(**payload)
+        return converter.structure(data, list[Title])
 
     async def advanced_search(
         self,
         query: str,
-        filter: Optional[List[str]] = None,
-        remove: Optional[List[str]] = None,
-        include: Optional[List[Include]] = None,
-        description_type: Optional[DescriptionType] = None,
-        playlist_type: Optional[PlayListType] = None,
-        after: Optional[int] = None,
-        order_by: str = None,
-        limit: Optional[int] = None,
-        sort_direction: Optional[int] = None,
-    ) -> List[Title]:
+        filter: Absent[list[str]] = MISSING,
+        remove: Absent[list[str]] = MISSING,
+        include: Absent[list[Include]] = MISSING,
+        description_type: Absent[DescriptionType] = MISSING,
+        playlist_type: Absent[PlaylistType] = MISSING,
+        after: Absent[int] = MISSING,
+        order_by: Absent[str] = MISSING,
+        limit: Absent[int] = MISSING,
+        sort_direction: Absent[int] = MISSING,
+        page: Absent[int] = MISSING,
+        items_per_page: Absent[int] = MISSING,
+    ) -> ListPagination[Title]:
         """
         Возвращает список тайтлов, найденных по фильтрам.
 
-        :param query:
-        :param filter: Список значений, которые будут в ответе.
-        :param remove: Список значений, которые будут удалены из ответа.
-        :param include: Список типов файлов, которые будут возвращены в виде base64 строки
-        :param description_type: Тип получаемого описания.
-        :param playlist_type: Формат получаемого списка серий. Словарь(object) или список(list).
-        :param after: Удаляет первые n записей из выдачи.
-        :param order_by: Ключ по которому будет происходить сортировка результатов
-        :param limit: Количество объектов в ответе.
+        :param str query: Запрос для поиска. Может быть название тайтла.
+        :param Absent[list[str]] filter: Список значений, которые будут в ответе.
+        :param Absent[list[str]] remove: Список значений, которые будут удалены из ответа.
+        :param Absent[list[Include]] include: Список типов файлов, которые будут возвращены в виде base64 строки
+        :param Absent[DescriptionType] description_type: Тип получаемого описания.
+        :param Absent[PlaylistType] playlist_type: Формат получаемого списка серий.
+        :param Absent[int] after: Удаляет первые n записей из выдачи.
+        :param Absent[str] order_by: Ключ по которому будет происходить сортировка результатов
+        :param Absent[int] limit: Количество объектов в ответе.
         :param sort_direction: Направление сортировки. 0 - По возрастанию, 1 - По убыванию
-        :return: Список тайтлов
-        :rtype: List[Title]
+        :param Absent[int] page: Номер страницы. По умолчанию 1
+        :param Absent[int] items_per_page: Количество элементов на одной странице.
         """
-        data = await self._http.v2.advanced_search(
+        payload = dict_filter_missing(
             query=query,
             filter=filter,
             remove=remove,
@@ -600,77 +632,110 @@ class AniLibriaClient:
             order_by=order_by,
             limit=limit,
             sort_direction=sort_direction,
+            page=page,
+            items_per_page=items_per_page
         )
-        return [Title(**_) for _ in data]
+        data = await self._http.advanced_search(**payload)
+        return converter.structure(data, ListPagination(**data))
 
-    async def get_favorites(
+    async def get_user(
+        self,
+        session_id: int,
+        filter: Absent[list[str]] = MISSING,
+        remove: Absent[list[str]] = MISSING,
+    ):
+        payload = dict_filter_missing(
+            session_id=session_id,
+            filter=filter,
+            remove=remove
+        )
+        data = await self._http.get_user(**payload)
+        return converter.structure(data, User)
+
+    async def get_user_favorites_titles(
         self,
         session_id: str,
-        filter: Optional[List[str]] = None,
-        remove: Optional[List[str]] = None,
-        include: Optional[List[Include]] = None,
-        description_type: Optional[DescriptionType] = None,
-        playlist_type: Optional[PlayListType] = None,
-    ) -> List[Title]:
+        filter: Absent[list[str]] = MISSING,
+        remove: Absent[list[str]] = MISSING,
+        include: Absent[list[Include]] = MISSING,
+        description_type: Absent[DescriptionType] = MISSING,
+        playlist_type: Absent[PlaylistType] = MISSING,
+        page: Absent[int] = MISSING,
+        items_per_page: Absent[int] = MISSING,
+    ) -> ListPagination[Title]:
         """
         Возвращает список избранных тайтлов пользователя
 
-        :param session_id: ID сессии.
-        :param filter: Список значений, которые будут в ответе.
-        :param remove: Список значений, которые будут удалены из ответа.
-        :param include: Список типов файлов, которые будут возвращены в виде base64 строки
-        :param description_type: Тип получаемого описания.
-        :param playlist_type: Формат получаемого списка серий. Словарь(object) или список(list).
-        :return: Список тайтлов
-        :rtype: List[Title]
+        :param str session_id: ID сессии.
+        :param Absent[list[str]] filter: Список значений, которые будут в ответе.
+        :param Absent[list[str]] remove: Список значений, которые будут удалены из ответа.
+        :param Absent[list[Include]] include: Список типов файлов, которые будут возвращены в виде base64 строки
+        :param Absent[DescriptionType] description_type: Тип получаемого описания.
+        :param Absent[PlaylistType] playlist_type: Формат получаемого списка серий. Словарь(object) или список(list).
+        :param Absent[int] page: Номер страницы. По умолчанию 1
+        :param Absent[int] items_per_page: Количество элементов на одной странице.
         """
-        data = await self._http.v2.get_favorites(
+        payload = dict_filter_missing(
             session=session_id,
             filter=filter,
             remove=remove,
             include=include,
             description_type=description_type,
             playlist_type=playlist_type,
+            page=page,
+            items_per_page=items_per_page
         )
-        return [Title(**_) for _ in data]
+        data = await self._http.get_user_favorites(**payload)
+        return converter.structure(data, ListPagination(**data))
 
-    async def add_favorite(self, session_id: str, title_id: int):
+    async def add_user_favorite_title(self, session_id: str, title_id: int):
         """
         Добавляет тайтл в список избранных
 
-        :param session_id: ID сессии.
-        :param title_id: айди тайтла.
+        :param str session_id: ID сессии.
+        :param int title_id: ID тайтла.
         """
-        await self._http.v2.add_favorite(session=session_id, title_id=title_id)
+        await self._http.add_user_favorite(session=session_id, title_id=title_id)
 
-    async def del_favorite(self, session_id: str, title_id: int):
+    async def remove_user_favorite_title(self, session_id: str, title_id: int):
         """
         Добавляет тайтл в список избранных
 
-        :param session_id: ID сессии.
-        :param title_id: айди тайтла.
+        :param str session_id: ID сессии.
+        :param int title_id: ID тайтла.
         """
-        await self._http.v2.del_favorite(session=session_id, title_id=title_id)
+        await self._http.remove_user_favorite(session=session_id, title_id=title_id)
 
-    def start(self):
+    async def astart(self, *, auto_reconnect: bool = True):
+        """
+        Асинхронно запускает вебсокет
+        """
+
+        while True:
+            try:
+                await self._websocket.start()
+            except ConnectionClosed as error:
+                if auto_reconnect:
+                    log.debug("Websocket disconnected. Reconnecting...")
+                    continue
+                raise error from error
+            except KeyboardInterrupt:
+                break
+
+    def start(self, *, auto_reconnect: bool = True):
         """
         Запускает клиент.
         """
-        self._loop.run_until_complete(self._start())
+        async def wrapper():
+            await self.astart(auto_reconnect=auto_reconnect)
 
-    def startwith(self, coro: Coroutine):
-        """
-        Запускает клиент вместе с другой функцией.
-
-        :param coro: Корутина
-        """
-        task1 = self._loop.create_task(self._start())
-        task2 = self._loop.create_task(coro)
-        gathered = gather(task1, task2)
-        self._loop.run_until_complete(gathered)
+        run(wrapper)
 
     async def close(self):
         """
-        Закрывает HTTP клиент.
+        Закрывает клиент.
         """
-        await self._http.request.session.close()
+        await self._http.session.aclose()
+        await self._websocket.close()
+
+

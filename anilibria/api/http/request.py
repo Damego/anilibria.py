@@ -1,49 +1,57 @@
-from json import loads, JSONDecodeError
 from logging import getLogger
 
-from aiohttp import ClientSession
+from orjson import loads, JSONDecodeError
+from httpx import AsyncClient, Response
 
+from .route import Route
 from ..error import HTTPException
+from ...utils.serializer import prepare_payload
 
 
 log = getLogger("anilibria.request")
-__all__ = ["Request"]
+__all__ = ("Request", )
 
 
 class Request:
-    def __init__(self, proxy: str = None) -> None:
-        """
+    def __init__(self, proxy: str | None = None) -> None:
+        self.proxy: str | None = proxy
+        self.session: AsyncClient = None  # noqa
 
-        :param proxy:
-        """
-        self.proxy = proxy
-        self.session = ClientSession()
+    async def check_session(self):
+        if self.session is None or self.session.is_closed:
+            self.session = AsyncClient(proxies=self.proxy)
 
-    async def request(self, method: str, url: str, data: dict = None, **kwargs):
-        """
-        :param method:
-        :param url:
-        :param data:
-        :param kwargs:
-        :return:
-        """
-        if self.proxy is not None:
-            kwargs["proxy"] = self.proxy
+    async def request(self, route: Route, params: dict = None, **kwargs):
+        await self.check_session()
+
+        if params:
+            prepare_payload(params)
 
         log.debug(
-            f"Send {method} request to {url} with data: {data} and additional kwargs: {kwargs}"
+            f"Send {route.method} request to {route.endpoint} endpoint with params: {params} and kwargs: {kwargs}"
         )
-        async with self.session.request(method, url, params=data, **kwargs) as response:
-            raw = await response.text()
-            try:
-                data = loads(raw)
-            except JSONDecodeError:  # Can be RSS
-                data = raw
-            log.debug(f"Got response from request {data}")
-            self.__catch_error(data)
-            return data
+        response = await self.session.request(route.method, route.url, params=params, **kwargs)
+        data = self._get_data(response)
 
-    def __catch_error(self, data: dict):
+        log.debug(f"Got response from request {data}")
+
+        self._catch_error(data)
+
+        return data
+
+    @staticmethod
+    def _get_data(response: Response) -> dict | str:
+        text = response.text
+
+        try:
+            data = loads(text)
+        except JSONDecodeError:  # Could be RSS
+            data = text
+
+        return data
+
+    @staticmethod
+    def _catch_error(data: dict):
         if not isinstance(data, dict):
             return
         if error := data.get("error"):

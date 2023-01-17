@@ -1,3 +1,6 @@
+__all__ = ("HTTPException", "NoArgumentsError")
+
+
 class HTTPException(Exception):
     def __init__(self, code: int, message: str) -> None:
         super().__init__(f"HTTP error with code: {code}!\nMessage: {message}")

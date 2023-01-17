@@ -1,203 +1,107 @@
-from asyncio import get_event_loop, get_running_loop, new_event_loop, AbstractEventLoop
-from typing import List, Union, Optional
+from orjson import loads, dumps
+
 from logging import getLogger
-from sys import version_info
 
-from aiohttp import WSMessage, ClientWebSocketResponse, WSMsgType
-from aiohttp.http import WS_CLOSED_MESSAGE
+from trio import open_nursery, Nursery
+from trio_websocket import open_websocket_url, WebSocketConnection
 
-from .events import (
-    TitleUpdateEvent,
-    PlayListUpdateEvent,
-    EncodeEvent,
-    EventType,
-    TorrentUpdateEvent,
-    TitleSerieEvent,
-)
+from .events import EventType
 from ..http import HTTPClient
-from ..dispatch import EventDispatcher
+from ..dispatch import Dispatch
+from ...const import __api_url__
+from ..models.cattrs_utils import converter
 
 
 log = getLogger("anilibria.gateway")
-URL = "wss://api.anilibria.tv/v2.13/ws/"
-__all__ = ["WebSocketClient"]
+URL = f"wss://{__api_url__}/ws/"
+__all__ = ("GatewayClient", )
 
 
-class WebSocketClient:
-    """
-    Клиент для управления вебсокетом.
-    """
-
-    def __init__(self, proxy: str = None):
-        self._loop: AbstractEventLoop = self.__get_event_loop()
-        self._http = HTTPClient(proxy)
-        self.dispatcher = EventDispatcher()
-        self.proxy: str = proxy
-        self._client: ClientWebSocketResponse = None  # type: ignore
+class GatewayClient:
+    def __init__(self, http: HTTPClient):
+        self._connection: WebSocketConnection | None = None
         self._closed: bool = False
-        self._subscribes: List[dict] = None  # type: ignore
-        self.api_version: str = None  # type: ignore
+        self._stopped: bool = False
+        self.nursery: Nursery = None  # noqa
 
-    def __get_event_loop(self):
-        try:
-            loop = get_event_loop() if version_info < (3, 10) else get_running_loop()
-        except RuntimeError:
-            loop = new_event_loop()
-        return loop
+        self._http: HTTPClient = http
+        self.dispatch: Dispatch = Dispatch()
 
-    async def run(self):
-        """
-        Запускает вебсокет.
-        """
-        await self.__connect()
+        self._started_up: bool = False
 
-    async def __connect(self):
-        """
-        Устанавливает соединение с вебсокетом.
+    async def start(self):
+        async with open_nursery() as self.nursery:
+            self.nursery.start_soon(self.reconnect)
 
-        .. warning::
-           Не пытайтесь самостоятельно использовать этот метод!
-        """
-        async with self._http.request.session.ws_connect(URL) as self._client:
-            log.debug("Connected to websocket")
-            self._closed = self._client._closed
+    def close(self):
+        # This looks like a dumb hack, but I don't found in the docs how to cancel task.
+        raise KeyboardInterrupt
+
+    async def reconnect(self):
+        if self.dispatch.nursery is None:
+            self.dispatch.nursery = self.nursery
+
+        self._closed = True
+
+        if self._closed:
+            await self.connect()
+
+    async def connect(self):
+        self._stopped = False
+
+        async with open_websocket_url(URL) as self._connection:
+            self._closed = self._connection.closed
+
+            if self._stopped:
+                await self._connection.aclose()
             if self._closed:
-                await self.__connect()
+                await self._match_error()
+
+            if not self._started_up:
+                self.dispatch.call("on_startup")
+                self._started_up = True
+
+            data = await self._receive_data()
+            if data.get("connection") == "success":
+                # I don't think there are will be something other.
+                self.dispatch.call("on_connect")
 
             while not self._closed:
-                data = await self.__receive_packet_data()
-                if data is None:
-                    continue
-                if self._client is None or data == WS_CLOSED_MESSAGE:
-                    await self.__connect()
-                    break
+                data = await self._receive_data()
 
-                await self.__dispatch_events(data)
+                self._track_data(data)
 
-    async def __receive_packet_data(self) -> Optional[Union[dict, WSMessage]]:
-        """
-        Принимает пакет данных и возвращает словарь с данными или пустое значение
+    async def _receive_data(self) -> dict:
+        response = await self._connection.get_message()
+        return loads(response)
 
-        .. warning::
-           Не пытайтесь самостоятельно использовать этот метод!
+    def _track_data(self, data: dict):
+        type: str
+        if not (type := data.get("type")):
+            return self._track_unknown_event(data)
 
-        :return:
-        """
-        packet: WSMessage = await self._client.receive()
-        if packet.type == WSMsgType.CLOSED:
-            return WS_CLOSED_MESSAGE
+        event_model = EventType.__dict__.get(type.upper())
 
-        return packet.json() if packet.data and isinstance(packet.data, str) else None
+        if event_model is None:
+            return log.warning(f"Received a not excepted event `{type}`!")
 
-    async def __dispatch_events(self, data: dict):
-        """
-        Диспатчит ивенты
+        log.debug(f"Received {type} event {data}")
 
-        .. warning::
-           Не пытайтесь самостоятельно использовать этот метод!
+        obj = converter.structure(data["data"], event_model)
+        self.dispatch.call(f"on_{type}", obj)
 
-        :param data: Словарь с данными об ивенте
-        :type data: dict
-        """
-        self.dispatcher.dispatch("on_raw_packet", data)
+    def _track_unknown_event(self, data: dict):
+        if "subscribe" in data:
+            self.dispatch.call("on_subscription", data)
 
-        type = data.get("type")
-        if type is None:
-            return await self.__dispatch_other_events(data)
+    async def _match_error(self):
+        code: int = self._connection.closed.code
 
-        event_name = f"on_{type}"
-        event_model = self.__get_event_model(EventType(type), data[type])
-        if event_model is not None:
-            self.dispatcher.dispatch(event_name, event_model)
-            if type == EventType.PLAYLIST_UPDATE:
-                await self.__dispatch_title_serie(event_model)
-        else:
-            self.dispatcher.dispatch(event_name, data)
-            log.debug(f"Not documented event type {type} dispatched with data: {data}")
+        print("ERROR", code)
 
-    def __get_event_model(self, event_type: EventType, data: dict):
-        events = {
-            EventType.TITLE_UPDATE: TitleUpdateEvent,
-            EventType.PLAYLIST_UPDATE: PlayListUpdateEvent,
-            EventType.ENCODE_START: EncodeEvent,
-            EventType.ENCODE_PROGRESS: EncodeEvent,
-            EventType.ENCODE_END: EncodeEvent,
-            EventType.ENCODE_FINISH: EncodeEvent,
-            EventType.TORRENT_UPDATE: TorrentUpdateEvent,
-        }
-        return model(**data) if (model := events.get(event_type)) else None
-
-    async def __dispatch_title_serie(self, event_model: PlayListUpdateEvent):
-        """
-        Диспатчит ивент ``on_title_serie``
-
-        .. warning::
-           Не пытайтесь самостоятельно использовать этот метод!
-
-        :param event_model:
-        :type event_model: PlayListUpdateEvent
-        """
-
-        # Cool(hehe no. pls help me) logic of checking new series
-        if not self.is_new_serie(event_model):
-            return
-
-        title = await self._http.v2.get_title(id=event_model.id)
-        event_model = TitleSerieEvent(title=title, episode=event_model.updated_episode)
-        self.dispatcher.dispatch("on_title_serie", event_model)
-
-    def is_new_serie(self, event: PlayListUpdateEvent):
-        """
-        Проверяет, это новая серия или перезалив/другое
-
-        :param event:
-        """
-        if (
-            event.updated_episode
-            and ((hls := event.updated_episode.hls) and hls.fhd and hls.hd and hls.sd)
-            and not event.diff.get("playlist")
-        ):
-            return True
-        if (playlist := event.diff.get("playlist")) is None:
-            return
-        if (series := list(playlist.values())) is None:
-            return
-        if (not series) or (series and series[0].get("hls") is None):
-            return
-        hls_diff = series[0]["hls"]
-        if all(v is not None for k, v in hls_diff.items()):
-            return
-        if event.updated_episode is None:
-            return
-        if not hls.fhd or not hls.hd or not hls.sd:
-            return
-
-        return True
-
-    async def __dispatch_other_events(self, data: dict):
-        """
-        Диспатчит ивент ``on_connect``.
-
-        .. warning::
-           Не пытайтесь самостоятельно использовать этот метод!
-
-        :param data: словарь с данными об ивенте
-        :type data: dict
-        """
-        if api_version := data.get("api_version"):
-            self.api_version = api_version
-            log.debug(f"Successfully connected to API. API version {api_version}")
-            self.dispatcher.dispatch("on_connect")
-        elif data.get("subscribe"):
-            log.debug(f"Successfully subscribed! subscription_id={data['subscription_id']}")
-        else:
-            log.debug(f"Not documented event data: {data}")
+    async def _send_message(self, data: dict):
+        message = dumps(data)
+        await self._connection.send_message(message)
 
     async def subscribe(self, data: dict):
-        """
-        Отправляет словарь с данными о подписке вебсокету
-
-        :param data:
-        :return:
-        """
-        await self._client.send_json(data)
+        await self._send_message(data)
