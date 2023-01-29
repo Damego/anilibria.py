@@ -735,6 +735,19 @@ class AniLibriaClient:
         except KeyboardInterrupt:
             self._loop.run_until_complete(self.close())
 
+    def startwith(self, coro: Coroutine, *, auto_reconnect: bool = True):
+        """
+        Запускает основной клиент вместе с корутиной.
+
+        :param coro: Корутина
+        :param auto_reconnect: Нужно ли перезапускать клиент после ошибки сервера анилибрии?
+        """
+        gather = asyncio.gather(
+            asyncio.create_task(self.astart(auto_reconnect=auto_reconnect)),
+            asyncio.create_task(coro)
+        )
+        self._loop.run_until_complete(gather)
+
     async def close(self):
         """
         Закрывает клиент.
