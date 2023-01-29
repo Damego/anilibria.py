@@ -1,4 +1,3 @@
-trio
-trio-websocket
+aiohttp
 attrs
 cattrs

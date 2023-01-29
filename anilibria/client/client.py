@@ -1,8 +1,8 @@
+import asyncio
+
+from aiohttp import WSServerHandshakeError
 from typing import Coroutine, Callable
 from logging import getLogger
-
-from trio import run
-from trio_websocket import ConnectionClosed
 
 from ..api import HTTPClient, GatewayClient
 from ..api.models import (
@@ -38,6 +38,8 @@ class AniLibriaClient:
         self._websocket: GatewayClient = GatewayClient(http=self._http)
 
         self.event(self._on_playlist_update, name="on_playlist_update")
+
+        self._loop = asyncio.get_event_loop()
 
     async def _on_playlist_update(self, event: PlaylistUpdate):
         # Убеждаемся, что ивент затрагивает обновление эпизода, а не другие данные
@@ -714,28 +716,31 @@ class AniLibriaClient:
         while True:
             try:
                 await self._websocket.start()
-            except ConnectionClosed as error:
+            except WSServerHandshakeError as error:
                 if auto_reconnect:
                     log.debug("Websocket disconnected. Reconnecting...")
                     continue
                 raise error from error
-            except KeyboardInterrupt:
+            except (KeyboardInterrupt, asyncio.CancelledError):
+                await self.close()
                 break
 
     def start(self, *, auto_reconnect: bool = True):
         """
         Запускает клиент.
         """
-        async def wrapper():
-            await self.astart(auto_reconnect=auto_reconnect)
 
-        run(wrapper)
+        try:
+            self._loop.run_until_complete(self.astart(auto_reconnect=auto_reconnect))
+        except KeyboardInterrupt:
+            self._loop.run_until_complete(self.close())
 
     async def close(self):
         """
         Закрывает клиент.
         """
-        await self._http.session.aclose()
-        await self._websocket.close()
+        if self._http.session and not self._http.session.closed:
+            await self._http.session.close()
+            await self._websocket.close()
 
 
