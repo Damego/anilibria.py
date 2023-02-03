@@ -4,7 +4,7 @@ from logging import getLogger
 from aiohttp import ClientWebSocketResponse, WSMsgType, WSMessage
 from orjson import loads, dumps
 
-from .events import EventType
+from .events import EventType, Connect
 from ..http import HTTPClient
 from ..dispatch import Dispatch
 from ...const import __api_url__
@@ -56,14 +56,15 @@ class GatewayClient:
                 self._started_up = True
 
             data = await self._receive_data()
-
+            
+            # Information about opened connection
             if data.get("connection") == "success":
-                # I don't think there are will be something other.
-                self.dispatch.call("on_connect")
+                self.dispatch.call("on_connect", converter.structure(data, Connect))
 
             while not self._closed:
                 data = await self._receive_data()
 
+                # Possible only when connection was closed
                 if isinstance(data, WSMessage):
                     return
 

@@ -1,7 +1,12 @@
 from ...models import Title, Episode
 from ...models.attrs_utils import define
 
-__all__ = ("TitleEpisode", )
+__all__ = ("Connect", "TitleEpisode", )
+
+
+@define()
+class Connect:
+  api_version: str
 
 
 @define()
