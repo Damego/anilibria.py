@@ -19,58 +19,36 @@ anilibria.py - это REST API и Websocket обёртка API.
 Использование
 *************
 
-Ниже представлено самое простое использование библиотеки.
-
-Функция ``on_connect`` будет вызвана после успешного подключения к API anilibria.
-
-Функция ``on_title_update`` будет вызываться после того, как на сервер будет залита новая серия любого тайтла.
+В библиотеке реализована поддержка RESTful API.
+Список всех возможных методов вы можете увидеть `здесь <https://anilibriapy.readthedocs.io/ru/latest/client.html>`__
 
 .. code-block:: python
 
-  from anilibria import AniLibriaClient, TitleUpdateEvent
+  import asyncio
 
-  client = AniLibriaClient(proxy="http://0.0.0.0:80")  # proxy - необязательный аргумент
-
-  @client.event
-  async def on_connect():
-    print("Подключено")
-  
-  @client.event
-  async def on_title_update(event: TitleUpdateEvent):
-    print(event.title.names.ru)  # Выведет название тайтла на русском, который обновили.
-  
-  client.start()
+  from anilibria import AniLibriaClient
 
 
-Подписка на определённые тайтлы
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  async def main():
+      # Создание клиента
+      client = AniLibriaClient(proxy="http://0.0.0.0:80")  # proxy - необязательный аргумент
 
-Если вы хотите получать уведомления об определённых тайтлах, то вы можете подписаться на них.
+      # Получение тайтла по его коду
+      title = await client.get_title(code="kimetsu-no-yaiba-yuukaku-hen")
+      # Вывод описание тайтла
+      print(title.description)  # Все атрибуты вы можете найти в документации моделей
 
-.. code-block:: python
+  asyncio.run(main())
 
-   @client.event
-   async def on_title_serie(event: TitleSerieEvent):
-       if event.title.code == "texhnolyze":  # Ещё один способ: event.title.names.ru == "Технолайз"
-           ...  # Если выйдет новая серия Технолайза, то вызовется эта функция и выполнится условие
-
-
-Получение информации о тайтле
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-В библиотеке реализована поддержка http запросов. Список всех возможных методов вы можете увидеть `здесь <https://anilibriapy.readthedocs.io/ru/latest/client.html>`__
-
-.. code-block:: python
-
-   async def some_function():
-       title = await client.get_title(code="kimetsu-no-yaiba-yuukaku-hen")
-       print(title.description)  # Все атрибуты вы можете найти в документации моделей
 
 Использование с другими библиотеками
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Вы также можете использовать эту библиотеку вместе с другими:
+Вы также можете использовать эту библиотеку вместе с:
 
 - ``discord.py`` и его форках
 - ``aiogram``
+
+и с другими.
 
 Примеры использования представлены `здесь <https://github.com/Damego/anilibria.py/tree/main/examples>`__
 

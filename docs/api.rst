@@ -28,6 +28,6 @@ API Reference
 
 .. toctree::
     :maxdepth: 2
-    :caption: Объекты Enum
+    :caption: Перечисляемые объекты (Enum)
 
     anilibria.api.models.v2.enums.rst
