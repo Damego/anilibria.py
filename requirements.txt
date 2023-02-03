@@ -1,3 +1,5 @@
 aiohttp
 attrs
 cattrs
+orjson
+tomli

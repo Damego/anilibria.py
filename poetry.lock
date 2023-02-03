@@ -916,7 +916,7 @@ test = ["pytest"]
 name = "tomli"
 version = "2.0.1"
 description = "A lil' TOML parser"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
@@ -1032,4 +1032,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "4fcec600255b30f3b4633c8fdaef683f34d3c7384b6153e2f86fe32488922a7b"
+content-hash = "bb26c3d35f2bbd3eb7e8bf3f2de7af0f378be862331e11390d52fa21bf70bab5"
