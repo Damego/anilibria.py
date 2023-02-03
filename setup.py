@@ -44,5 +44,6 @@ setup(
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Software Development :: Libraries",
         "Topic :: Utilities",
+        "Typing :: Typed",
     ],
 )
