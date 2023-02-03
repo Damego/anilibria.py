@@ -81,12 +81,12 @@ class AniLibriaClient:
         Декоратор для прослушивания событий. Принимает класс события.
 
         .. code-block:: python
+
            @client.on(PlaylistUpdate)
            async def name_you_want(event: PlaylistUpdate):
                ...
 
         :param event: Класс ивента
-        :return:
         """
         def wrapper(coro: Callable[..., Coroutine]):
             event_name: str = "on_" + EventType(event).name.lower()
@@ -97,21 +97,19 @@ class AniLibriaClient:
     def listen(self, coro: Callable[..., Coroutine] = MISSING, *, name: str = MISSING):
         """
         Декоратор для прослушивания событий. Принимает названия события.
-        Существует алиас ``event``.
 
         Примеры использования:
 
         .. code-block:: python
+
            @client.listen
            async def on_playlist_update(event: PlaylistUpdate):
                ...
 
-        .. code-block:: python
            @client.listen()
            async def on_playlist_update(event: PlaylistUpdate):
                ...
 
-        .. code-block:: python
            @client.listen(name="on_playlist_update")
            async def name_you_want(event: PlaylistUpdate):
                ...
@@ -129,7 +127,30 @@ class AniLibriaClient:
 
         return decorator
 
-    event = listen
+    def event(self, coro: Callable[..., Coroutine] = MISSING, *, name: str = MISSING):
+        """
+        Декоратор для прослушивания событий. Принимает названия события.
+        Алиас для :meth:`.listen`:
+
+        Примеры использования:
+
+        .. code-block:: python
+
+           @client.listen
+           async def on_playlist_update(event: PlaylistUpdate):
+               ...
+
+           @client.listen()
+           async def on_playlist_update(event: PlaylistUpdate):
+               ...
+
+           @client.listen(name="on_playlist_update")
+           async def name_you_want(event: PlaylistUpdate):
+               ...
+
+        :param Callable[..., Coroutine] coro: Функция, которая будет вызываться.
+        :param str name: Название ивента. Например: on_title_update.
+        """
 
     async def subscribe(self, subscribe: dict, filter: str = MISSING, remove: str = MISSING):
         """
