@@ -18,6 +18,7 @@ repos:
       language: python
       types: [file]
       exclude_types: ['image']
+      exclude: 'README.md'
     - id: end-of-file-fixer
       name: EOF Newlines
       language: python
