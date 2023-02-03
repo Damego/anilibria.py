@@ -2,7 +2,7 @@ import asyncio
 
 from aiohttp import WSServerHandshakeError
 from typing import Coroutine, Callable
-from logging import getLogger
+from logging import getLogger, basicConfig, DEBUG
 
 from ..api import HTTPClient, GatewayClient
 from ..api.models import (
@@ -33,10 +33,16 @@ class AniLibriaClient:
     Основной клиент для взаимодействия с API anilibria.tv.
     """
 
-    def __init__(self, *, proxy: str = None) -> None:
+    def __init__(self, *, proxy: str | None = None, logging: bool | int | None = None) -> None:
         self._http: HTTPClient = HTTPClient(proxy=proxy)
         self._websocket: GatewayClient = GatewayClient(http=self._http)
 
+        if logging is not None:
+            if logging is True:
+                basicConfig(level=DEBUG)
+            else:
+                basicConfig(level=logging)
+        
         self.event(self._on_playlist_update, name="on_playlist_update")
 
         self._loop = asyncio.get_event_loop()

@@ -1,4 +1,4 @@
-Anilibria Client
+Основной клиент
 ================
 
 .. automodule:: anilibria.client.client
