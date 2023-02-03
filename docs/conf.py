@@ -16,15 +16,21 @@ import sys
 
 sys.path.insert(0, os.path.abspath(".."))
 
-from anilibria import __version__
+import tomli
+
 
 # -- Project information -----------------------------------------------------
 
+with open("../pyproject.toml", "rb") as f:
+    pyproject = tomli.load(f)
+
+_version: str = pyproject["tool"]["poetry"]["version"]
+
 project = "anilibria.py"
-copyright = "2022, Damego"
+copyright = "2023, Damego"
 author = "Damego"
-release = __version__
-version = ".".join(__version__.split(".", 2)[:2])
+release = _version
+version = ".".join(_version.split(".", 2)[:2])
 
 # -- General configuration ---------------------------------------------------
 
@@ -35,6 +41,11 @@ add_module_names = False
 autosectionlabel_prefix_document = True
 hoverxref_auto_ref = True
 hoverxref_sphinxtabs = True
+
+# descriptions of the relevant function/method.
+autodoc_typehints = "description"
+autodoc_typehints_description_target = "documented_params"
+
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.intersphinx",

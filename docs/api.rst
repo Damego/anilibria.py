@@ -1,18 +1,17 @@
-API Reference
-=============
+Документация АПИ
+================
 
 .. toctree::
     :maxdepth: 2
-    :caption: Клиенты
+    :caption: Клиент
 
     client.rst
-    anilibria.api.gateway.client.rst
 
 .. toctree::
     :maxdepth: 2
     :caption: Модели ответов
 
-    anilibria.api.models.v2.rst
+    anilibria.api.models.rst
 
 .. toctree::
     :maxdepth: 2
@@ -30,4 +29,4 @@ API Reference
     :maxdepth: 2
     :caption: Перечисляемые объекты (Enum)
 
-    anilibria.api.models.v2.enums.rst
+    anilibria.api.models.enums.rst
