@@ -76,7 +76,18 @@ class AniLibriaClient:
             "on_title_episode", TitleEpisode(title=title, episode=event.updated_episode)
         )
 
-    def on(self, event: Type[BaseEvent]):
+    def on(self, event: Type[BaseEvent]) -> Callable:
+        """
+        Декоратор для прослушивания событий. Принимает класс события.
+
+        .. code-block:: python
+           @client.on(PlaylistUpdate)
+           async def name_you_want(event: PlaylistUpdate):
+               ...
+
+        :param event: Класс ивента
+        :return:
+        """
         def wrapper(coro: Callable[..., Coroutine]):
             event_name: str = "on_" + EventType(event).name.lower()
             self._websocket.dispatch.register(event_name, coro)
@@ -85,7 +96,25 @@ class AniLibriaClient:
 
     def listen(self, coro: Callable[..., Coroutine] = MISSING, *, name: str = MISSING):
         """
-        Делает из функции ивент, который будет вызываться из вебсокета.
+        Декоратор для прослушивания событий. Принимает названия события.
+        Существует алиас ``event``.
+
+        Примеры использования:
+
+        .. code-block:: python
+           @client.listen
+           async def on_playlist_update(event: PlaylistUpdate):
+               ...
+
+        .. code-block:: python
+           @client.listen()
+           async def on_playlist_update(event: PlaylistUpdate):
+               ...
+
+        .. code-block:: python
+           @client.listen(name="on_playlist_update")
+           async def name_you_want(event: PlaylistUpdate):
+               ...
 
         :param Callable[..., Coroutine] coro: Функция, которая будет вызываться.
         :param str name: Название ивента. Например: on_title_update.
