@@ -217,7 +217,7 @@ class AniLibriaClient:
 
         data = await self._http.get_titles(**payload)
 
-        return converter.structure(data, ListPagination(**data))
+        return converter.structure(data, ListPagination)
 
     async def get_updates(
         self,
@@ -259,7 +259,7 @@ class AniLibriaClient:
             items_per_page=items_per_page
         )
         data = await self._http.get_updates(**payload)
-        return converter.structure(data, ListPagination(**data))
+        return converter.structure(data, ListPagination)
 
     async def get_changes(
         self,
@@ -298,7 +298,7 @@ class AniLibriaClient:
             items_per_page=items_per_page
         )
         data = await self._http.get_changes(**payload)
-        return converter.structure(data, ListPagination(**data))
+        return converter.structure(data, ListPagination)
 
     async def get_schedule(
         self,
@@ -391,7 +391,7 @@ class AniLibriaClient:
             items_per_page=items_per_page
         )
         data = await self._http.get_youtube(**payload)
-        return converter.structure(data, ListPagination(**data))
+        return converter.structure(data, ListPagination)
 
     async def get_feed(
         self,
@@ -443,7 +443,7 @@ class AniLibriaClient:
             else:
                 data["list"][index] = converter.structure(data["youtube"], YouTubeVideo)
 
-        return ListPagination(**data)
+        return converter.structure(data, ListPagination)
 
     async def get_years(self) -> list[int]:
         """
@@ -509,7 +509,7 @@ class AniLibriaClient:
             items_per_page=items_per_page,
         )
         data = await self._http.get_seed_stats(**payload)
-        return converter.structure(data, ListPagination(**data))
+        return converter.structure(data, ListPagination)
 
     async def get_rss(
         self,
@@ -638,7 +638,7 @@ class AniLibriaClient:
             items_per_page=items_per_page
         )
         data = await self._http.advanced_search(**payload)
-        return converter.structure(data, ListPagination(**data))
+        return converter.structure(data, ListPagination)
 
     async def get_user(
         self,
@@ -688,7 +688,7 @@ class AniLibriaClient:
             items_per_page=items_per_page
         )
         data = await self._http.get_user_favorites(**payload)
-        return converter.structure(data, ListPagination(**data))
+        return converter.structure(data, ListPagination)
 
     async def add_user_favorite_title(self, session_id: str, title_id: int):
         """
