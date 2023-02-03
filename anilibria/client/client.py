@@ -743,8 +743,8 @@ class AniLibriaClient:
         :param auto_reconnect: Нужно ли перезапускать клиент после ошибки сервера анилибрии?
         """
         gather = asyncio.gather(
-            asyncio.create_task(self.astart(auto_reconnect=auto_reconnect)),
-            asyncio.create_task(coro)
+            self._loop.create_task(self.astart(auto_reconnect=auto_reconnect)),
+            self._loop.create_task(coro)
         )
         self._loop.run_until_complete(gather)
 
