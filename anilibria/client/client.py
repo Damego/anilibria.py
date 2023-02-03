@@ -79,7 +79,7 @@ class AniLibriaClient:
             )
         )
 
-    def event(self, coro: Callable[..., Coroutine] = MISSING, *, name: str = MISSING):
+    def listen(self, coro: Callable[..., Coroutine] = MISSING, *, name: str = MISSING):
         """
         Делает из функции ивент, который будет вызываться из вебсокета.
 
@@ -95,6 +95,8 @@ class AniLibriaClient:
             return decorator(coro)
 
         return decorator
+
+    event = listen
 
     async def subscribe(self, subscribe: dict, filter: str = MISSING, remove: str = MISSING):
         """
