@@ -1,16 +1,17 @@
 from ...models import Title, Episode
 from ...models.attrs_utils import define
+from .base import BaseEvent
 
 __all__ = ("Connect", "TitleEpisode", )
 
 
 @define()
-class Connect:
-  api_version: str
+class Connect(BaseEvent):
+    api_version: str
 
 
 @define()
-class TitleEpisode:
+class TitleEpisode(BaseEvent):
     """
     Модель для ивента `on_title_episode`.
 

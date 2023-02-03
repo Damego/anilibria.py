@@ -1,10 +1,12 @@
 import asyncio
+from typing import Coroutine, Callable, Type
 
 from aiohttp import WSServerHandshakeError
-from typing import Coroutine, Callable
 from logging import getLogger, basicConfig, DEBUG
 
-from ..api import HTTPClient, GatewayClient
+from ..api.http.client import HTTPClient
+from ..api.gateway.client import GatewayClient
+from ..api.gateway.events import BaseEvent, EventType
 from ..api.models import (
     Title,
     Schedule,
@@ -78,6 +80,13 @@ class AniLibriaClient:
                 episode=event.updated_episode
             )
         )
+
+    def on(self, event: Type[BaseEvent]):
+        def wrapper(coro: Callable[..., Coroutine]):
+            event_name: str = "on_" + EventType(event).name.lower()
+            self._websocket.dispatch.register(event_name, coro)
+
+        return wrapper
 
     def listen(self, coro: Callable[..., Coroutine] = MISSING, *, name: str = MISSING):
         """

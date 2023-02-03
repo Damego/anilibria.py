@@ -84,7 +84,7 @@ class GatewayClient:
         if not (type := data.get("type")):
             return self._track_unknown_event(data)
 
-        event_model = EventType.__dict__.get(type.upper())
+        event_model = EventType[type.upper()].value
 
         if event_model is None:
             return log.warning(f"Received a not excepted event `{type}`!")

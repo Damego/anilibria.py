@@ -1,10 +1,13 @@
 from typing import Optional
+from enum import Enum
 
 from cattrs.gen import make_dict_structure_fn, make_dict_unstructure_fn, override
 
 from ...models import Player, Episode, Title, Torrents
 from ...models.attrs_utils import define
 from ...models.cattrs_utils import converter
+from .base import BaseEvent
+from .internal import Connect, TitleEpisode
 
 
 __all__ = (
@@ -20,7 +23,7 @@ __all__ = (
 
 
 @define()
-class _BaseEncodeEvent:
+class _BaseEncodeEvent(BaseEvent):
     """
     Базовый объект для события кодирования
     """
@@ -56,7 +59,7 @@ class EncodeFinish(_BaseEncodeEvent):
 
 
 @define()
-class PlaylistUpdate:
+class PlaylistUpdate(BaseEvent):
     """
     Модель для ивента ``on_playlist_update``
 
@@ -76,7 +79,7 @@ class PlaylistUpdate:
 
 
 @define()
-class TitleUpdate:
+class TitleUpdate(BaseEvent):
     """
     Модель для ивента ``on_title_update``
 
@@ -92,7 +95,7 @@ class TitleUpdate:
 
 
 @define()
-class TorrentUpdate:
+class TorrentUpdate(BaseEvent):
     """
     Модель для ивента `on_torrent_update`
 
@@ -109,11 +112,12 @@ class TorrentUpdate:
     diff: dict = None
 
 
-class EventType:
+class EventType(Enum):
     """
     Обозначает ивенты, которые принимает Websocket
     """
 
+    # Anilibria events
     TITLE_UPDATE = TitleUpdate
     PLAYLIST_UPDATE = PlaylistUpdate
     ENCODE_START = EncodeStart
@@ -122,6 +126,9 @@ class EventType:
     ENCODE_FINISH = EncodeFinish
     TORRENT_UPDATE = TorrentUpdate
 
+    # Internal events
+    TITLE_EPISODE = TitleEpisode
+    CONNECT = Connect
 
 
 # Hooks
