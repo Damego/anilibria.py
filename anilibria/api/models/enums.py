@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Type, Any
+from typing import Any, Type
 
 __all__ = (
     "StrEnum",

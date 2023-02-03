@@ -1,13 +1,9 @@
-from typing import Union, Tuple
 from functools import wraps
 from logging import getLogger
 
 import attrs
 
-
-__all__ = (
-    "define",
-)
+__all__ = ("define",)
 log = getLogger("anilibria.attrs")
 
 

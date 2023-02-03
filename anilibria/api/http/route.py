@@ -1,6 +1,6 @@
 from ...const import __api_url__
 
-__all__ = ("Route", )
+__all__ = ("Route",)
 
 V1_URL = "https://www.anilibria.tv/public"
 V3_URL = f"https://{__api_url__}"

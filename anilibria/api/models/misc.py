@@ -1,7 +1,7 @@
-from typing import List, Generic, TypeVar
+from typing import Generic, List, TypeVar
 
-from .title import Title
 from .attrs_utils import define
+from .title import Title
 
 T = TypeVar("T")
 

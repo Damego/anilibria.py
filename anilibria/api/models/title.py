@@ -1,8 +1,7 @@
 from typing import List
 
-from .enums import StatusCode, TitleCodeType, SeasonCode
 from .attrs_utils import define
-
+from .enums import SeasonCode, StatusCode, TitleCodeType
 
 __all__ = (
     "TitleNames",
@@ -348,6 +347,7 @@ class TitleDescription:
     """
     Объект с описанием тайтла
     """
+
     html: str | None = None
     "Описание тайтла в виде html"
     no_view_order: str | None = None

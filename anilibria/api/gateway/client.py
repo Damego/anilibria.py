@@ -1,19 +1,18 @@
 import asyncio
 from logging import getLogger
 
-from aiohttp import ClientWebSocketResponse, WSMsgType, WSMessage
-from orjson import loads, dumps
+from aiohttp import ClientWebSocketResponse, WSMessage, WSMsgType
+from orjson import dumps, loads
 
-from .events import EventType, Connect
-from ..http import HTTPClient
-from ..dispatch import Dispatch
 from ...const import __api_url__
+from ..dispatch import Dispatch
+from ..http import HTTPClient
 from ..models.cattrs_utils import converter
-
+from .events import Connect, EventType
 
 log = getLogger("anilibria.gateway")
 URL = f"wss://{__api_url__}/ws/"
-__all__ = ("GatewayClient", )
+__all__ = ("GatewayClient",)
 
 
 class GatewayClient:
@@ -56,7 +55,7 @@ class GatewayClient:
                 self._started_up = True
 
             data = await self._receive_data()
-            
+
             # Information about opened connection
             if data.get("connection") == "success":
                 self.dispatch.call("on_connect", converter.structure(data, Connect))

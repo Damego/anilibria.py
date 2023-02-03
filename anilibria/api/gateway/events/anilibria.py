@@ -1,14 +1,13 @@
-from typing import Optional
 from enum import Enum
+from typing import Optional
 
 from cattrs.gen import make_dict_structure_fn, make_dict_unstructure_fn, override
 
-from ...models import Player, Episode, Title, Torrents
+from ...models import Episode, Player, Title, Torrents
 from ...models.attrs_utils import define
 from ...models.cattrs_utils import converter
 from .base import BaseEvent
 from .internal import Connect, TitleEpisode
-
 
 __all__ = (
     "EventType",
@@ -133,8 +132,12 @@ class EventType(Enum):
 
 # Hooks
 # TODO: Find a better place
-unstruct_hook = make_dict_unstructure_fn(EncodeStart, converter, is_reupload=override(rename="isReupload"))
-struct_hook = make_dict_structure_fn(EncodeStart, converter, is_reupload=override(rename="isReupload"))
+unstruct_hook = make_dict_unstructure_fn(
+    EncodeStart, converter, is_reupload=override(rename="isReupload")
+)
+struct_hook = make_dict_structure_fn(
+    EncodeStart, converter, is_reupload=override(rename="isReupload")
+)
 
 converter.register_unstructure_hook(EncodeStart, unstruct_hook)
 converter.register_structure_hook(EncodeStart, struct_hook)

@@ -1,6 +1,6 @@
 from ...models.attrs_utils import define
 
-__all__ = ("BaseEvent", )
+__all__ = ("BaseEvent",)
 
 
 @define()

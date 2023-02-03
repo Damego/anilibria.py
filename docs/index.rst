@@ -57,4 +57,3 @@ anilibria.py - это REST API и Websocket обёртка API.
    :caption: Страницы:
 
    api.rst
-

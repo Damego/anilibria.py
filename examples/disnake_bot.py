@@ -4,10 +4,10 @@
 """
 
 
-from anilibria import AniLibriaClient, TitleSerieEvent
 import disnake
 from disnake.ext import commands
 
+from anilibria import AniLibriaClient, TitleSerieEvent
 
 bot = commands.InteractionBot()
 client = AniLibriaClient(proxy="your_proxy.com:80")

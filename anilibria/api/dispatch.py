@@ -1,11 +1,10 @@
 import asyncio
-from typing import Callable, Dict, List, Coroutine
-from logging import getLogger
 from collections import defaultdict
-
+from logging import getLogger
+from typing import Callable, Coroutine, Dict, List
 
 log = getLogger("anilibria.dispatch")
-__all__ = ("Dispatch", )
+__all__ = ("Dispatch",)
 
 
 class Dispatch:
@@ -28,4 +27,6 @@ class Dispatch:
     def register(self, name: str, coro: Callable[..., Coroutine]):
         self._registered_events[name].append(coro)
 
-        log.debug(f"Added coro to {name} event. Total coros for this event: {self._registered_events[name]}")
+        log.debug(
+            f"Added coro to {name} event. Total coros for this event: {self._registered_events[name]}"
+        )

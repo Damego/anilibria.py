@@ -1,4 +1,4 @@
 furo
+readthedocs-sphinx-search
 Sphinx
 sphinx-hoverxref
-readthedocs-sphinx-search

@@ -1,33 +1,32 @@
 import asyncio
-from typing import Coroutine, Callable, Type
+from logging import DEBUG, basicConfig, getLogger
+from typing import Callable, Coroutine, Type
 
 from aiohttp import WSServerHandshakeError
-from logging import getLogger, basicConfig, DEBUG
 
-from ..api.http.client import HTTPClient
+from ..api.error import NoArgumentsError
 from ..api.gateway.client import GatewayClient
-from ..api.gateway.events import BaseEvent, EventType
+from ..api.gateway.events import BaseEvent, EventType, PlaylistUpdate, TitleEpisode
+from ..api.http.client import HTTPClient
 from ..api.models import (
-    Title,
-    Schedule,
-    YouTubeVideo,
-    TitleTeam,
-    SeedStats,
-    Include,
     DescriptionType,
+    Include,
+    ListPagination,
     PlaylistType,
     RSSType,
-    ListPagination,
-    User
+    Schedule,
+    SeedStats,
+    Title,
+    TitleTeam,
+    User,
+    YouTubeVideo,
 )
-from ..api.error import NoArgumentsError
-from ..utils.typings import MISSING, Absent
-from ..utils.serializer import dict_filter_missing
 from ..api.models.cattrs_utils import converter
-from ..api.gateway.events import PlaylistUpdate, TitleEpisode
+from ..utils.serializer import dict_filter_missing
+from ..utils.typings import MISSING, Absent
 
 log = getLogger("anilibria.client")
-__all__ = ("AniLibriaClient", )
+__all__ = ("AniLibriaClient",)
 
 
 class AniLibriaClient:
@@ -44,7 +43,7 @@ class AniLibriaClient:
                 basicConfig(level=DEBUG)
             else:
                 basicConfig(level=logging)
-        
+
         self.event(self._on_playlist_update, name="on_playlist_update")
 
         self._loop = asyncio.get_event_loop()
@@ -74,11 +73,7 @@ class AniLibriaClient:
         title = await self.get_title(id=event.id)
 
         self._websocket.dispatch.call(
-            "on_title_episode",
-            TitleEpisode(
-                title=title,
-                episode=event.updated_episode
-            )
+            "on_title_episode", TitleEpisode(title=title, episode=event.updated_episode)
         )
 
     def on(self, event: Type[BaseEvent]):
@@ -273,7 +268,7 @@ class AniLibriaClient:
             after=after,
             limit=limit,
             page=page,
-            items_per_page=items_per_page
+            items_per_page=items_per_page,
         )
         data = await self._http.get_updates(**payload)
         return converter.structure(data, ListPagination)
@@ -312,7 +307,7 @@ class AniLibriaClient:
             after=after,
             limit=limit,
             page=page,
-            items_per_page=items_per_page
+            items_per_page=items_per_page,
         )
         data = await self._http.get_changes(**payload)
         return converter.structure(data, ListPagination)
@@ -405,7 +400,7 @@ class AniLibriaClient:
             after=after,
             limit=limit,
             page=page,
-            items_per_page=items_per_page
+            items_per_page=items_per_page,
         )
         data = await self._http.get_youtube(**payload)
         return converter.structure(data, ListPagination)
@@ -447,7 +442,7 @@ class AniLibriaClient:
             after=after,
             limit=limit,
             page=page,
-            items_per_page=items_per_page
+            items_per_page=items_per_page,
         )
         data = await self._http.get_feed(**payload)
 
@@ -546,11 +541,7 @@ class AniLibriaClient:
         :param Absent[int] limit: Количество объектов в ответе
         """
         payload: dict = dict_filter_missing(
-            rss_type=rss_type,
-            session_id=session_id,
-            since=since,
-            after=after,
-            limit=limit
+            rss_type=rss_type, session_id=session_id, since=since, after=after, limit=limit
         )
 
         return await self._http.get_rss(**payload)
@@ -652,7 +643,7 @@ class AniLibriaClient:
             limit=limit,
             sort_direction=sort_direction,
             page=page,
-            items_per_page=items_per_page
+            items_per_page=items_per_page,
         )
         data = await self._http.advanced_search(**payload)
         return converter.structure(data, ListPagination)
@@ -670,11 +661,7 @@ class AniLibriaClient:
         :param Absent[list[str]] filter: Список значений, которые будут в ответе.
         :param Absent[list[str]] remove: Список значений, которые будут удалены из ответа.
         """
-        payload = dict_filter_missing(
-            session_id=session_id,
-            filter=filter,
-            remove=remove
-        )
+        payload = dict_filter_missing(session_id=session_id, filter=filter, remove=remove)
         data = await self._http.get_user(**payload)
         return converter.structure(data, User)
 
@@ -709,7 +696,7 @@ class AniLibriaClient:
             description_type=description_type,
             playlist_type=playlist_type,
             page=page,
-            items_per_page=items_per_page
+            items_per_page=items_per_page,
         )
         data = await self._http.get_user_favorites(**payload)
         return converter.structure(data, ListPagination)
@@ -768,7 +755,7 @@ class AniLibriaClient:
         """
         gather = asyncio.gather(
             self._loop.create_task(self.astart(auto_reconnect=auto_reconnect)),
-            self._loop.create_task(coro)
+            self._loop.create_task(coro),
         )
         self._loop.run_until_complete(gather)
 
@@ -779,5 +766,3 @@ class AniLibriaClient:
         if self._http.session and not self._http.session.closed:
             await self._http.session.close()
             await self._websocket.close()
-
-

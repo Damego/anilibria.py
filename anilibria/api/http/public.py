@@ -1,15 +1,15 @@
-from typing import Any
-
+from ...utils import dict_filter_none
 from .request import Request
 from .route import Route
-from ...utils import dict_filter_none
 
-
-__all__ = ("PublicRequest", )
+__all__ = ("PublicRequest",)
 
 
 class PublicRequest(Request):
-    def __init__(self, proxy: str | None = None, ) -> None:
+    def __init__(
+        self,
+        proxy: str | None = None,
+    ) -> None:
         super().__init__(proxy)
 
     # v1
@@ -18,6 +18,7 @@ class PublicRequest(Request):
     Здесь не будут реализованы методы для "/api", так как существует v2, в котором точно такие же методы,
     и к тому же документация к "/api" не обновлялась более двух лет.
     """
+
     async def login(self, mail: str, password: str) -> dict:
         payload: dict = {"mail": mail, "passwd": password}
         route = Route("POST", "/login.php", is_v1=True)
@@ -97,7 +98,7 @@ class PublicRequest(Request):
             after=after,
             limit=limit,
             page=page,
-            items_per_page=items_per_page
+            items_per_page=items_per_page,
         )
         return await self.request(Route("GET", "/title/updates"), payload)
 
@@ -181,7 +182,7 @@ class PublicRequest(Request):
             after=after,
             limit=limit,
             page=page,
-            items_per_page=items_per_page
+            items_per_page=items_per_page,
         )
         return await self.request(Route("GET", "/youtube"), payload)
 
@@ -208,7 +209,7 @@ class PublicRequest(Request):
             after=after,
             limit=limit,
             page=page,
-            items_per_page=items_per_page
+            items_per_page=items_per_page,
         )
         return await self.request(Route("GET", "/feed"), payload)
 
@@ -249,7 +250,7 @@ class PublicRequest(Request):
             order=order,
             limit=limit,
             page=page,
-            items_per_page=items_per_page
+            items_per_page=items_per_page,
         )
         return await self.request(Route("GET", "/torrent/seed_stats"), payload)
 
@@ -297,7 +298,7 @@ class PublicRequest(Request):
             after=after,
             limit=limit,
             page=page,
-            items_per_page=items_per_page
+            items_per_page=items_per_page,
         )
         return await self.request(Route("GET", "/title/search"), payload)
 
@@ -328,7 +329,7 @@ class PublicRequest(Request):
             limit=limit,
             sort_direction=sort_direction,
             page=page,
-            items_per_page=items_per_page
+            items_per_page=items_per_page,
         )
         return await self.request(Route("GET", "/title/search/advanced"), payload)
 

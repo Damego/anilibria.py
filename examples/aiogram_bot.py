@@ -3,11 +3,11 @@
 """
 
 
-from aiogram import Bot, Dispatcher, types
-from anilibria import AniLibriaClient, TitleSerieEvent
-
 import logging
 
+from aiogram import Bot, Dispatcher, types
+
+from anilibria import AniLibriaClient, TitleSerieEvent
 
 logging.basicConfig(level=logging.INFO)
 

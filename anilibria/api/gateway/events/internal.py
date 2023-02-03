@@ -1,8 +1,11 @@
-from ...models import Title, Episode
+from ...models import Episode, Title
 from ...models.attrs_utils import define
 from .base import BaseEvent
 
-__all__ = ("Connect", "TitleEpisode", )
+__all__ = (
+    "Connect",
+    "TitleEpisode",
+)
 
 
 @define()

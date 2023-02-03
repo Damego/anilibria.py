@@ -1,15 +1,14 @@
 from logging import getLogger
 
-from aiohttp import ClientSession, ClientResponse
-from orjson import loads, JSONDecodeError
+from aiohttp import ClientResponse, ClientSession
+from orjson import JSONDecodeError, loads
 
-from .route import Route
-from ..error import HTTPException
 from ...utils.serializer import prepare_payload
-
+from ..error import HTTPException
+from .route import Route
 
 log = getLogger("anilibria.request")
-__all__ = ("Request", )
+__all__ = ("Request",)
 
 
 class Request:
@@ -36,7 +35,9 @@ class Request:
             f"Send {route.method} request to {route.endpoint} endpoint with params: {params} and kwargs: {kwargs}"
         )
 
-        async with self.session.request(route.method, route.url, params=params, **kwargs) as response:
+        async with self.session.request(
+            route.method, route.url, params=params, **kwargs
+        ) as response:
             data = await self._get_data(response)
 
             log.debug(f"Got response from request {data}")
