@@ -18,7 +18,7 @@ with open("requirements-docs.txt", "r", encoding="utf-8") as f:
 
 
 setup(
-    name=pyproject["tool"]["tool"]["poetry"]["name"],
+    name=pyproject["tool"]["poetry"]["name"],
     version=pyproject["tool"]["poetry"]["version"],
     author="Damego",
     author_email="danyabatueff@gmail.com",
