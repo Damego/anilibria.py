@@ -645,7 +645,14 @@ class AniLibriaClient:
         session_id: int,
         filter: Absent[list[str]] = MISSING,
         remove: Absent[list[str]] = MISSING,
-    ):
+    ) -> User:
+        """
+        Возвращает объект пользователя по текущей сессии.
+
+        :param session_id: Айди сессии.
+        :param Absent[list[str]] filter: Список значений, которые будут в ответе.
+        :param Absent[list[str]] remove: Список значений, которые будут удалены из ответа.
+        """
         payload = dict_filter_missing(
             session_id=session_id,
             filter=filter,
@@ -701,7 +708,7 @@ class AniLibriaClient:
 
     async def remove_user_favorite_title(self, session_id: str, title_id: int):
         """
-        Добавляет тайтл в список избранных
+        Удаляет тайтл из списка избранных
 
         :param str session_id: ID сессии.
         :param int title_id: ID тайтла.
@@ -710,7 +717,7 @@ class AniLibriaClient:
 
     async def astart(self, *, auto_reconnect: bool = True):
         """
-        Асинхронно запускает вебсокет
+        Запускает клиент асинхронно
         """
 
         while True:
@@ -739,7 +746,7 @@ class AniLibriaClient:
         """
         Запускает основной клиент вместе с корутиной.
 
-        :param coro: Корутина
+        :param coro: Корутина для запуска
         :param auto_reconnect: Нужно ли перезапускать клиент после ошибки сервера анилибрии?
         """
         gather = asyncio.gather(
