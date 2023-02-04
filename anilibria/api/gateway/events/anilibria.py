@@ -10,7 +10,6 @@ from .base import BaseEvent
 from .internal import Connect, TitleEpisode
 
 __all__ = (
-    "EventType",
     "EncodeStart",
     "EncodeProgress",
     "EncodeEnd",
@@ -18,6 +17,7 @@ __all__ = (
     "PlaylistUpdate",
     "TitleUpdate",
     "TorrentUpdate",
+    "EventType"
 )
 
 
@@ -28,87 +28,148 @@ class _BaseEncodeEvent(BaseEvent):
     """
 
     id: str
+    "ID тайтла"
     episode: str
+    "Номер эпизода"
 
 
 @define()
 class _EncodeEvent(_BaseEncodeEvent):
     resolution: str
+    "Разрешение загружаемого эпизода"
     quality: str
+    "Качество загружаемого эпизода"
 
 
 @define()
 class EncodeStart(_EncodeEvent):
+    """
+    Объект для события ``on_encode_start``.
+    Вызывается, когда начинается загрузка эпизода на сервер.
+
+    .. code-block:: python
+
+       @client.on(EncodeStart)
+       async def start_encode(event: EncodeStart):
+           ...
+    """
     is_reupload: bool
+    "Является ли загрузка эпизода перезаливом"
 
 
 @define()
 class EncodeProgress(_EncodeEvent):
+    """
+    Объект для события ``on_encode_progress``.
+    Вызывается на каждые 5% загрузки.
+
+    .. code-block:: python
+
+       @client.on(EncodeProgress)
+       async def progress(event: EncodeProgress):
+           ...
+    """
     encoded_percent: str
+    "Текущий процент загрузки"
 
 
 @define()
 class EncodeEnd(_EncodeEvent):
+    """
+    Объект для события ``on_encode_end``.
+    Вызывается, когда было загружено одно качество эпизода на сервер.
+
+    .. code-block:: python
+
+       @client.on(EncodeEnd)
+       async def encode_end(event: EncodeEnd):
+           ...
+    """
     ...
 
 
 @define()
 class EncodeFinish(_BaseEncodeEvent):
+    """
+    Объект для события ``on_encode_finish``.
+    Вызывается, когда все возможные качества эпизода были загружены на сервер.
+
+    .. code-block:: python
+
+       @client.on(EncodeFinish)
+       async def encode_finish(event: EncodeFinish):
+           ...
+    """
     ...
 
 
 @define()
 class PlaylistUpdate(BaseEvent):
     """
-    Модель для ивента ``on_playlist_update``
+    Модель для ивента ``on_playlist_update``.
+    Вызывается при обновлении данных плейлиста тайтла.
 
     .. code-block:: python
 
-      @client.event
+      @client.on(PlaylistUpdate)
       async def on_playlist_update(event: PlaylistUpdate):
           ...
     """
 
     id: Optional[int] = None
+    "ID тайтла"
     player: Player | None = None
+    "Обновлённый плейлист"
     updated_episode: Episode | None = None
+    "Обновлённый/добавленный эпизод"
     episode: str | None = None
+    "Номер эпизода"
     diff: dict | None = None
+    "Словарь с предыдущими значениями"
     reupload: bool | None = None
+    "Является ли это перезаливом"
 
 
 @define()
 class TitleUpdate(BaseEvent):
     """
-    Модель для ивента ``on_title_update``
+    Модель для ивента ``on_title_update``.
+    Вызывается при изменении информации о тайтле.
 
     .. code-block:: python
 
-      @client.event
+      @client.on(TitleUpdate)
       async def on_title_update(event: TitleUpdate):
           ...
     """
 
     title: Title = None
+    "Объект тайтла"
     diff: dict = None
+    "Предыдущие значения тайтла"
 
 
 @define()
 class TorrentUpdate(BaseEvent):
     """
-    Модель для ивента `on_torrent_update`
+    Модель для ивента `on_torrent_update`.
+    Вызывается при изменении информации о торрент файлах.
 
     .. code-block:: python
 
-      @client.event
+      @client.on(TorrentUpdate)
       async def on_torrent_update(event: TorrentUpdate):
           ...
     """
 
     id: str = None
+    "ID тайтла"
     torrents: Torrents = None
+    "Информация о торренте"
     updated_torrent_id: int = None
+    "ID обновлённого торрента"
     diff: dict = None
+    "Предыдущие значения"
 
 
 class EventType(Enum):
