@@ -2,4 +2,3 @@ furo
 readthedocs-sphinx-search
 Sphinx
 sphinx-hoverxref
-tomli
