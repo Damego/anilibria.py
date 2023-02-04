@@ -52,7 +52,7 @@ class AniLibriaClient:
         # Убеждаемся, что ивент затрагивает обновление эпизода, а не другие данные
         if not event.updated_episode or not event.updated_episode.hls:
             return
-        # Проверяем, что все три качества видео присутствуют
+        # Проверяем, что хотя бы одно из трёх качеств видео отсутствует, иначе это перезалив
         hls = event.updated_episode.hls
         if not hls.sd or not hls.hd or not hls.fhd:
             return
@@ -66,7 +66,7 @@ class AniLibriaClient:
         # - значения hls эпизода
         if (previous_hls := episode.get("hls")) is None:
             return
-        # Проверяем, не перезалив ли это
+        # Если есть предыдущее значение, значит это перезалив
         if all(v is not None for v in previous_hls.values()):
             return
 
