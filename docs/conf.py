@@ -18,7 +18,6 @@ sys.path.insert(0, os.path.abspath(".."))
 
 import tomli
 
-
 # -- Project information -----------------------------------------------------
 
 with open("../pyproject.toml", "rb") as f:

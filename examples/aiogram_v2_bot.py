@@ -26,7 +26,9 @@ async def on_connect():
 async def new_episode(event: TitleEpisode):
     if event.title.code == "otonari-no-tenshi-sama-ni-itsunomanika-dame-ningen-ni-sareteita-ken":
         # Ангел по соседству
-        await bot.send_message(123456789, f"Вышла {event.episode.episode}-я серия {event.title.names.ru}")
+        await bot.send_message(
+            123456789, f"Вышла {event.episode.episode}-я серия {event.title.names.ru}"
+        )
 
 
 @dp.message_handler()

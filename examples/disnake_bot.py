@@ -7,7 +7,7 @@
 import disnake
 from disnake.ext import commands
 
-from anilibria import AniLibriaClient, TitleEpisode, Connect
+from anilibria import AniLibriaClient, Connect, TitleEpisode
 
 bot = commands.InteractionBot()
 client = AniLibriaClient(proxy="your_proxy.com:80")

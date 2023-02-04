@@ -17,7 +17,7 @@ __all__ = (
     "PlaylistUpdate",
     "TitleUpdate",
     "TorrentUpdate",
-    "EventType"
+    "EventType",
 )
 
 
@@ -53,6 +53,7 @@ class EncodeStart(_EncodeEvent):
        async def start_encode(event: EncodeStart):
            ...
     """
+
     is_reupload: bool
     "Является ли загрузка эпизода перезаливом"
 
@@ -69,6 +70,7 @@ class EncodeProgress(_EncodeEvent):
        async def progress(event: EncodeProgress):
            ...
     """
+
     encoded_percent: str
     "Текущий процент загрузки"
 
@@ -85,6 +87,7 @@ class EncodeEnd(_EncodeEvent):
        async def encode_end(event: EncodeEnd):
            ...
     """
+
     ...
 
 
@@ -100,6 +103,7 @@ class EncodeFinish(_BaseEncodeEvent):
        async def encode_finish(event: EncodeFinish):
            ...
     """
+
     ...
 
 

@@ -19,6 +19,7 @@ class Connect(BaseEvent):
       async def connected(event: Connect):
           ...
     """
+
     api_version: str
     "Версия АПИ анилибрии"
 

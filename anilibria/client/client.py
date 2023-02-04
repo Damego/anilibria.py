@@ -88,6 +88,7 @@ class AniLibriaClient:
 
         :param Callable[..., Coroutine] coro: Функция, которая будет вызываться.
         """
+
         def wrapper(coro: Callable[..., Coroutine]) -> Callable[..., Coroutine]:
             self._websocket.dispatch.register("on_startup", coro)
 
@@ -110,6 +111,7 @@ class AniLibriaClient:
 
         :param event: Класс ивента
         """
+
         def wrapper(coro: Callable[..., Coroutine]) -> Callable[..., Coroutine]:
             event_name: str = "on_" + EventType(event).name.lower()
             self._websocket.dispatch.register(event_name, coro)
