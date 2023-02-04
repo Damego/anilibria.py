@@ -3,21 +3,21 @@ anilibria.py
 
 О библиотеке
 ************
-anilibria.py - это REST API и Websocket обёртка API.
+anilibria.py - это RESTful и Websocket обёртка для API anilibria.tv.
 
 Вы можете ей пользоваться для получение уведомлений о выходе новой серии, получение информации о тайтлах и других вещей.
 
 Установка
 *********
 
-``pip install anilibria.py``
+``pip install --upgrade anilibria.py``
 
-или
+С использование poetry:
+``poetry add anilibria.py``
 
-``pip install git+https://github.com/Damego/anilibria.py.git`` - (Рекомендуется на текущий момент)
 
-Использование
-*************
+Использование методов клиента
+*****************************
 
 В библиотеке реализована поддержка RESTful API.
 Список всех возможных методов вы можете увидеть `здесь <https://anilibriapy.readthedocs.io/ru/latest/client.html>`__
@@ -40,6 +40,29 @@ anilibria.py - это REST API и Websocket обёртка API.
 
   asyncio.run(main())
 
+Использование Websocket
+***********************
+
+АПИ Анилибрии имеет вебсокет, к которому можно подключиться.
+
+.. code-block:: python
+
+   from anilibria import AniLibriaClient, Connect
+
+
+   client = AniLibriaClient()
+
+
+   @client.on(Connect)  # Или client.listen(name="on_connect")
+   async def connected(event: Connect):
+       print("Подключено к АПИ")
+
+
+   client.start()
+
+
+Все модели события вы можете найти :doc:`events`
+
 
 Использование с другими библиотеками
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -57,4 +80,3 @@ anilibria.py - это REST API и Websocket обёртка API.
    :caption: Страницы:
 
    api.rst
-   events.rst
