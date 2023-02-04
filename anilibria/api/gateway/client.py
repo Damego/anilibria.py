@@ -8,7 +8,7 @@ from ...const import __api_url__
 from ..dispatch import Dispatch
 from ..http import HTTPClient
 from ..models.cattrs_utils import converter
-from .events import Connect, EventType
+from .events import Connect, EventType, Subscription
 
 log = getLogger("anilibria.gateway")
 URL = f"wss://{__api_url__}/ws/"
@@ -95,7 +95,7 @@ class GatewayClient:
 
     def _track_unknown_event(self, data: dict):
         if "subscribe" in data:
-            self.dispatch.call("on_subscription", data)
+            self.dispatch.call("on_subscription", converter.structure(data, Subscription))
 
     async def _send_message(self, data: dict):
         await self._connection.send_bytes(dumps(data))

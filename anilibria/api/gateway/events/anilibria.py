@@ -17,6 +17,7 @@ __all__ = (
     "PlaylistUpdate",
     "TitleUpdate",
     "TorrentUpdate",
+    "Subscription",
     "EventType",
 )
 
@@ -176,6 +177,24 @@ class TorrentUpdate(BaseEvent):
     "Предыдущие значения"
 
 
+@define()
+class Subscription(BaseEvent):
+    """
+    Модель для ивента `on_subscription`.
+    Вызывается при подписке на события, приходящие с websocket.
+
+    .. code-block:: python
+
+      @client.on(Subscription)
+      async def event_subscription(event: Subscription):
+          ...
+    """
+    subscribe: str
+    "Статус подписки"
+    subscription_id: int
+    "ID подписки"
+
+
 class EventType(Enum):
     """
     Обозначает ивенты, которые принимает Websocket
@@ -189,6 +208,7 @@ class EventType(Enum):
     ENCODE_END = EncodeEnd
     ENCODE_FINISH = EncodeFinish
     TORRENT_UPDATE = TorrentUpdate
+    SUBSCRIPTION = Subscription
 
     # Internal events
     TITLE_EPISODE = TitleEpisode
