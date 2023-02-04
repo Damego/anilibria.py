@@ -24,10 +24,10 @@ orjson = "^3.8.5"
 aiohttp = "^3.8.3"
 tomli = "^2.0.1"
 
-[tool.poetry.group.docs]
+[tool.poetry.group.readthedocs]
 optional=true
 
-[tool.poetry.group.docs.dependencies]
+[tool.poetry.group.readthedocs.dependencies]
 Sphinx = "^6.1.3"
 sphinx-hoverxref = "^1.3.0"
 furo = "^2022.12.7"
