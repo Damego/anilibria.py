@@ -76,7 +76,29 @@ class AniLibriaClient:
             "on_title_episode", TitleEpisode(title=title, episode=event.updated_episode)
         )
 
-    def on(self, event: BaseEvent):
+    def on_startup(self, coro: Callable[..., Coroutine] = MISSING):
+        """
+        Декоратор для прослушивания события ``on_startup``. Вызывается только один раз при запуске клиента.
+
+        .. code-block:: python
+
+           @client.on_startup()  # Можно без скобок
+           async def start():  # Единственное событие, при котором функция ничего не должна принимать.
+               ...
+
+        :param Callable[..., Coroutine] coro: Функция, которая будет вызываться.
+        """
+        def wrapper(coro: Callable[..., Coroutine]) -> Callable[..., Coroutine]:
+            self._websocket.dispatch.register("on_startup", coro)
+
+            return coro
+
+        if coro is not MISSING:
+            return wrapper(coro)
+
+        return wrapper
+
+    def on(self, event: Type[BaseEvent]):
         """
         Декоратор для прослушивания событий. Принимает класс события.
 
