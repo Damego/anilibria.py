@@ -9,7 +9,7 @@ with open("pyproject.toml", "rb") as f:
 
 
 def get_long_description() -> str:
-    return (Path(__file__).parent / "README.md").read_text()
+    return (Path(__file__).parent / "README.rst").read_text()
 
 
 def get_requirements(filename: str) -> list[str]:
