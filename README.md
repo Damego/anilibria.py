@@ -9,48 +9,53 @@ anilibria.py - это RestAPI и Websocket обёртка API.
 
 `pip install anilibria.py`  
 или  
-`pip install git+https://github.com/Damego/anilibria.py.git` - (Рекомендуется на текущий момент)
+`poetry add anilibria.py`
 
-## Использование
+## Использование методов клиента
 
-Ниже представлено самое простое использование библиотеки.  
-Функция `on_connect` будет вызвана после успешного подключения к API anilibria.  
-Функция `on_title_update` будет вызываться после того, как на сервер будет залита новая серия любого тайтла.
+В библиотеке реализована поддержка RESTful API.
+Список всех возможных методов вы можете увидеть [здесь](https://anilibriapy.readthedocs.io/ru/latest/client.html)
 
-```py
-from anilibria import AniLibriaClient, TitleUpdateEvent
+
+```python
+import asyncio
+
+from anilibria import AniLibriaClient
+
+
+async def main():
+  # Создание клиента
+  client = AniLibriaClient(proxy="http://0.0.0.0:80")  # proxy - необязательный аргумент
+
+  # Получение тайтла по его коду
+  title = await client.get_title(code="kimetsu-no-yaiba-yuukaku-hen")
+  # Вывод описание тайтла
+  print(title.description)  # Все атрибуты вы можете найти в документации моделей
+
+asyncio.run(main())
+```
+
+## Использование Websocket
+
+АПИ Анилибрии имеет вебсокет, к которому можно подключиться.
+
+```python
+from anilibria import AniLibriaClient, Connect
+
 
 client = AniLibriaClient()
 
-@client.event
-async def on_connect():
-  print("Подключено")
 
-@client.event
-async def on_title_update(event: TitleUpdateEvent):
-  print(event.title.names.ru)  # Выведет название тайтла на русском, который обновили.
-  
+@client.on(Connect)  # Или client.listen(name="on_connect")
+async def connected(event: Connect):
+   print("Подключено к АПИ")
+
+
 client.start()
-```
-
-### Уведомления о новых сериях.
-
-```py
-@client.event
-async def on_title_serie(event: TitleSerieEvent):
-    if event.title.code == "texhnolyze":  # Ещё один способ: event.title.names.ru == "Технолайз"
-        ...  # Если выйдет новая серия Технолайза, то вызовется эта функция и выполнится условие
 
 ```
 
-### Получение информации о тайтле
-В библиотеке реализована поддержка http запросов. Список всех возможных методов вы можете увидеть [здесь](https://anilibriapy.readthedocs.io/ru/latest/client.html)
-
-```py
-async def some_function():
-    title = await client.get_title(code="kimetsu-no-yaiba-yuukaku-hen")
-    print(title.description)  # Все атрибуты вы можете найти в документации моделей
-```
+Все модели событий вы можете найти [здесь](https://anilibriapy.readthedocs.io/ru/latest/events.html)
 
 ### Использование с другими библиотеками
 Вы также можете использовать эту библиотеку вместе с другими:
@@ -60,5 +65,5 @@ async def some_function():
 Примеры использования представлены в папке [examples](https://github.com/Damego/anilibria.py/tree/main/examples)
 
 ## Документация
-[Официальная документация API](https://github.com/anilibria/docs/blob/master/api_v2.md)  
+[Официальная документация API](https://github.com/anilibria/docs/blob/master/api_v3.md)  
 [Документация библиотеки](https://anilibriapy.readthedocs.io/ru/latest/)
