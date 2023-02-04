@@ -17,7 +17,7 @@
     :maxdepth: 2
     :caption: Модели событий
 
-    anilibria.api.gateway.events.rst
+    events.rst
 
 .. toctree::
     :maxdepth: 2
