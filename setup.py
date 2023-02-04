@@ -8,8 +8,8 @@ with open("pyproject.toml", "rb") as f:
     pyproject = tomli.load(f)
 
 
-with open("README.md", "r", encoding="utf-8") as f:
-    README = f.read()
+def get_long_description() -> str:
+    return (Path(__file__).parent / "README.md").read_text()
 
 
 def get_requirements(filename: str) -> list[str]:
@@ -26,8 +26,8 @@ setup(
     include_package_data=True,
     install_requires=get_requirements("requirements.txt"),
     license="GPL-3.0 License",
-    long_description=README,
     long_description_content_type="text/markdown",
+    long_description=get_long_description(),
     url="https://github.com/Damego/anilibria.py",
     packages=find_packages(),
     python_requires=">=3.10",
