@@ -16,13 +16,23 @@ def get_requirements(filename: str) -> list[str]:
     return (Path(__file__).parent / filename).read_text().splitlines()
 
 
+extra_requirements = {
+    "readthedocs": [
+        "furo",
+        "readthedocs-sphinx-search",
+        "Sphinx",
+        "sphinx-hoverxref",
+    ]
+}
+
+
 setup(
     name=pyproject["tool"]["poetry"]["name"],
     version=pyproject["tool"]["poetry"]["version"],
     author="Damego",
     author_email="danyabatueff@gmail.com",
     description=pyproject["tool"]["poetry"]["description"],
-    extras_require={"readthedocs": get_requirements("requirements-docs.txt")},
+    extras_require=extra_requirements,
     include_package_data=True,
     install_requires=get_requirements("requirements.txt"),
     license="GPL-3.0 License",
