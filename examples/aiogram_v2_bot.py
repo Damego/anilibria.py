@@ -1,5 +1,5 @@
 """
-Совместное использование aiogram и anilibria.py.
+Совместное использование aiogram v2 и anilibria.py.
 """
 
 
@@ -7,7 +7,7 @@ import logging
 
 from aiogram import Bot, Dispatcher, types
 
-from anilibria import AniLibriaClient, TitleSerieEvent
+from anilibria import AniLibriaClient, TitleEpisode
 
 logging.basicConfig(level=logging.INFO)
 
@@ -22,10 +22,11 @@ async def on_connect():
     print("Anilibria connected")
 
 
-@ani_client.event
-async def on_title_serie(event: TitleSerieEvent):
-    if event.title.code == "texhnolyze":
-        print("Вышла новая серия технолайза! (хз что это)")
+@ani_client.on(TitleEpisode)
+async def new_episode(event: TitleEpisode):
+    if event.title.code == "otonari-no-tenshi-sama-ni-itsunomanika-dame-ningen-ni-sareteita-ken":
+        # Ангел по соседству
+        await bot.send_message(123456789, f"Вышла {event.episode.episode}-я серия {event.title.names.ru}")
 
 
 @dp.message_handler()
@@ -38,6 +39,8 @@ async def random(message: types.Message):
 
 
 if __name__ == "__main__":
+    # Обратите внимание, здесь используется dp.start_polling(), а не executor.start_polling()
+
     # В executor.start_polling() происходит много чего ещё, перед стартом бота,
     # если эти действия необходимы, откройте Issue об этом
-    ani_client.startwith(dp.start_polling())  # ! Not executor.start_polling(dp)
+    ani_client.startwith(dp.start_polling())
