@@ -76,7 +76,7 @@ class AniLibriaClient:
             "on_title_episode", TitleEpisode(title=title, episode=event.updated_episode)
         )
 
-    def on(self, event: Type[BaseEvent]) -> Callable:
+    def on(self, event: BaseEvent):
         """
         Декоратор для прослушивания событий. Принимает класс события.
 
@@ -88,9 +88,11 @@ class AniLibriaClient:
 
         :param event: Класс ивента
         """
-        def wrapper(coro: Callable[..., Coroutine]):
+        def wrapper(coro: Callable[..., Coroutine]) -> Callable[..., Coroutine]:
             event_name: str = "on_" + EventType(event).name.lower()
             self._websocket.dispatch.register(event_name, coro)
+
+            return coro
 
         return wrapper
 
