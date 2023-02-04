@@ -14,7 +14,7 @@ with open("requirements.txt", "r", encoding="utf-8") as f:
     requirements = f.read()
 
 with open("requirements-docs.txt", "r", encoding="utf-8") as f:
-    requirements_docs = f.read()
+    requirements_docs = f.read().strip().splitlines()
 
 
 setup(
