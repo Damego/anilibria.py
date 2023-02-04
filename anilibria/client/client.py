@@ -176,6 +176,8 @@ class AniLibriaClient:
         :param str name: Название ивента. Например: on_title_update.
         """
 
+        return self.listen(coro, name=name)
+
     async def subscribe(self, subscribe: dict, filter: str = MISSING, remove: str = MISSING):
         """
         По умолчанию клиент получает все возможные уведомления от API.
@@ -183,7 +185,7 @@ class AniLibriaClient:
 
         .. code-block:: python
 
-           await subscribe(
+           await client.subscribe(
                {
                    "title_update": {
                        "title": {
