@@ -676,7 +676,7 @@ class AniLibriaClient:
             items_per_page=items_per_page,
         )
         data = await self._http.search_titles(**payload)
-        return converter.structure(data, list[Title])
+        return converter.structure(data, ListPagination)
 
     async def advanced_search(
         self,
