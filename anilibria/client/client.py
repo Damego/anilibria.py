@@ -17,6 +17,7 @@ from ..api.models import (
     Schedule,
     SeedStats,
     Title,
+    TitleFranchise,
     TitleTeam,
     User,
     YouTubeVideo,
@@ -796,6 +797,57 @@ class AniLibriaClient:
         :param int title_id: ID тайтла.
         """
         await self._http.remove_user_favorite(session=session_id, title_id=title_id)
+
+    async def get_title_franchises(
+        self,
+        id: int,
+        filter: Absent[list[str]] = MISSING,
+        remove: Absent[list[str]] = MISSING,
+    ) -> TitleFranchise | None:
+        """
+        Получение франшизы тайтла
+
+        :param id: ID тайтла
+        :param Absent[list[str]] filter: Список значений, которые будут в ответе.
+        :param Absent[list[str]] remove: Список значений, которые будут удалены из ответа.
+        """
+        payload = dict_filter_missing(
+            id=id,
+            filter=filter,
+            remove=remove,
+        )
+        data = await self._http.get_title_franchises(**payload)
+        return converter.structure(data, TitleFranchise) if data else None
+
+    async def get_franchises(
+        self,
+        filter: Absent[list[str]] = MISSING,
+        remove: Absent[list[str]] = MISSING,
+        after: Absent[int] = MISSING,
+        limit: Absent[int] = MISSING,
+        page: Absent[int] = MISSING,
+        items_per_page: Absent[int] = MISSING,
+    ) -> ListPagination[TitleFranchise]:
+        """
+        Возвращает список всех франшиз
+
+        :param Absent[list[str]] filter: Список значений, которые будут в ответе.
+        :param Absent[list[str]] remove: Список значений, которые будут удалены из ответа.
+        :param Absent[int] after: Удаляет первые n записей из выдачи.
+        :param Absent[int] limit: Количество объектов в ответе.
+        :param Absent[int] page: Номер страницы. По умолчанию 1
+        :param Absent[int] items_per_page: Количество элементов на одной странице.
+        """
+        payload = dict_filter_missing(
+            filter=filter,
+            remove=remove,
+            after=after,
+            limit=limit,
+            page=page,
+            items_per_page=items_per_page,
+        )
+        data = await self._http.get_franchises(**payload)
+        return converter.structure(data, ListPagination[TitleFranchise])
 
     async def astart(self, *, auto_reconnect: bool = True):
         """

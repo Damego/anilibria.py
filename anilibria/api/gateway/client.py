@@ -79,6 +79,10 @@ class GatewayClient:
         return response.json(loads=loads)
 
     def _track_data(self, data: dict):
+        log.debug(
+            f"Received an event with data {data}",
+        )
+
         type: str
         if not (type := data.get("type")):
             return self._track_unknown_event(data)
@@ -87,8 +91,6 @@ class GatewayClient:
 
         if event_model is None:
             return log.warning(f"Received a not excepted event `{type}`!")
-
-        log.debug(f"Received {type} event {data}")
 
         obj = converter.structure(data["data"], event_model)
         self.dispatch.call(f"on_{type}", obj)

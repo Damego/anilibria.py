@@ -24,6 +24,9 @@ __all__ = (
     "Torrent",
     "Torrents",
     "Title",
+    "Franchise",
+    "FranchiseRelease",
+    "TitleFranchise",
 )
 
 
@@ -210,6 +213,8 @@ class Episode:
     "Ссылка на превью серии"
     skips: SerieSkips | None = None
     "Таймкоды на пропуски"
+    uuid: str
+    "UUID эпизода"
 
     # TODO: Добавить свойство 'created_at' с datetime
 
@@ -357,6 +362,34 @@ class TitleDescription:
 
 
 @define()
+class Franchise:
+    id: str
+    "UUID франшизы"
+    name: str
+    "Название франшизы"
+
+
+@define()
+class FranchiseRelease:
+    id: int
+    "ID тайтла"
+    code: str
+    "Код тайтла"
+    names: TitleNames
+    "Названия тайтла"
+    ordinal: int
+    "Порядковый номер в списке"
+
+
+@define()
+class TitleFranchise:
+    franchise: Franchise
+    "Объект с информацией о франшизе"
+    releases: list[FranchiseRelease]
+    "Список релизов франшизы"
+
+
+@define()
 class Title:
     """
     Объект тайтла
@@ -396,6 +429,8 @@ class Title:
     "Информация о плеере"
     torrents: Torrents | None = None
     "Информация о торрентах"
+    franchises: list[TitleFranchise] | None = None
+    "Список франшиз"
 
     @property
     def url(self) -> str:

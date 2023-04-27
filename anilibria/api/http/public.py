@@ -373,3 +373,31 @@ class PublicRequest(Request):
     async def remove_user_favorite(self, session: str, title_id: int) -> dict:
         payload: dict = dict_filter_none(session=session, title_id=title_id)
         return await self.request(Route("DELETE", "/user/favourites/remove"), payload)
+
+    async def get_title_franchises(
+        self,
+        id: int,
+        filter: list[str] | None = None,
+        remove: list[str] | None = None,
+    ) -> dict:
+        payload: dict = dict_filter_none(id=id, filter=filter, remove=remove)
+        return await self.request(Route("GET", "/title/franchises"), payload)
+
+    async def get_franchises(
+        self,
+        filter: list[str] | None = None,
+        remove: list[str] | None = None,
+        limit: int | None = None,
+        after: int | None = None,
+        page: int | None = None,
+        items_per_page: int | None = None,
+    ) -> list[dict]:
+        payload: dict = dict_filter_none(
+            filter=filter,
+            remove=remove,
+            limit=limit,
+            after=after,
+            page=page,
+            items_per_page=items_per_page,
+        )
+        return await self.request(Route("GET", "/franchise/list"), payload)

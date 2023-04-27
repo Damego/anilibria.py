@@ -78,4 +78,5 @@ anilibria.py - это RESTful и Websocket обёртка для API anilibria.t
 Документация
 ^^^^^^^^^^^^
 `Официальная документация API <https://github.com/anilibria/docs/blob/master/api_v3.md>`__
+
 `Документация библиотеки <https://anilibriapy.readthedocs.io/ru/latest/>`__

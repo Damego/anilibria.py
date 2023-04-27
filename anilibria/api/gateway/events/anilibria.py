@@ -189,6 +189,7 @@ class Subscription(BaseEvent):
       async def event_subscription(event: Subscription):
           ...
     """
+
     subscribe: str
     "Статус подписки"
     subscription_id: int
