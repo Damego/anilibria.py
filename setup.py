@@ -35,7 +35,7 @@ setup(
     extras_require=extra_requirements,
     include_package_data=True,
     install_requires=[
-        "aiohttp==3.8.3",
+        "aiohttp>=3.8.3",
         "attrs==22.2.0",
         "cattrs==22.2.0",
         "orjson==3.8.5",
