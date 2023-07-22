@@ -72,7 +72,7 @@ class GatewayClient:
     async def _receive_data(self) -> dict | WSMessage:
         response = await self._connection.receive()
 
-        if response.type is WSMsgType.CLOSING:
+        if response.type in {WSMsgType.CLOSING, WSMsgType.CLOSED}:
             self._closed = True
             return response
 
