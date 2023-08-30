@@ -75,7 +75,7 @@ class GatewayClient:
         if response.type in {WSMsgType.CLOSING, WSMsgType.CLOSED}:
             self._closed = True
             return response
-
+        print(response)
         return response.json(loads=loads)
 
     def _track_data(self, data: dict):
