@@ -66,15 +66,23 @@ class GatewayClient:
                 # Possible only when connection was closed
                 if isinstance(data, WSMessage):
                     return
+                if not data:
+                    continue
 
                 self._track_data(data)
 
-    async def _receive_data(self) -> dict | WSMessage:
+    async def _receive_data(self) -> dict | WSMessage | None:
         response = await self._connection.receive()
 
-        if response.type in {WSMsgType.CLOSING, WSMsgType.CLOSED}:
+        if response.type in {WSMsgType.CLOSING, WSMsgType.CLOSED, WSMsgType.CLOSE}:
             self._closed = True
             return response
+
+        if response.type is not WSMsgType.TEXT:
+            log.warning(f"Received an unexpected message with type: {response.type}. Update to the latest version or "
+                        f"tell the developer about this message")
+            log.debug(f"Unexpected message's data: {response.data}")
+            return
 
         return response.json(loads=loads)
 
